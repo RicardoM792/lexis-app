@@ -1,0 +1,3770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a1a">
+<title>LEXIS · English Intelligence Platform</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg: #0a0a1a;
+  --surface: #12121f;
+  --surface2: #1a1a2e;
+  --surface3: #1e1e35;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e8f0;
+  --text2: #9898b0;
+  --text3: #6060788;
+  --accent: #7c5cfc;
+  --accent2: #9b7aff;
+  --accent3: #5a3dd6;
+  --green: #22d3a8;
+  --green2: #10b981;
+  --red: #f43f5e;
+  --yellow: #fbbf24;
+  --blue: #38bdf8;
+  --orange: #fb923c;
+  --pink: #f472b6;
+  --glow: 0 0 30px rgba(124,92,252,0.3);
+  --glow2: 0 0 60px rgba(124,92,252,0.15);
+  --r: 14px;
+  --r2: 20px;
+  --r3: 28px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow2: 0 8px 48px rgba(0,0,0,0.6);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--accent3); border-radius: 4px; }
+
+/* BACKGROUND MESH */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(124,92,252,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(34,211,168,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(124,92,252,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app { position: relative; z-index: 1; }
+
+/* ── NAV ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(10,10,26,0.85);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 0 20px rgba(124,92,252,0.4);
+}
+
+.nav-levels {
+  display: flex;
+  gap: 4px;
+  background: var(--surface2);
+  padding: 4px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.lvl-btn {
+  padding: 6px 16px;
+  border-radius: 50px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.lvl-btn:hover { color: var(--text); background: var(--surface3); }
+.lvl-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  box-shadow: 0 2px 12px rgba(124,92,252,0.4);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+.icon-btn:hover { color: var(--text); background: var(--surface3); border-color: var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  padding: 40px 24px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+}
+.hero-title {
+  font-size: clamp(2rem,4vw,3rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+.hero-title span {
+  background: linear-gradient(135deg, #a78bff, #38bdf8, #22d3a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  color: var(--text2);
+  font-size: 1rem;
+  margin-top: 10px;
+  max-width: 500px;
+}
+
+/* STATS ROW */
+.stats-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.stat-pill:hover { border-color: var(--accent); }
+.stat-pill .sval {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--accent2);
+  font-feature-settings: 'tnum';
+}
+.stat-pill .slbl { color: var(--text2); }
+
+.progress-slim {
+  height: 3px;
+  background: var(--surface3);
+  border-radius: 3px;
+  margin-top: 16px;
+  max-width: 400px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-slim-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  border-radius: 3px;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+}
+
+.level-badge {
+  text-align: center;
+}
+.level-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(124,92,252,0.2), rgba(34,211,168,0.2));
+  border: 2px solid rgba(124,92,252,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent2);
+  box-shadow: var(--glow);
+  position: relative;
+}
+.level-circle::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(124,92,252,0.2);
+  animation: orbit 3s linear infinite;
+}
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── TOPICS BAR ── */
+.topics-bar {
+  padding: 0 24px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.topics-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.topics-scroll::-webkit-scrollbar { display: none; }
+.topic-chip {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text2);
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.topic-chip:hover { color: var(--text); border-color: var(--accent); }
+.topic-chip.active {
+  background: rgba(124,92,252,0.15);
+  border-color: var(--accent);
+  color: var(--accent2);
+  font-weight: 600;
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+@media(max-width: 1100px) { .main { grid-template-columns: 1fr 1fr; } }
+@media(max-width: 700px) { .main { grid-template-columns: 1fr; } .hero-inner { grid-template-columns: 1fr; } .level-badge { display:none; } }
+
+/* ── CARD ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  overflow: hidden;
+  transition: border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover { border-color: var(--border2); }
+
+.card-top {
+  padding: 20px 20px 0;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.card-icon {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.card-actions { display: flex; gap: 6px; }
+
+.btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn:hover { color: var(--text); border-color: var(--accent); background: var(--surface3); }
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 2px 12px rgba(124,92,252,0.3);
+}
+.btn.primary:hover { box-shadow: 0 4px 20px rgba(124,92,252,0.5); transform: translateY(-1px); }
+.btn.success {
+  background: rgba(34,211,168,0.15);
+  border-color: rgba(34,211,168,0.3);
+  color: var(--green);
+}
+.btn.danger {
+  background: rgba(244,63,94,0.12);
+  border-color: rgba(244,63,94,0.25);
+  color: var(--red);
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--surface2);
+  padding: 3px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.tab {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+  text-align: center;
+}
+.tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+.tab:hover:not(.active) { color: var(--text); }
+
+/* ── SEARCH ── */
+.search-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text2);
+  pointer-events: none;
+}
+.search-inp {
+  width: 100%;
+  padding: 10px 12px 10px 38px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-inp:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
+.search-inp::placeholder { color: var(--text2); }
+
+/* ── VOCAB LIST ── */
+.vocab-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 20px;
+  max-height: 420px;
+}
+
+.vitem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.vitem:last-child { border-bottom: none; }
+.vitem:hover { padding-left: 4px; }
+
+.vitem-body { flex: 1; min-width: 0; }
+.vitem-word {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vitem-word .badge-mastered {
+  font-size: 0.65rem;
+  background: rgba(34,211,168,0.15);
+  border: 1px solid rgba(34,211,168,0.3);
+  color: var(--green);
+  padding: 1px 6px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.vitem-ipa {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent2);
+  opacity: 0.8;
+  margin-bottom: 3px;
+}
+.vitem-meaning {
+  font-size: 0.88rem;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.vitem-ex {
+  font-size: 0.8rem;
+  color: var(--text2);
+  opacity: 0.7;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vitem-ex em { color: var(--accent2); font-style: normal; }
+
+.vitem-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.speak-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(124,92,252,0.15);
+  color: var(--accent2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+.speak-btn:hover { background: var(--accent); color: white; transform: scale(1.1); }
+.speak-btn.speaking { background: var(--accent); color: white; animation: pulse-speak 0.6s infinite alternate; }
+@keyframes pulse-speak { to { box-shadow: 0 0 16px rgba(124,92,252,0.6); } }
+
+.master-btn {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(34,211,168,0.25);
+  background: transparent;
+  color: var(--green);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-weight: 600;
+}
+.master-btn:hover { background: rgba(34,211,168,0.15); }
+
+/* ── VOICE PANEL ── */
+.voice-panel {
+  margin: 0 20px 16px;
+  padding: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: none;
+}
+.voice-panel.open { display: block; }
+
+.voice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.voice-grid label {
+  font-size: 0.8rem;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.vselect {
+  padding: 7px 10px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.vselect:focus { border-color: var(--accent); }
+
+.voice-params {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.vparam label { display: block; font-size: 0.75rem; color: var(--text2); margin-bottom: 4px; }
+.vparam input[type=range] {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ── VERBS TABLE ── */
+.verbs-wrap {
+  overflow: auto;
+  max-height: 420px;
+  padding: 0 20px 20px;
+}
+.vtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.vtable th {
+  position: sticky;
+  top: 0;
+  padding: 10px 12px;
+  text-align: left;
+  background: var(--surface2);
+  color: var(--text2);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border2);
+  z-index: 2;
+}
+.vtable td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.vtable tr:hover td { background: var(--surface2); }
+.verb-base { font-weight: 700; color: var(--accent2); }
+.verb-past { color: var(--blue); }
+.verb-part { color: var(--green); }
+.verb-mean { color: var(--text2); font-size: 0.8rem; }
+
+/* ── PHRASAL / IDIOMS ── */
+.phrase-list {
+  overflow-y: auto;
+  max-height: 420px;
+  padding: 0 20px 20px;
+}
+.pitem {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--surface2);
+  border-radius: 12px;
+  border-left: 3px solid var(--yellow);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  transition: all 0.2s;
+}
+.pitem.idiom-style { border-left-color: var(--pink); }
+.pitem:hover { background: var(--surface3); }
+.pitem-body { flex: 1; min-width: 0; }
+.pitem-phrase { font-weight: 700; color: var(--text); margin-bottom: 3px; font-size: 0.95rem; }
+.pitem.idiom-style .pitem-phrase { color: var(--pink); }
+.pitem-mean { font-size: 0.83rem; color: var(--text2); margin-bottom: 4px; }
+.pitem-ex { font-size: 0.8rem; color: var(--text2); opacity: 0.7; font-style: italic; }
+
+/* ── GRAMMAR ── */
+.grammar-list {
+  overflow-y: auto;
+  max-height: 420px;
+  padding: 0 20px 20px;
+}
+.gitem {
+  margin-bottom: 12px;
+  background: var(--surface2);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.gitem-head {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.gitem-head:hover { background: var(--surface3); }
+.gitem-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gitem-badge {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(124,92,252,0.15);
+  color: var(--accent2);
+  font-weight: 600;
+}
+.gitem-body {
+  padding: 0 14px 14px;
+  display: none;
+  animation: slideDown 0.25s ease;
+}
+.gitem-body.open { display: block; }
+@keyframes slideDown {
+  from { opacity:0; transform:translateY(-6px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.gitem-rule {
+  font-size: 0.85rem;
+  color: var(--text2);
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  background: rgba(124,92,252,0.06);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent3);
+}
+.gitem-struct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--green);
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background: rgba(34,211,168,0.06);
+  border-radius: 8px;
+}
+.gitem-examples { display: flex; flex-direction: column; gap: 4px; }
+.gitem-ex {
+  font-size: 0.83rem;
+  color: var(--text2);
+  padding: 6px 10px;
+  background: var(--surface3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.gitem-ex span { flex:1; }
+
+/* ── PRACTICE CARD ── */
+.practice-body {
+  padding: 0 20px 20px;
+  flex: 1;
+}
+
+/* QUIZ */
+.quiz-stage {
+  text-align: center;
+  padding: 20px 0;
+}
+.quiz-word-big {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  margin: 8px 0 4px;
+  line-height: 1.1;
+}
+.quiz-word-big .ipa {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--accent2);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0;
+  margin-top: 6px;
+}
+.quiz-label { font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; }
+.quiz-ex {
+  font-size: 0.88rem;
+  color: var(--text2);
+  font-style: italic;
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: var(--surface2);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.quiz-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+.quiz-opt {
+  padding: 13px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: all 0.18s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.quiz-opt-letter {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: var(--surface3);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+.quiz-opt:hover { border-color: var(--accent); background: rgba(124,92,252,0.08); }
+.quiz-opt:hover .quiz-opt-letter { background: var(--accent); color: white; }
+.quiz-opt.correct { background: rgba(34,211,168,0.12); border-color: var(--green); }
+.quiz-opt.correct .quiz-opt-letter { background: var(--green); color: white; }
+.quiz-opt.wrong { background: rgba(244,63,94,0.1); border-color: var(--red); }
+.quiz-opt.wrong .quiz-opt-letter { background: var(--red); color: white; }
+.quiz-opt:disabled { pointer-events: none; opacity: 0.7; }
+
+.quiz-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: var(--surface2);
+  border-radius: 10px;
+  font-size: 0.82rem;
+}
+.quiz-score-row .correct-c { color: var(--green); font-weight: 700; }
+.quiz-score-row .wrong-c { color: var(--red); font-weight: 700; }
+.quiz-streak {
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+/* FILL-IN */
+.fill-stage { padding: 16px 0; }
+.fill-sentence {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.6;
+  padding: 14px;
+  background: var(--surface2);
+  border-radius: 12px;
+  border-left: 3px solid var(--accent);
+}
+.fill-blank {
+  display: inline-block;
+  min-width: 80px;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent2);
+  font-style: italic;
+}
+.fill-inp {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.fill-inp:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
+.fill-inp.correct-inp { border-color: var(--green); background: rgba(34,211,168,0.06); }
+.fill-inp.wrong-inp { border-color: var(--red); background: rgba(244,63,94,0.06); animation: shake 0.3s; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+}
+.fill-hint {
+  font-size: 0.82rem;
+  color: var(--text2);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fill-hint .hint-letters { color: var(--accent2); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.15em; }
+.fill-attempts {
+  font-size: 0.8rem;
+  color: var(--text2);
+}
+.fill-attempts span { color: var(--yellow); font-weight: 700; }
+.fill-feedback {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 8px 0;
+  display: none;
+}
+.fill-feedback.ok { background: rgba(34,211,168,0.12); color: var(--green); border: 1px solid rgba(34,211,168,0.25); display: block; }
+.fill-feedback.err { background: rgba(244,63,94,0.1); color: var(--red); border: 1px solid rgba(244,63,94,0.2); display: block; }
+
+/* LISTENING */
+.listen-stage { text-align: center; padding: 16px 0; }
+.listen-visualizer {
+  height: 60px;
+  background: var(--surface2);
+  border-radius: 12px;
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  overflow: hidden;
+}
+.vis-bar {
+  width: 4px;
+  background: var(--accent);
+  border-radius: 4px;
+  min-height: 4px;
+  transition: height 0.1s;
+}
+.listen-play {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: rgba(124,92,252,0.15);
+  color: var(--accent2);
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+  transition: all 0.2s;
+}
+.listen-play:hover { background: var(--accent); color: white; box-shadow: var(--glow); }
+.listen-play.playing { background: var(--accent); color: white; animation: pulse-play 1s infinite; }
+@keyframes pulse-play { 0%,100%{box-shadow:0 0 0 0 rgba(124,92,252,0.4)} 50%{box-shadow:0 0 0 12px rgba(124,92,252,0)} }
+
+.listen-count {
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-bottom: 10px;
+}
+.listen-count span { color: var(--accent2); font-weight: 700; }
+
+/* SRS */
+.srs-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text2);
+  font-size: 0.9rem;
+}
+.srs-empty .big { font-size: 2.5rem; margin-bottom: 10px; }
+
+.srs-card {
+  background: var(--surface2);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border2);
+}
+.srs-word { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.srs-reveal {
+  font-size: 0.9rem;
+  color: var(--text2);
+  margin-bottom: 12px;
+  display: none;
+}
+.srs-reveal.shown { display: block; }
+.srs-btns { display: flex; gap: 8px; }
+.srs-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.srs-btn.hard { background: rgba(244,63,94,0.15); color: var(--red); border: 1px solid rgba(244,63,94,0.25); }
+.srs-btn.good { background: rgba(251,191,36,0.15); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+.srs-btn.easy { background: rgba(34,211,168,0.15); color: var(--green); border: 1px solid rgba(34,211,168,0.25); }
+.srs-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+
+/* ── NOTIFICATIONS ── */
+#notifs {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.notif {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  max-width: 300px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  box-shadow: var(--shadow2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.3s ease, fadeOut 0.4s 2.8s forwards;
+  pointer-events: auto;
+}
+.notif.ok { border-color: rgba(34,211,168,0.4); }
+.notif.err { border-color: rgba(244,63,94,0.4); }
+.notif.info { border-color: rgba(124,92,252,0.4); }
+@keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+@keyframes fadeOut { to{opacity:0;transform:translateX(10px)} }
+
+/* ── MISC ── */
+.sep { height: 1px; background: var(--border); margin: 0 20px; }
+.loading-txt { text-align:center; padding:30px; color:var(--text2); font-size:0.88rem; }
+
+.tab-content { display: none; }
+.tab-content.active { display: flex; flex-direction: column; flex: 1; }
+
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text2);
+}
+.empty-state .e-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+/* LIGHT MODE */
+body.light {
+  --bg: #f4f4f8;
+  --surface: #ffffff;
+  --surface2: #f0f0f6;
+  --surface3: #e8e8f2;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1a2e;
+  --text2: #60608a;
+}
+body.light::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(124,92,252,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(34,211,168,0.04) 0%, transparent 60%);
+}
+
+@media(max-width: 480px) {
+  .topbar { padding: 0 12px; }
+  .hero { padding: 24px 12px 20px; }
+  .topics-bar { padding: 0 12px 16px; }
+  .main { padding: 0 12px 80px; gap: 14px; }
+  .vocab-scroll, .verbs-wrap, .phrase-list, .grammar-list { max-height: 360px; }
+  .nav-levels { padding: 3px; }
+  .lvl-btn { padding: 5px 10px; font-size: 0.76rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" style="display: none;">
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="logo">
+    <div class="logo-icon">L</div>
+    LEXIS
+  </div>
+
+  <div class="nav-levels" id="levelNav">
+    <button class="lvl-btn active" data-level="A1">A1</button>
+    <button class="lvl-btn" data-level="A2">A2</button>
+    <button class="lvl-btn" data-level="B1">B1</button>
+    <button class="lvl-btn" data-level="B2">B2</button>
+    <button class="lvl-btn" data-level="C1">C1</button>
+    <button class="lvl-btn" data-level="C2">C2</button>
+  </div>
+
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="toggleLight()" title="Tema" id="themeBtn">🌙</button>
+    <button class="icon-btn" onclick="exportData()" title="Exportar">↑</button>
+    <button class="icon-btn" onclick="resetAll()" title="Reiniciar">↺</button>
+    <button class="icon-btn" onclick="showAchievementsModal()" title="Logros">🏆</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-title">
+        Master English<br><span>from A1 to C2</span>
+      </div>
+      <div class="hero-sub">Vocabulario inteligente · Pronunciación nativa · Repaso espaciado · Gramática completa</div>
+      <div class="stats-row">
+        <div class="stat-pill">
+          <span class="sval" id="statStudied">0</span>
+          <span class="slbl">estudiadas</span>
+        </div>
+        <div class="stat-pill">
+          <span class="sval" id="statMastered">0</span>
+          <span class="slbl">dominadas</span>
+        </div>
+        <div class="stat-pill">
+          <span class="sval" id="statScore">0</span>
+          <span class="slbl">puntos</span>
+        </div>
+        <div class="stat-pill">
+          <span class="sval" id="statReview">0</span>
+          <span class="slbl">repasos</span>
+        </div>
+      </div>
+      <div class="progress-slim">
+        <div class="progress-slim-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="level-badge">
+      <div class="level-circle" id="levelCircle">A1</div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPICS -->
+<div class="topics-bar">
+  <div class="topics-scroll" id="topicsBar">
+    <button class="topic-chip active" data-topic="all">🔍 Todos</button>
+    <button class="topic-chip" data-topic="basics">🏠 Básicos</button>
+    <button class="topic-chip" data-topic="family">👨‍👩‍👧 Familia</button>
+    <button class="topic-chip" data-topic="food">🍎 Comida</button>
+    <button class="topic-chip" data-topic="travel">✈️ Viajes</button>
+    <button class="topic-chip" data-topic="work">💼 Trabajo</button>
+    <button class="topic-chip" data-topic="tech">💻 Tech</button>
+    <button class="topic-chip" data-topic="emotions">💭 Emociones</button>
+    <button class="topic-chip" data-topic="business">📊 Negocios</button>
+    <button class="topic-chip" data-topic="academic">🎓 Académico</button>
+    <button class="topic-chip" data-topic="advanced">🔬 Avanzado</button>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main">
+
+  <!-- ═══ CARD 1: VOCABULARIO ═══ -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="card-icon" style="background:rgba(124,92,252,0.15)">📝</div>
+          Vocabulario
+        </div>
+        <div class="card-actions">
+          <button class="btn" onclick="toggleVoicePanel()">🔊 Voz</button>
+        </div>
+      </div>
+
+      <!-- VOICE PANEL -->
+      <div class="voice-panel" id="voicePanel">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div>
+            <label style="display:block;font-size:0.75rem;color:var(--text2);margin-bottom:4px;">Acento</label>
+            <select class="vselect" id="accentSelect" onchange="filterVoices()" style="width:100%">
+              <option value="all">🌐 Todos</option>
+              <option value="US" selected>🇺🇸 US English</option>
+              <option value="GB">🇬🇧 UK English</option>
+              <option value="AU">🇦🇺 Australian</option>
+              <option value="IE">🇮🇪 Irish</option>
+              <option value="IN">🇮🇳 Indian</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:0.75rem;color:var(--text2);margin-bottom:4px;">Género</label>
+            <select class="vselect" id="genderSelect" onchange="filterVoices()" style="width:100%">
+              <option value="all">👤 Cualquiera</option>
+              <option value="female">👩 Mujer</option>
+              <option value="male">👨 Hombre</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;">
+          <div>
+            <label style="display:block;font-size:0.75rem;color:var(--text2);margin-bottom:4px;">Voz disponible</label>
+            <select class="vselect" id="voiceSelect" style="width:100%">
+              <option value="">Cargando voces...</option>
+            </select>
+          </div>
+          <button class="btn" onclick="testVoice()">▶ Test</button>
+        </div>
+        <div class="voice-params">
+          <div class="vparam">
+            <label>Velocidad: <span id="rateVal">0.90</span></label>
+            <input type="range" id="speechRate" min="0.5" max="1.5" step="0.05" value="0.9" oninput="document.getElementById('rateVal').textContent=parseFloat(this.value).toFixed(2)">
+          </div>
+          <div class="vparam">
+            <label>Tono: <span id="pitchVal">1.00</span></label>
+            <input type="range" id="speechPitch" min="0.5" max="2" step="0.05" value="1" oninput="document.getElementById('pitchVal').textContent=parseFloat(this.value).toFixed(2)">
+          </div>
+        </div>
+      </div>
+
+      <div class="search-wrap" style="padding:0 0 4px 0">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-inp" id="vocabSearch" placeholder="Buscar palabra, significado..." oninput="renderVocab()">
+      </div>
+      <div class="sep"></div>
+    </div>
+
+    <div class="vocab-scroll" id="vocabContainer">
+      <div class="loading-txt">Cargando vocabulario...</div>
+    </div>
+  </div>
+
+  <!-- ═══ CARD 2: VERBOS & GRAMÁTICA ═══ -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="card-icon" style="background:rgba(56,189,248,0.15)">⚡</div>
+          Verbos &amp; Gramática
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-vg="irregular" onclick="switchVGTab('irregular',this)">Irregulares</button>
+        <button class="tab" data-vg="phrasal" onclick="switchVGTab('phrasal',this)">Phrasal</button>
+        <button class="tab" data-vg="grammar" onclick="switchVGTab('grammar',this)">Gramática</button>
+        <button class="tab" data-vg="idioms" onclick="switchVGTab('idioms',this)">Idioms</button>
+      </div>
+      <div class="sep" style="margin:0 0 0 0"></div>
+    </div>
+
+    <div id="vg-irregular" class="tab-content active">
+      <div class="verbs-wrap">
+        <table class="vtable">
+          <thead>
+            <tr>
+              <th>Base</th><th>Past</th><th>Participle</th><th>Español</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="verbsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="vg-phrasal" class="tab-content">
+      <div class="phrase-list" id="phrasalList"></div>
+    </div>
+
+    <div id="vg-grammar" class="tab-content">
+      <div class="grammar-list" id="grammarList"></div>
+    </div>
+
+    <div id="vg-idioms" class="tab-content">
+      <div class="phrase-list" id="idiomsList"></div>
+    </div>
+  </div>
+
+  <!-- ═══ CARD 3: PRÁCTICA ═══ -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="card-icon" style="background:rgba(34,211,168,0.15)">🎯</div>
+          Práctica
+        </div>
+        <div class="card-actions">
+          <button class="btn primary" onclick="reloadPractice()" id="reloadBtn">↻ Nuevo</button>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-pr="quiz" onclick="switchPrTab('quiz',this)">Quiz</button>
+        <button class="tab" data-pr="fill" onclick="switchPrTab('fill',this)">Completar</button>
+        <button class="tab" data-pr="listen" onclick="switchPrTab('listen',this)">Listening</button>
+        <button class="tab" data-pr="srs" onclick="switchPrTab('srs',this)">Repaso SRS</button>
+      </div>
+      <div class="sep"></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="pr-quiz" class="tab-content active">
+      <div class="practice-body">
+        <div class="quiz-score-row">
+          <span>✅ <span class="correct-c" id="qCorrect">0</span> correctas</span>
+          <span class="quiz-streak" id="qStreak">🔥 0 racha</span>
+          <span>❌ <span class="wrong-c" id="qWrong">0</span> errores</span>
+        </div>
+        <div class="quiz-stage">
+          <div class="quiz-label">¿Qué significa esta palabra?</div>
+          <div class="quiz-word-big" id="quizWord">
+            —
+            <span class="ipa" id="quizIpa"></span>
+          </div>
+          <div class="quiz-ex" id="quizEx"></div>
+        </div>
+        <div class="quiz-opts" id="quizOpts"></div>
+      </div>
+    </div>
+
+    <!-- FILL IN -->
+    <div id="pr-fill" class="tab-content">
+      <div class="practice-body">
+        <div class="fill-stage">
+          <div class="fill-attempts">Intentos: <span id="fillAttempts">0</span></div>
+          <div class="fill-sentence" id="fillSentence">Cargando...</div>
+          <div class="fill-hint" id="fillHint" style="display:none">
+            💡 Pista: <span class="hint-letters" id="fillHintLetters"></span>
+          </div>
+          <input class="fill-inp" id="fillInp" placeholder="Escribe la palabra que falta..." autocomplete="off" autocorrect="off" spellcheck="false">
+          <div class="fill-feedback" id="fillFeedback"></div>
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <button class="btn" style="flex:1" onclick="checkFill()">✓ Verificar</button>
+            <button class="btn" onclick="showFillHint()">💡 Pista</button>
+            <button class="btn" onclick="skipFill()">→ Saltar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LISTENING -->
+    <div id="pr-listen" class="tab-content">
+      <div class="practice-body">
+        <div class="listen-stage">
+          <p style="font-size:0.88rem;color:var(--text2);margin-bottom:12px;">Escucha y escribe exactamente lo que oyes</p>
+          <button class="listen-play" id="listenPlayBtn" onclick="playListenAudio()">▶</button>
+          <div class="listen-count">Reproducción <span id="listenPlayCount">0</span>/3</div>
+          <div class="listen-visualizer" id="listenViz">
+            <!-- bars -->
+          </div>
+          <input class="fill-inp" id="listenInp" placeholder="Escribe lo que escuchaste..." autocomplete="off" autocorrect="off" spellcheck="false">
+          <div class="fill-feedback" id="listenFeedback"></div>
+          <button class="btn primary" style="width:100%" onclick="checkListen()">✓ Verificar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SRS -->
+    <div id="pr-srs" class="tab-content">
+      <div class="practice-body" id="srsContainer">
+        <div class="srs-empty">
+          <div class="big">🧠</div>
+          <p>Marca palabras como "Dominar" en el vocabulario para añadirlas al sistema de repaso espaciado</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- app -->
+
+<div id="notifs"></div>
+
+<!-- ========== MODAL DE LOGIN ========== -->
+<div id="loginModal" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+  <div style="background: var(--surface); border-radius: 28px; padding: 32px; max-width: 400px; width: 90%; text-align: center; border: 1px solid var(--border);">
+    <div style="font-size: 3rem; margin-bottom: 16px;">📘</div>
+    <h2 style="margin-bottom: 8px;">LEXIS</h2>
+    <p style="color: var(--text2); margin-bottom: 24px;">Ingresa tu nombre para continuar tu aprendizaje</p>
+    <input type="text" id="loginName" placeholder="Tu nombre" style="width: 100%; padding: 14px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 14px; color: var(--text); font-size: 1rem; margin-bottom: 16px;">
+    <button id="loginBtn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #7c5cfc, #9b7aff); border: none; border-radius: 40px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer;">Comenzar / Continuar</button>
+    <p style="font-size: 0.75rem; color: var(--text2); margin-top: 16px;">Tu progreso se guardará automáticamente con tu nombre</p>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const S = {
+  level: 'A1',
+  topic: 'all',
+  voices: [],
+  selectedVoice: null,
+  studiedWords: JSON.parse(localStorage.getItem('lx_studied')||'{}'),
+  masteredWords: JSON.parse(localStorage.getItem('lx_mastered')||'[]'),
+  score: parseInt(localStorage.getItem('lx_score')||'0'),
+  srs: JSON.parse(localStorage.getItem('lx_srs')||'[]'),
+  quizCorrect: 0,
+  quizWrong: 0,
+  quizStreak: 0,
+  fillAttempts: 0,
+  fillWord: null,
+  fillSentence: null,
+  listenPhrase: null,
+  listenPlays: 0,
+  currentPrTab: 'quiz',
+  currentVGTab: 'irregular'
+};
+
+// ═══════════════════════════════════════════════════════
+// SISTEMA DE USUARIOS CON LOCALSTORAGE
+// ═══════════════════════════════════════════════════════
+let currentUser = null;
+let userProgress = null;
+
+function loadUser(username) {
+  const storageKey = `lexis_user_${username}`;
+  const saved = localStorage.getItem(storageKey);
+  
+  if (saved) {
+    userProgress = JSON.parse(saved);
+    // Verificar racha diaria
+    const lastLogin = new Date(userProgress.lastLogin);
+    const today = new Date();
+    const isSameDay = lastLogin.toDateString() === today.toDateString();
+    
+    if (!isSameDay) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const wasYesterday = lastLogin.toDateString() === yesterday.toDateString();
+      if (!wasYesterday) userProgress.streak = 0;
+    }
+    userProgress.lastLogin = Date.now();
+  } else {
+    userProgress = {
+      name: username,
+      level: 'A1',
+      score: 0,
+      streak: 0,
+      bestStreak: 0,
+      masteredWords: [],
+      studiedWords: {},
+      srs: [],
+      quizCorrect: 0,
+      quizWrong: 0,
+      quizStreak: 0,
+      lastLogin: Date.now()
+    };
+  }
+  
+  currentUser = username;
+  saveUser();
+  return userProgress;
+}
+
+function saveUser() {
+  if (currentUser && userProgress) {
+    localStorage.setItem(`lexis_user_${currentUser}`, JSON.stringify(userProgress));
+    localStorage.setItem('lexis_last_user', currentUser);
+  }
+}
+
+function syncUserToState() {
+  if (!userProgress) return;
+  S.level = userProgress.level;
+  S.score = userProgress.score;
+  S.studiedWords = userProgress.studiedWords || {};
+  S.masteredWords = userProgress.masteredWords || [];
+  S.srs = userProgress.srs || [];
+  S.quizCorrect = userProgress.quizCorrect || 0;
+  S.quizWrong = userProgress.quizWrong || 0;
+  S.quizStreak = userProgress.quizStreak || 0;
+}
+
+function syncStateToUser() {
+  if (!userProgress) return;
+  userProgress.level = S.level;
+  userProgress.score = S.score;
+  userProgress.studiedWords = S.studiedWords;
+  userProgress.masteredWords = S.masteredWords;
+  userProgress.srs = S.srs;
+  userProgress.quizCorrect = S.quizCorrect;
+  userProgress.quizWrong = S.quizWrong;
+  userProgress.quizStreak = S.quizStreak;
+  saveUser();
+}
+
+function updateUserStreak(correct) {
+  if (!userProgress) return;
+  if (correct) {
+    userProgress.streak++;
+    if (userProgress.streak > userProgress.bestStreak) {
+      userProgress.bestStreak = userProgress.streak;
+    }
+  } else {
+    userProgress.streak = 0;
+  }
+  saveUser();
+  return userProgress.streak;
+}
+
+function addUserPoints(points) {
+  if (!userProgress) return;
+  userProgress.score += points;
+  saveUser();
+}
+
+function masterWordUser(word) {
+  if (!userProgress) return;
+  if (!userProgress.masteredWords.includes(word)) {
+    userProgress.masteredWords.push(word);
+    if (!userProgress.srs.find(i => i.word === word)) {
+      userProgress.srs.push({word, intervalIdx: 0, nextReview: Date.now()});
+    }
+    saveUser();
+    return true;
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════
+// VOCABULARY DATA - EXTENDIDO CON 500+ PALABRAS
+// ═══════════════════════════════════════════════════════
+const VOCAB = {
+  A1: {
+    basics: [
+      {word:"Hello",meaning:"Hola",example:"Hello, how are you today?",ipa:"/həˈloʊ/"},
+      {word:"Goodbye",meaning:"Adiós",example:"Goodbye, see you tomorrow!",ipa:"/ˌɡʊdˈbaɪ/"},
+      {word:"Please",meaning:"Por favor",example:"Please help me with this.",ipa:"/pliːz/"},
+      {word:"Thank you",meaning:"Gracias",example:"Thank you very much!",ipa:"/θæŋk juː/"},
+      {word:"Yes",meaning:"Sí",example:"Yes, I understand you.",ipa:"/jɛs/"},
+      {word:"No",meaning:"No",example:"No, thank you.",ipa:"/noʊ/"},
+      {word:"Sorry",meaning:"Lo siento",example:"Sorry, I'm late today.",ipa:"/ˈsɒri/"},
+      {word:"Excuse me",meaning:"Disculpe",example:"Excuse me, where is the station?",ipa:"/ɪkˈskjuːz miː/"},
+      {word:"Help",meaning:"Ayuda",example:"I need help right now.",ipa:"/hɛlp/"},
+      {word:"Okay",meaning:"De acuerdo",example:"Okay, let's go!",ipa:"/oʊˈkeɪ/"},
+      {word:"Good morning",meaning:"Buenos días",example:"Good morning, everyone!",ipa:"/ɡʊd ˈmɔːrnɪŋ/"},
+      {word:"Good night",meaning:"Buenas noches",example:"Good night, sleep well.",ipa:"/ɡʊd naɪt/"},
+      {word:"How are you",meaning:"¿Cómo estás?",example:"How are you feeling?",ipa:"/haʊ ɑːr juː/"},
+      {word:"My name is",meaning:"Mi nombre es",example:"My name is Alex.",ipa:"/maɪ neɪm ɪz/"},
+      {word:"Nice to meet you",meaning:"Mucho gusto",example:"Nice to meet you!",ipa:"/naɪs tə miːt juː/"},
+    ],
+    colors: [
+      {word:"red",meaning:"rojo",example:"The apple is red.",ipa:"/rɛd/"},
+      {word:"blue",meaning:"azul",example:"The sky is blue.",ipa:"/bluː/"},
+      {word:"yellow",meaning:"amarillo",example:"The sun is yellow.",ipa:"/ˈjɛloʊ/"},
+      {word:"green",meaning:"verde",example:"The grass is green.",ipa:"/ɡriːn/"},
+      {word:"orange",meaning:"naranja",example:"The orange is orange.",ipa:"/ˈɔːrɪndʒ/"},
+      {word:"purple",meaning:"morado",example:"Her dress is purple.",ipa:"/ˈpɜːrpəl/"},
+      {word:"pink",meaning:"rosado",example:"The flowers are pink.",ipa:"/pɪŋk/"},
+      {word:"brown",meaning:"marrón",example:"The tree is brown.",ipa:"/braʊn/"},
+      {word:"black",meaning:"negro",example:"The cat is black.",ipa:"/blæk/"},
+      {word:"white",meaning:"blanco",example:"The snow is white.",ipa:"/waɪt/"},
+      {word:"gray",meaning:"gris",example:"The sky is gray.",ipa:"/ɡreɪ/"},
+    ],
+    animals: [
+      {word:"dog",meaning:"perro",example:"The dog barks loudly.",ipa:"/dɒɡ/"},
+      {word:"cat",meaning:"gato",example:"The cat sleeps all day.",ipa:"/kæt/"},
+      {word:"bird",meaning:"pájaro",example:"The bird flies high.",ipa:"/bɜːrd/"},
+      {word:"fish",meaning:"pez",example:"Fish swim in water.",ipa:"/fɪʃ/"},
+      {word:"rabbit",meaning:"conejo",example:"The rabbit hops fast.",ipa:"/ˈræbɪt/"},
+      {word:"horse",meaning:"caballo",example:"The horse runs fast.",ipa:"/hɔːrs/"},
+      {word:"cow",meaning:"vaca",example:"The cow gives milk.",ipa:"/kaʊ/"},
+      {word:"pig",meaning:"cerdo",example:"The pig is pink.",ipa:"/pɪɡ/"},
+      {word:"chicken",meaning:"pollo",example:"The chicken eats corn.",ipa:"/ˈtʃɪkɪn/"},
+      {word:"duck",meaning:"pato",example:"The duck swims.",ipa:"/dʌk/"},
+      {word:"sheep",meaning:"oveja",example:"The sheep is white.",ipa:"/ʃiːp/"},
+      {word:"goat",meaning:"cabra",example:"The goat climbs rocks.",ipa:"/ɡoʊt/"},
+    ],
+    family: [
+      {word:"Mother",meaning:"Madre",example:"My mother is very kind.",ipa:"/ˈmʌðər/"},
+      {word:"Father",meaning:"Padre",example:"My father works hard.",ipa:"/ˈfɑːðər/"},
+      {word:"Brother",meaning:"Hermano",example:"I have one brother.",ipa:"/ˈbrʌðər/"},
+      {word:"Sister",meaning:"Hermana",example:"My sister is smart.",ipa:"/ˈsɪstər/"},
+      {word:"Baby",meaning:"Bebé",example:"The baby is sleeping.",ipa:"/ˈbeɪbi/"},
+      {word:"Child",meaning:"Niño/a",example:"Every child is special.",ipa:"/tʃaɪld/"},
+      {word:"Grandmother",meaning:"Abuela",example:"My grandmother tells stories.",ipa:"/ˈɡrænˌmʌðər/"},
+      {word:"Grandfather",meaning:"Abuelo",example:"My grandfather is wise.",ipa:"/ˈɡrænˌfɑːðər/"},
+      {word:"Family",meaning:"Familia",example:"Family is important.",ipa:"/ˈfæməli/"},
+      {word:"Friend",meaning:"Amigo/a",example:"She is my best friend.",ipa:"/frɛnd/"},
+    ],
+    food: [
+      {word:"Water",meaning:"Agua",example:"I need a glass of water.",ipa:"/ˈwɔːtər/"},
+      {word:"Bread",meaning:"Pan",example:"I eat bread every morning.",ipa:"/brɛd/"},
+      {word:"Milk",meaning:"Leche",example:"Children drink milk.",ipa:"/mɪlk/"},
+      {word:"Apple",meaning:"Manzana",example:"An apple a day is healthy.",ipa:"/ˈæpəl/"},
+      {word:"Banana",meaning:"Plátano",example:"Bananas are yellow.",ipa:"/bəˈnænə/"},
+      {word:"Orange",meaning:"Naranja",example:"Oranges are sweet.",ipa:"/ˈɔːrɪndʒ/"},
+      {word:"Rice",meaning:"Arroz",example:"We eat rice for dinner.",ipa:"/raɪs/"},
+      {word:"Chicken",meaning:"Pollo",example:"Grilled chicken is delicious.",ipa:"/ˈtʃɪkɪn/"},
+      {word:"Fish",meaning:"Pescado",example:"Fish is healthy.",ipa:"/fɪʃ/"},
+      {word:"Vegetable",meaning:"Verdura",example:"Eat your vegetables!",ipa:"/ˈvɛdʒtəbəl/"},
+      {word:"Fruit",meaning:"Fruta",example:"Fresh fruit is sweet.",ipa:"/fruːt/"},
+      {word:"Coffee",meaning:"Café",example:"I drink coffee in the morning.",ipa:"/ˈkɒfi/"},
+      {word:"Tea",meaning:"Té",example:"Would you like some tea?",ipa:"/tiː/"},
+      {word:"Juice",meaning:"Jugo",example:"Orange juice is fresh.",ipa:"/dʒuːs/"},
+      {word:"Egg",meaning:"Huevo",example:"I eat eggs for breakfast.",ipa:"/ɛɡ/"},
+      {word:"Cheese",meaning:"Queso",example:"Cheese is delicious.",ipa:"/tʃiːz/"},
+    ],
+    verbs: [
+      {word:"be",meaning:"ser/estar",example:"I am a student.",ipa:"/biː/"},
+      {word:"have",meaning:"tener",example:"I have a car.",ipa:"/hæv/"},
+      {word:"do",meaning:"hacer",example:"I do my homework.",ipa:"/duː/"},
+      {word:"go",meaning:"ir",example:"I go to school.",ipa:"/ɡoʊ/"},
+      {word:"come",meaning:"venir",example:"Come here please.",ipa:"/kʌm/"},
+      {word:"eat",meaning:"comer",example:"I eat breakfast.",ipa:"/iːt/"},
+      {word:"drink",meaning:"beber",example:"I drink water.",ipa:"/drɪŋk/"},
+      {word:"sleep",meaning:"dormir",example:"I sleep at night.",ipa:"/sliːp/"},
+      {word:"run",meaning:"correr",example:"I run every morning.",ipa:"/rʌn/"},
+      {word:"walk",meaning:"caminar",example:"I walk to work.",ipa:"/wɔːk/"},
+      {word:"talk",meaning:"hablar",example:"We talk every day.",ipa:"/tɔːk/"},
+      {word:"listen",meaning:"escuchar",example:"Listen to music.",ipa:"/ˈlɪsən/"},
+      {word:"read",meaning:"leer",example:"I read books.",ipa:"/riːd/"},
+      {word:"write",meaning:"escribir",example:"I write letters.",ipa:"/raɪt/"},
+      {word:"see",meaning:"ver",example:"I see you.",ipa:"/siː/"},
+      {word:"hear",meaning:"oír",example:"I hear a sound.",ipa:"/hɪər/"},
+      {word:"feel",meaning:"sentir",example:"I feel happy.",ipa:"/fiːl/"},
+      {word:"think",meaning:"pensar",example:"I think so.",ipa:"/θɪŋk/"},
+      {word:"know",meaning:"saber",example:"I know the answer.",ipa:"/noʊ/"},
+      {word:"want",meaning:"querer",example:"I want water.",ipa:"/wɒnt/"},
+      {word:"need",meaning:"necesitar",example:"I need help.",ipa:"/niːd/"},
+      {word:"like",meaning:"gustar",example:"I like pizza.",ipa:"/laɪk/"},
+      {word:"love",meaning:"amar",example:"I love you.",ipa:"/lʌv/"},
+      {word:"hate",meaning:"odiar",example:"I hate spiders.",ipa:"/heɪt/"},
+    ],
+    adjectives: [
+      {word:"big",meaning:"grande",example:"This house is big.",ipa:"/bɪɡ/"},
+      {word:"small",meaning:"pequeño",example:"This car is small.",ipa:"/smɔːl/"},
+      {word:"good",meaning:"bueno",example:"This is good food.",ipa:"/ɡʊd/"},
+      {word:"bad",meaning:"malo",example:"That was bad.",ipa:"/bæd/"},
+      {word:"happy",meaning:"feliz",example:"I am happy.",ipa:"/ˈhæpi/"},
+      {word:"sad",meaning:"triste",example:"She is sad.",ipa:"/sæd/"},
+      {word:"angry",meaning:"enojado",example:"He is angry.",ipa:"/ˈæŋɡri/"},
+      {word:"tired",meaning:"cansado",example:"I am tired.",ipa:"/ˈtaɪərd/"},
+      {word:"hungry",meaning:"hambriento",example:"I am hungry.",ipa:"/ˈhʌŋɡri/"},
+      {word:"thirsty",meaning:"sediento",example:"I am thirsty.",ipa:"/ˈθɜːrsti/"},
+      {word:"hot",meaning:"caliente",example:"The soup is hot.",ipa:"/hɒt/"},
+      {word:"cold",meaning:"frío",example:"The ice is cold.",ipa:"/koʊld/"},
+      {word:"new",meaning:"nuevo",example:"This is new.",ipa:"/njuː/"},
+      {word:"old",meaning:"viejo",example:"This is old.",ipa:"/oʊld/"},
+      {word:"fast",meaning:"rápido",example:"The car is fast.",ipa:"/fæst/"},
+      {word:"slow",meaning:"lento",example:"The turtle is slow.",ipa:"/sloʊ/"},
+    ],
+    pronouns: [
+      {word:"I",meaning:"yo",example:"I am here.",ipa:"/aɪ/"},
+      {word:"you",meaning:"tú/usted",example:"You are my friend.",ipa:"/juː/"},
+      {word:"he",meaning:"él",example:"He is tall.",ipa:"/hiː/"},
+      {word:"she",meaning:"ella",example:"She is nice.",ipa:"/ʃiː/"},
+      {word:"it",meaning:"ello",example:"It is cold.",ipa:"/ɪt/"},
+      {word:"we",meaning:"nosotros",example:"We are happy.",ipa:"/wiː/"},
+      {word:"they",meaning:"ellos",example:"They are here.",ipa:"/ðeɪ/"},
+      {word:"my",meaning:"mi",example:"This is my book.",ipa:"/maɪ/"},
+      {word:"your",meaning:"tu/su",example:"Is this your car?",ipa:"/jɔːr/"},
+      {word:"his",meaning:"su (de él)",example:"That is his house.",ipa:"/hɪz/"},
+      {word:"her",meaning:"su (de ella)",example:"Her name is Anna.",ipa:"/hɜːr/"},
+      {word:"our",meaning:"nuestro",example:"Our school is big.",ipa:"/aʊər/"},
+      {word:"their",meaning:"su (de ellos)",example:"Their house is nice.",ipa:"/ðɛər/"},
+    ],
+    prepositions: [
+      {word:"in",meaning:"en/dentro",example:"I am in the room.",ipa:"/ɪn/"},
+      {word:"on",meaning:"sobre/encima",example:"The book is on the table.",ipa:"/ɒn/"},
+      {word:"at",meaning:"en (lugar)",example:"I am at home.",ipa:"/æt/"},
+      {word:"to",meaning:"a/hacia",example:"I go to school.",ipa:"/tuː/"},
+      {word:"from",meaning:"de/desde",example:"I am from Spain.",ipa:"/frʌm/"},
+      {word:"with",meaning:"con",example:"I go with you.",ipa:"/wɪð/"},
+      {word:"for",meaning:"para",example:"This is for you.",ipa:"/fɔːr/"},
+      {word:"about",meaning:"sobre/acerca de",example:"Tell me about it.",ipa:"/əˈbaʊt/"},
+    ],
+    connectors: [
+      {word:"and",meaning:"y",example:"I like apples and oranges.",ipa:"/ænd/"},
+      {word:"but",meaning:"pero",example:"I am tired but happy.",ipa:"/bʌt/"},
+      {word:"or",meaning:"o",example:"Tea or coffee?",ipa:"/ɔːr/"},
+      {word:"because",meaning:"porque",example:"I study because I want to learn.",ipa:"/bɪˈkɒz/"},
+    ],
+    negatives: [
+      {word:"not",meaning:"no",example:"I am not tired.",ipa:"/nɒt/"},
+      {word:"don't",meaning:"no (hacer)",example:"I don't like it.",ipa:"/doʊnt/"},
+      {word:"doesn't",meaning:"no (él/ella)",example:"She doesn't work.",ipa:"/ˈdʌzənt/"},
+      {word:"can't",meaning:"no poder",example:"I can't swim.",ipa:"/kænt/"},
+      {word:"never",meaning:"nunca",example:"I never smoke.",ipa:"/ˈnɛvər/"},
+    ],
+    questions: [
+      {word:"what",meaning:"qué",example:"What is your name?",ipa:"/wɒt/"},
+      {word:"where",meaning:"dónde",example:"Where do you live?",ipa:"/wɛər/"},
+      {word:"when",meaning:"cuándo",example:"When do you work?",ipa:"/wɛn/"},
+      {word:"why",meaning:"por qué",example:"Why are you sad?",ipa:"/waɪ/"},
+      {word:"how",meaning:"cómo",example:"How are you?",ipa:"/haʊ/"},
+      {word:"who",meaning:"quién",example:"Who is that?",ipa:"/huː/"},
+    ],
+    travel: [
+      {word:"Car",meaning:"Coche",example:"I drive a red car.",ipa:"/kɑːr/"},
+      {word:"Bus",meaning:"Autobús",example:"The bus arrives at eight.",ipa:"/bʌs/"},
+      {word:"Train",meaning:"Tren",example:"The train is fast.",ipa:"/treɪn/"},
+      {word:"Plane",meaning:"Avión",example:"We traveled by plane.",ipa:"/pleɪn/"},
+      {word:"Hotel",meaning:"Hotel",example:"The hotel is comfortable.",ipa:"/hoʊˈtɛl/"},
+      {word:"Airport",meaning:"Aeropuerto",example:"We arrived at the airport.",ipa:"/ˈɛrˌpɔːrt/"},
+      {word:"Ticket",meaning:"Boleto",example:"I bought a ticket.",ipa:"/ˈtɪkɪt/"},
+      {word:"Map",meaning:"Mapa",example:"Can I see the map?",ipa:"/mæp/"},
+      {word:"Station",meaning:"Estación",example:"The station is nearby.",ipa:"/ˈsteɪʃən/"},
+      {word:"Road",meaning:"Carretera",example:"The road is long.",ipa:"/roʊd/"},
+    ],
+    emotions: [
+      {word:"Happy",meaning:"Feliz",example:"I am very happy.",ipa:"/ˈhæpi/"},
+      {word:"Sad",meaning:"Triste",example:"She feels sad.",ipa:"/sæd/"},
+      {word:"Angry",meaning:"Enojado",example:"He is angry.",ipa:"/ˈæŋɡri/"},
+      {word:"Tired",meaning:"Cansado",example:"I'm very tired.",ipa:"/ˈtaɪərd/"},
+      {word:"Excited",meaning:"Emocionado",example:"I'm excited for the trip!",ipa:"/ɪkˈsaɪtɪd/"},
+      {word:"Scared",meaning:"Asustado",example:"The child is scared.",ipa:"/skɛrd/"},
+      {word:"Nervous",meaning:"Nervioso",example:"I feel nervous.",ipa:"/ˈnɜːrvəs/"},
+      {word:"Surprised",meaning:"Sorprendido",example:"She was surprised.",ipa:"/sərˈpraɪzd/"},
+      {word:"Love",meaning:"Amor",example:"Love is powerful.",ipa:"/lʌv/"},
+      {word:"Hope",meaning:"Esperanza",example:"Never lose hope.",ipa:"/hoʊp/"},
+      {word:"Fear",meaning:"Miedo",example:"Fear is natural.",ipa:"/fɪər/"},
+      {word:"Joy",meaning:"Alegría",example:"Joy fills my heart.",ipa:"/dʒɔɪ/"},
+    ]
+  },
+  A2: {
+    basics: [
+      {word:"Beautiful",meaning:"Hermoso/a",example:"You look beautiful today.",ipa:"/ˈbjuːtɪfəl/"},
+      {word:"Important",meaning:"Importante",example:"It is important to study.",ipa:"/ɪmˈpɔːrtənt/"},
+      {word:"Problem",meaning:"Problema",example:"We have a problem.",ipa:"/ˈprɒbləm/"},
+      {word:"Solution",meaning:"Solución",example:"I found the solution.",ipa:"/səˈluːʃən/"},
+      {word:"Question",meaning:"Pregunta",example:"Do you have questions?",ipa:"/ˈkwɛstʃən/"},
+      {word:"Answer",meaning:"Respuesta",example:"That is the answer.",ipa:"/ˈɑːnsər/"},
+      {word:"Idea",meaning:"Idea",example:"That is a great idea!",ipa:"/aɪˈdiːə/"},
+      {word:"Plan",meaning:"Plan",example:"What is your plan?",ipa:"/plæn/"},
+      {word:"Time",meaning:"Tiempo",example:"What time is it?",ipa:"/taɪm/"},
+      {word:"Place",meaning:"Lugar",example:"This is a nice place.",ipa:"/pleɪs/"},
+      {word:"Experience",meaning:"Experiencia",example:"Wonderful experience.",ipa:"/ɪkˈspɪriəns/"},
+      {word:"Remember",meaning:"Recordar",example:"I remember you.",ipa:"/rɪˈmɛmbər/"},
+      {word:"Understand",meaning:"Entender",example:"I understand now.",ipa:"/ˌʌndərˈstænd/"},
+    ],
+    animals_extended: [
+      {word:"lion",meaning:"león",example:"The lion is the king of the jungle.",ipa:"/ˈlaɪən/"},
+      {word:"tiger",meaning:"tigre",example:"The tiger has stripes.",ipa:"/ˈtaɪɡər/"},
+      {word:"elephant",meaning:"elefante",example:"The elephant is huge.",ipa:"/ˈɛlɪfənt/"},
+      {word:"giraffe",meaning:"jirafa",example:"The giraffe has a long neck.",ipa:"/dʒɪˈræf/"},
+      {word:"monkey",meaning:"mono",example:"Monkeys love bananas.",ipa:"/ˈmʌŋki/"},
+      {word:"zebra",meaning:"cebra",example:"Zebras have black and white stripes.",ipa:"/ˈziːbrə/"},
+      {word:"kangaroo",meaning:"canguro",example:"Kangaroos jump high.",ipa:"/ˌkæŋɡəˈruː/"},
+      {word:"panda",meaning:"panda",example:"Pandas eat bamboo.",ipa:"/ˈpændə/"},
+      {word:"bear",meaning:"oso",example:"Bears hibernate in winter.",ipa:"/bɛər/"},
+      {word:"wolf",meaning:"lobo",example:"Wolves howl at the moon.",ipa:"/wʊlf/"},
+      {word:"fox",meaning:"zorro",example:"Foxes are clever.",ipa:"/fɒks/"},
+      {word:"deer",meaning:"ciervo",example:"Deer run fast.",ipa:"/dɪər/"},
+      {word:"snake",meaning:"serpiente",example:"Snakes are reptiles.",ipa:"/sneɪk/"},
+      {word:"frog",meaning:"rana",example:"Frogs jump and swim.",ipa:"/frɒɡ/"},
+      {word:"butterfly",meaning:"mariposa",example:"Butterflies are colorful.",ipa:"/ˈbʌtərflaɪ/"},
+      {word:"bee",meaning:"abeja",example:"Bees make honey.",ipa:"/biː/"},
+      {word:"ant",meaning:"hormiga",example:"Ants work together.",ipa:"/ænt/"},
+      {word:"spider",meaning:"araña",example:"Spiders make webs.",ipa:"/ˈspaɪdər/"},
+    ],
+    colors_extended: [
+      {word:"gold",meaning:"dorado",example:"The sun is gold.",ipa:"/ɡoʊld/"},
+      {word:"silver",meaning:"plateado",example:"The ring is silver.",ipa:"/ˈsɪlvər/"},
+      {word:"bronze",meaning:"bronce",example:"He won bronze medal.",ipa:"/brɒnz/"},
+      {word:"turquoise",meaning:"turquesa",example:"The sea is turquoise.",ipa:"/ˈtɜːrkwɔɪz/"},
+      {word:"coral",meaning:"coral",example:"Her dress is coral.",ipa:"/ˈkɔːrəl/"},
+      {word:"beige",meaning:"beige",example:"The walls are beige.",ipa:"/beɪʒ/"},
+      {word:"lavender",meaning:"lavanda",example:"Lavender flowers are purple.",ipa:"/ˈlævəndər/"},
+    ],
+    work: [
+      {word:"Job",meaning:"Trabajo",example:"I love my new job.",ipa:"/dʒɒb/"},
+      {word:"Office",meaning:"Oficina",example:"I work in an office.",ipa:"/ˈɒfɪs/"},
+      {word:"Boss",meaning:"Jefe",example:"My boss is fair.",ipa:"/bɒs/"},
+      {word:"Colleague",meaning:"Colega",example:"My colleagues are friendly.",ipa:"/ˈkɒliːɡ/"},
+      {word:"Meeting",meaning:"Reunión",example:"We have a meeting.",ipa:"/ˈmiːtɪŋ/"},
+      {word:"Salary",meaning:"Salario",example:"The salary is good.",ipa:"/ˈsæləri/"},
+      {word:"Interview",meaning:"Entrevista",example:"I have an interview.",ipa:"/ˈɪntərˌvjuː/"},
+      {word:"Career",meaning:"Carrera",example:"She has a great career.",ipa:"/kəˈrɪər/"},
+      {word:"Employee",meaning:"Empleado",example:"He is a good employee.",ipa:"/ɪmˈplɔɪiː/"},
+      {word:"Employer",meaning:"Empleador",example:"My employer is nice.",ipa:"/ɪmˈplɔɪər/"},
+    ],
+    tech: [
+      {word:"Computer",meaning:"Computadora",example:"I use a computer.",ipa:"/kəmˈpjuːtər/"},
+      {word:"Phone",meaning:"Teléfono",example:"My phone is ringing.",ipa:"/foʊn/"},
+      {word:"Internet",meaning:"Internet",example:"The internet is slow.",ipa:"/ˈɪntərˌnɛt/"},
+      {word:"Website",meaning:"Sitio web",example:"Visit our website.",ipa:"/ˈwɛbˌsaɪt/"},
+      {word:"App",meaning:"Aplicación",example:"Download the app.",ipa:"/æp/"},
+      {word:"Password",meaning:"Contraseña",example:"Keep your password safe.",ipa:"/ˈpæsˌwɜːrd/"},
+      {word:"Software",meaning:"Software",example:"Install the software.",ipa:"/ˈsɒftˌwɛər/"},
+      {word:"Download",meaning:"Descargar",example:"Download the file.",ipa:"/ˈdaʊnˌloʊd/"},
+      {word:"Upload",meaning:"Subir",example:"Upload your photo.",ipa:"/ʌpˈloʊd/"},
+      {word:"Email",meaning:"Correo",example:"Send me an email.",ipa:"/ˈiːmeɪl/"},
+    ],
+    tenses: [
+      {word:"Present Simple",meaning:"Presente simple",example:"I work every day.",ipa:"/ˈprɛzənt ˈsɪmpəl/"},
+      {word:"Past Simple",meaning:"Pasado simple",example:"I worked yesterday.",ipa:"/pæst ˈsɪmpəl/"},
+      {word:"Future Simple",meaning:"Futuro simple",example:"I will work tomorrow.",ipa:"/ˈfjuːtʃər ˈsɪmpəl/"},
+      {word:"Present Continuous",meaning:"Presente continuo",example:"I am working now.",ipa:"/ˈprɛzənt kənˈtɪnjuəs/"},
+      {word:"Past Continuous",meaning:"Pasado continuo",example:"I was working when you called.",ipa:"/pæst kənˈtɪnjuəs/"},
+    ],
+    connectors_extended: [
+      {word:"although",meaning:"aunque",example:"Although it rained, we went out.",ipa:"/ɔːlˈðoʊ/"},
+      {word:"however",meaning:"sin embargo",example:"It's hard; however, I try.",ipa:"/haʊˈɛvər/"},
+      {word:"therefore",meaning:"por lo tanto",example:"I studied, therefore I passed.",ipa:"/ˈðɛrfɔːr/"},
+      {word:"so",meaning:"así que",example:"I was tired, so I slept.",ipa:"/soʊ/"},
+      {word:"if",meaning:"si",example:"If it rains, we stay home.",ipa:"/ɪf/"},
+      {word:"when",meaning:"cuando",example:"When I arrive, I call you.",ipa:"/wɛn/"},
+    ],
+    negatives_extended: [
+      {word:"no one",meaning:"nadie",example:"No one came.",ipa:"/noʊ wʌn/"},
+      {word:"nothing",meaning:"nada",example:"I have nothing.",ipa:"/ˈnʌθɪŋ/"},
+      {word:"nowhere",meaning:"ningún lugar",example:"I have nowhere to go.",ipa:"/ˈnoʊwɛr/"},
+      {word:"neither",meaning:"ninguno",example:"Neither option is good.",ipa:"/ˈnaɪðər/"},
+    ],
+    prepositions_extended: [
+      {word:"under",meaning:"debajo",example:"The cat is under the table.",ipa:"/ˈʌndər/"},
+      {word:"above",meaning:"encima",example:"The bird is above the tree.",ipa:"/əˈbʌv/"},
+      {word:"behind",meaning:"detrás",example:"The car is behind the house.",ipa:"/bɪˈhaɪnd/"},
+      {word:"in front of",meaning:"enfrente de",example:"I stand in front of you.",ipa:"/ɪn frʌnt ʌv/"},
+      {word:"between",meaning:"entre",example:"It's between the chairs.",ipa:"/bɪˈtwiːn/"},
+      {word:"next to",meaning:"al lado de",example:"My house is next to the park.",ipa:"/nɛkst tuː/"},
+    ]
+  },
+  B1: {
+    work: [
+      {word:"Achieve",meaning:"Lograr",example:"You can achieve your goals.",ipa:"/əˈtʃiːv/"},
+      {word:"Challenge",meaning:"Desafío",example:"This is a challenge.",ipa:"/ˈtʃælɪndʒ/"},
+      {word:"Develop",meaning:"Desarrollar",example:"Develop new skills.",ipa:"/dɪˈvɛləp/"},
+      {word:"Improve",meaning:"Mejorar",example:"I want to improve.",ipa:"/ɪmˈpruːv/"},
+      {word:"Opportunity",meaning:"Oportunidad",example:"Great opportunity!",ipa:"/ˌɒpərˈtjuːnɪti/"},
+      {word:"Responsibility",meaning:"Responsabilidad",example:"Take responsibility.",ipa:"/rɪˌspɒnsɪˈbɪlɪti/"},
+      {word:"Teamwork",meaning:"Trabajo en equipo",example:"Teamwork is key.",ipa:"/ˈtiːmˌwɜːrk/"},
+      {word:"Deadline",meaning:"Fecha límite",example:"The deadline is tomorrow.",ipa:"/ˈdɛdˌlaɪn/"},
+      {word:"Negotiate",meaning:"Negociar",example:"Negotiate the contract.",ipa:"/nɪˈɡoʊʃieɪt/"},
+      {word:"Productive",meaning:"Productivo",example:"Be productive.",ipa:"/prəˈdʌktɪv/"},
+      {word:"Efficient",meaning:"Eficiente",example:"She is efficient.",ipa:"/ɪˈfɪʃənt/"},
+      {word:"Goal",meaning:"Meta",example:"Set your goals.",ipa:"/ɡoʊl/"},
+    ],
+    business: [
+      {word:"Strategy",meaning:"Estrategia",example:"We need a strategy.",ipa:"/ˈstrætɪdʒi/"},
+      {word:"Investment",meaning:"Inversión",example:"Good investment.",ipa:"/ɪnˈvɛstmənt/"},
+      {word:"Profit",meaning:"Ganancia",example:"Make a profit.",ipa:"/ˈprɒfɪt/"},
+      {word:"Market",meaning:"Mercado",example:"The market is changing.",ipa:"/ˈmɑːrkɪt/"},
+      {word:"Customer",meaning:"Cliente",example:"The customer is right.",ipa:"/ˈkʌstəmər/"},
+      {word:"Brand",meaning:"Marca",example:"Build a brand.",ipa:"/brænd/"},
+      {word:"Revenue",meaning:"Ingresos",example:"Revenue increased.",ipa:"/ˈrɛvəˌnjuː/"},
+      {word:"Budget",meaning:"Presupuesto",example:"Stay within budget.",ipa:"/ˈbʌdʒɪt/"},
+      {word:"Innovation",meaning:"Innovación",example:"Innovation drives growth.",ipa:"/ˌɪnəˈveɪʃən/"},
+      {word:"Partnership",meaning:"Asociación",example:"Strong partnership.",ipa:"/ˈpɑːrtnərˌʃɪp/"},
+    ],
+    academic: [
+      {word:"Research",meaning:"Investigación",example:"She does research.",ipa:"/rɪˈsɜːrtʃ/"},
+      {word:"Analysis",meaning:"Análisis",example:"The analysis shows.",ipa:"/əˈnæləsɪs/"},
+      {word:"Evidence",meaning:"Evidencia",example:"Strong evidence.",ipa:"/ˈɛvɪdəns/"},
+      {word:"Hypothesis",meaning:"Hipótesis",example:"Test the hypothesis.",ipa:"/haɪˈpɒθɪsɪs/"},
+      {word:"Conclusion",meaning:"Conclusión",example:"Final conclusion.",ipa:"/kənˈkluːʒən/"},
+      {word:"Thesis",meaning:"Tesis",example:"Defend the thesis.",ipa:"/ˈθiːsɪs/"},
+      {word:"Theory",meaning:"Teoría",example:"Scientific theory.",ipa:"/ˈθɪri/"},
+      {word:"Method",meaning:"Método",example:"Research method.",ipa:"/ˈmɛθəd/"},
+    ],
+    adjectives_advanced: [
+      {word:"friendly",meaning:"amigable",example:"She is friendly.",ipa:"/ˈfrɛndli/"},
+      {word:"honest",meaning:"honesto",example:"Be honest.",ipa:"/ˈɒnɪst/"},
+      {word:"lazy",meaning:"perezoso",example:"He is lazy.",ipa:"/ˈleɪzi/"},
+      {word:"hardworking",meaning:"trabajador",example:"She is hardworking.",ipa:"/hɑːrdˈwɜːrkɪŋ/"},
+      {word:"intelligent",meaning:"inteligente",example:"He is intelligent.",ipa:"/ɪnˈtɛlɪdʒənt/"},
+      {word:"stupid",meaning:"estúpido",example:"That was stupid.",ipa:"/ˈstjuːpɪd/"},
+      {word:"rich",meaning:"rico",example:"He is rich.",ipa:"/rɪtʃ/"},
+      {word:"poor",meaning:"pobre",example:"They are poor.",ipa:"/pʊər/"},
+      {word:"young",meaning:"joven",example:"She is young.",ipa:"/jʌŋ/"},
+      {word:"old",meaning:"viejo",example:"He is old.",ipa:"/oʊld/"},
+      {word:"strong",meaning:"fuerte",example:"He is strong.",ipa:"/strɒŋ/"},
+      {word:"weak",meaning:"débil",example:"She feels weak.",ipa:"/wiːk/"},
+    ]
+  },
+  B2: {
+    business: [
+      {word:"Comprehensive",meaning:"Completo",example:"Comprehensive guide.",ipa:"/ˌkɒmprɪˈhɛnsɪv/"},
+      {word:"Consequence",meaning:"Consecuencia",example:"Consider consequences.",ipa:"/ˈkɒnsɪkwəns/"},
+      {word:"Evaluate",meaning:"Evaluar",example:"Evaluate results.",ipa:"/ɪˈvæljueɪt/"},
+      {word:"Implication",meaning:"Implicación",example:"What are the implications?",ipa:"/ˌɪmplɪˈkeɪʃən/"},
+      {word:"Perspective",meaning:"Perspectiva",example:"From my perspective.",ipa:"/pərˈspɛktɪv/"},
+      {word:"Sustainability",meaning:"Sostenibilidad",example:"Environmental sustainability.",ipa:"/səˌsteɪnəˈbɪlɪti/"},
+      {word:"Versatile",meaning:"Versátil",example:"Versatile tool.",ipa:"/ˈvɜːrsətɪl/"},
+      {word:"Implement",meaning:"Implementar",example:"Implement the policy.",ipa:"/ˈɪmplɪmɛnt/"},
+      {word:"Negotiation",meaning:"Negociación",example:"Successful negotiation.",ipa:"/nɪˌɡoʊʃiˈeɪʃən/"},
+      {word:"Competitor",meaning:"Competidor",example:"Our main competitor.",ipa:"/kəmˈpɛtɪtər/"},
+    ],
+    academic: [
+      {word:"Abstract",meaning:"Resumen",example:"Read the abstract.",ipa:"/ˈæbstrækt/"},
+      {word:"Empirical",meaning:"Empírico",example:"Empirical evidence.",ipa:"/ɛmˈpɪrɪkəl/"},
+      {word:"Framework",meaning:"Marco",example:"Theoretical framework.",ipa:"/ˈfreɪmˌwɜːrk/"},
+      {word:"Paradigm",meaning:"Paradigma",example:"Paradigm shift.",ipa:"/ˈpærəˌdaɪm/"},
+      {word:"Quantitative",meaning:"Cuantitativo",example:"Quantitative methods.",ipa:"/ˈkwɒntɪtətɪv/"},
+      {word:"Qualitative",meaning:"Cualitativo",example:"Qualitative analysis.",ipa:"/ˈkwɒlɪtətɪv/"},
+      {word:"Methodology",meaning:"Metodología",example:"Research methodology.",ipa:"/ˌmɛθəˈdɒlədʒi/"},
+      {word:"Significant",meaning:"Significativo",example:"Significant results.",ipa:"/sɪɡˈnɪfɪkənt/"},
+    ],
+    adjectives_negative: [
+      {word:"arrogant",meaning:"arrogante",example:"He is arrogant.",ipa:"/ˈærəɡənt/"},
+      {word:"selfish",meaning:"egoísta",example:"Don't be selfish.",ipa:"/ˈsɛlfɪʃ/"},
+      {word:"jealous",meaning:"celoso",example:"She is jealous.",ipa:"/ˈdʒɛləs/"},
+      {word:"rude",meaning:"grosero",example:"That was rude.",ipa:"/ruːd/"},
+      {word:"lazy",meaning:"perezoso",example:"Stop being lazy.",ipa:"/ˈleɪzi/"},
+      {word:"careless",meaning:"descuidado",example:"Careless mistake.",ipa:"/ˈkɛrləs/"},
+      {word:"stubborn",meaning:"terco",example:"He is stubborn.",ipa:"/ˈstʌbərn/"},
+      {word:"greedy",meaning:"codicioso",example:"Greedy people.",ipa:"/ˈɡriːdi/"},
+    ]
+  },
+  C1: {
+    academic: [
+      {word:"Ambiguous",meaning:"Ambiguo",example:"Ambiguous statement.",ipa:"/æmˈbɪɡjuəs/"},
+      {word:"Articulate",meaning:"Expresarse",example:"Articulate clearly.",ipa:"/ɑːrˈtɪkjʊlɪt/"},
+      {word:"Cogent",meaning:"Convincente",example:"Cogent argument.",ipa:"/ˈkoʊdʒənt/"},
+      {word:"Discerning",meaning:"Perspicaz",example:"Discerning reader.",ipa:"/dɪˈsɜːrnɪŋ/"},
+      {word:"Erudite",meaning:"Erudito",example:"Erudite professor.",ipa:"/ˈɛrjʊˌdaɪt/"},
+      {word:"Holistic",meaning:"Holístico",example:"Holistic approach.",ipa:"/hoʊˈlɪstɪk/"},
+      {word:"Inevitable",meaning:"Inevitable",example:"Inevitable change.",ipa:"/ɪnˈɛvɪtəbəl/"},
+      {word:"Juxtapose",meaning:"Yuxtaponer",example:"Juxtapose ideas.",ipa:"/ˌdʒʌkstəˈpoʊz/"},
+      {word:"Substantiate",meaning:"Fundamentar",example:"Substantiate claims.",ipa:"/səbˈstænʃieɪt/"},
+      {word:"Validate",meaning:"Validar",example:"Validate results.",ipa:"/ˈvælɪdeɪt/"},
+    ],
+    business: [
+      {word:"Leverage",meaning:"Aprovechar",example:"Leverage strengths.",ipa:"/ˈlɛvərɪdʒ/"},
+      {word:"Mitigate",meaning:"Mitigar",example:"Mitigate risks.",ipa:"/ˈmɪtɪɡeɪt/"},
+      {word:"Optimize",meaning:"Optimizar",example:"Optimize workflow.",ipa:"/ˈɒptɪmaɪz/"},
+      {word:"Proactive",meaning:"Proactivo",example:"Be proactive.",ipa:"/proʊˈæktɪv/"},
+      {word:"Synergy",meaning:"Sinergia",example:"Create synergy.",ipa:"/ˈsɪnərdʒi/"},
+      {word:"Unprecedented",meaning:"Sin precedentes",example:"Unprecedented growth.",ipa:"/ʌnˈprɛsɪdɛntɪd/"},
+      {word:"Viable",meaning:"Viable",example:"Viable solution.",ipa:"/ˈvaɪəbəl/"},
+      {word:"Workflow",meaning:"Flujo de trabajo",example:"Streamline workflow.",ipa:"/ˈwɜːrkˌfloʊ/"},
+    ]
+  },
+  C2: {
+    academic: [
+      {word:"Acumen",meaning:"Perspicacia",example:"Business acumen.",ipa:"/ˈækjʊmɛn/"},
+      {word:"Cacophony",meaning:"Cacofonía",example:"Cacophony of sounds.",ipa:"/kəˈkɒfəni/"},
+      {word:"Dichotomy",meaning:"Dicotomía",example:"False dichotomy.",ipa:"/daɪˈkɒtəmi/"},
+      {word:"Ephemeral",meaning:"Efímero",example:"Ephemeral beauty.",ipa:"/ɪˈfɛmərəl/"},
+      {word:"Exacerbate",meaning:"Exacerbar",example:"Exacerbate problems.",ipa:"/ɪɡˈzæsərbeɪt/"},
+      {word:"Idiosyncrasy",meaning:"Idiosincrasia",example:"Cultural idiosyncrasy.",ipa:"/ˌɪdiəˈsɪŋkrəsi/"},
+      {word:"Mellifluous",meaning:"Melifluo",example:"Mellifluous voice.",ipa:"/mɛˈlɪfluəs/"},
+      {word:"Quintessential",meaning:"Quintaesencial",example:"Quintessential example.",ipa:"/ˌkwɪntɪˈsɛnʃəl/"},
+      {word:"Ubiquitous",meaning:"Ubicuo",example:"Ubiquitous technology.",ipa:"/juːˈbɪkwɪtəs/"},
+      {word:"Fastidious",meaning:"Meticuloso",example:"Fastidious attention.",ipa:"/fæˈstɪdiəs/"},
+    ],
+    advanced: [
+      {word:"Aberration",meaning:"Aberración",example:"Statistical aberration.",ipa:"/ˌæbəˈreɪʃən/"},
+      {word:"Filibuster",meaning:"Obstruccionismo",example:"Political filibuster.",ipa:"/ˈfɪlɪˌbʌstər/"},
+      {word:"Garrulous",meaning:"Locuaz",example:"Garrulous storyteller.",ipa:"/ˈɡærʊləs/"},
+      {word:"Hegemony",meaning:"Hegemonía",example:"Cultural hegemony.",ipa:"/hɪˈdʒɛməni/"},
+      {word:"Ineffable",meaning:"Inefable",example:"Ineffable wonder.",ipa:"/ɪnˈɛfəbəl/"},
+      {word:"Juxtaposition",meaning:"Yuxtaposición",example:"Juxtaposition of ideas.",ipa:"/ˌdʒʌkstəpəˈzɪʃən/"},
+      {word:"Perspicacious",meaning:"Perspicaz",example:"Perspicacious leader.",ipa:"/ˌpɜːrspɪˈkeɪʃəs/"},
+      {word:"Sycophant",meaning:"Adulador",example:"Avoid sycophants.",ipa:"/ˈsɪkəfænt/"},
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// IRREGULAR VERBS
+// ═══════════════════════════════════════════════════════
+const VERBS = [
+  {base:"be",past:"was/were",participle:"been",meaning:"ser/estar",ipa:"/biː/"},
+  {base:"begin",past:"began",participle:"begun",meaning:"empezar",ipa:"/bɪˈɡɪn/"},
+  {base:"break",past:"broke",participle:"broken",meaning:"romper",ipa:"/breɪk/"},
+  {base:"bring",past:"brought",participle:"brought",meaning:"traer",ipa:"/brɪŋ/"},
+  {base:"build",past:"built",participle:"built",meaning:"construir",ipa:"/bɪld/"},
+  {base:"buy",past:"bought",participle:"bought",meaning:"comprar",ipa:"/baɪ/"},
+  {base:"catch",past:"caught",participle:"caught",meaning:"atrapar",ipa:"/kætʃ/"},
+  {base:"choose",past:"chose",participle:"chosen",meaning:"elegir",ipa:"/tʃuːz/"},
+  {base:"come",past:"came",participle:"come",meaning:"venir",ipa:"/kʌm/"},
+  {base:"do",past:"did",participle:"done",meaning:"hacer",ipa:"/duː/"},
+  {base:"drink",past:"drank",participle:"drunk",meaning:"beber",ipa:"/drɪŋk/"},
+  {base:"drive",past:"drove",participle:"driven",meaning:"conducir",ipa:"/draɪv/"},
+  {base:"eat",past:"ate",participle:"eaten",meaning:"comer",ipa:"/iːt/"},
+  {base:"fall",past:"fell",participle:"fallen",meaning:"caer",ipa:"/fɔːl/"},
+  {base:"feel",past:"felt",participle:"felt",meaning:"sentir",ipa:"/fiːl/"},
+  {base:"find",past:"found",participle:"found",meaning:"encontrar",ipa:"/faɪnd/"},
+  {base:"fly",past:"flew",participle:"flown",meaning:"volar",ipa:"/flaɪ/"},
+  {base:"forget",past:"forgot",participle:"forgotten",meaning:"olvidar",ipa:"/fərˈɡɛt/"},
+  {base:"get",past:"got",participle:"gotten",meaning:"obtener",ipa:"/ɡɛt/"},
+  {base:"give",past:"gave",participle:"given",meaning:"dar",ipa:"/ɡɪv/"},
+  {base:"go",past:"went",participle:"gone",meaning:"ir",ipa:"/ɡoʊ/"},
+  {base:"grow",past:"grew",participle:"grown",meaning:"crecer",ipa:"/ɡroʊ/"},
+  {base:"have",past:"had",participle:"had",meaning:"tener",ipa:"/hæv/"},
+  {base:"hear",past:"heard",participle:"heard",meaning:"oír",ipa:"/hɪər/"},
+  {base:"keep",past:"kept",participle:"kept",meaning:"mantener",ipa:"/kiːp/"},
+  {base:"know",past:"knew",participle:"known",meaning:"saber/conocer",ipa:"/noʊ/"},
+  {base:"leave",past:"left",participle:"left",meaning:"dejar/salir",ipa:"/liːv/"},
+  {base:"make",past:"made",participle:"made",meaning:"hacer/fabricar",ipa:"/meɪk/"},
+  {base:"meet",past:"met",participle:"met",meaning:"conocer/encontrar",ipa:"/miːt/"},
+  {base:"pay",past:"paid",participle:"paid",meaning:"pagar",ipa:"/peɪ/"},
+  {base:"put",past:"put",participle:"put",meaning:"poner",ipa:"/pʊt/"},
+  {base:"read",past:"read",participle:"read",meaning:"leer",ipa:"/riːd/"},
+  {base:"run",past:"ran",participle:"run",meaning:"correr",ipa:"/rʌn/"},
+  {base:"say",past:"said",participle:"said",meaning:"decir",ipa:"/seɪ/"},
+  {base:"see",past:"saw",participle:"seen",meaning:"ver",ipa:"/siː/"},
+  {base:"sell",past:"sold",participle:"sold",meaning:"vender",ipa:"/sɛl/"},
+  {base:"send",past:"sent",participle:"sent",meaning:"enviar",ipa:"/sɛnd/"},
+  {base:"sing",past:"sang",participle:"sung",meaning:"cantar",ipa:"/sɪŋ/"},
+  {base:"sit",past:"sat",participle:"sat",meaning:"sentarse",ipa:"/sɪt/"},
+  {base:"sleep",past:"slept",participle:"slept",meaning:"dormir",ipa:"/sliːp/"},
+  {base:"speak",past:"spoke",participle:"spoken",meaning:"hablar",ipa:"/spiːk/"},
+  {base:"spend",past:"spent",participle:"spent",meaning:"gastar/pasar tiempo",ipa:"/spɛnd/"},
+  {base:"stand",past:"stood",participle:"stood",meaning:"estar de pie",ipa:"/stænd/"},
+  {base:"swim",past:"swam",participle:"swum",meaning:"nadar",ipa:"/swɪm/"},
+  {base:"take",past:"took",participle:"taken",meaning:"tomar",ipa:"/teɪk/"},
+  {base:"teach",past:"taught",participle:"taught",meaning:"enseñar",ipa:"/tiːtʃ/"},
+  {base:"tell",past:"told",participle:"told",meaning:"decir/contar",ipa:"/tɛl/"},
+  {base:"think",past:"thought",participle:"thought",meaning:"pensar",ipa:"/θɪŋk/"},
+  {base:"understand",past:"understood",participle:"understood",meaning:"entender",ipa:"/ˌʌndərˈstænd/"},
+  {base:"wake",past:"woke",participle:"woken",meaning:"despertar",ipa:"/weɪk/"},
+  {base:"wear",past:"wore",participle:"worn",meaning:"vestir/llevar puesto",ipa:"/wɛər/"},
+  {base:"win",past:"won",participle:"won",meaning:"ganar",ipa:"/wɪn/"},
+  {base:"write",past:"wrote",participle:"written",meaning:"escribir",ipa:"/raɪt/"},
+  {base:"arise",past:"arose",participle:"arisen",meaning:"surgir",ipa:"/əˈraɪz/"},
+  {base:"bite",past:"bit",participle:"bitten",meaning:"morder",ipa:"/baɪt/"},
+  {base:"blow",past:"blew",participle:"blown",meaning:"soplar",ipa:"/bloʊ/"},
+  {base:"cut",past:"cut",participle:"cut",meaning:"cortar",ipa:"/kʌt/"},
+  {base:"draw",past:"drew",participle:"drawn",meaning:"dibujar",ipa:"/drɔː/"},
+  {base:"fight",past:"fought",participle:"fought",meaning:"pelear",ipa:"/faɪt/"},
+  {base:"freeze",past:"froze",participle:"frozen",meaning:"congelar",ipa:"/friːz/"},
+  {base:"hang",past:"hung",participle:"hung",meaning:"colgar",ipa:"/hæŋ/"},
+  {base:"hide",past:"hid",participle:"hidden",meaning:"esconder",ipa:"/haɪd/"},
+  {base:"hit",past:"hit",participle:"hit",meaning:"golpear",ipa:"/hɪt/"},
+  {base:"hold",past:"held",participle:"held",meaning:"sostener",ipa:"/hoʊld/"},
+  {base:"hurt",past:"hurt",participle:"hurt",meaning:"herir/doler",ipa:"/hɜːrt/"},
+  {base:"lay",past:"laid",participle:"laid",meaning:"poner/tender",ipa:"/leɪ/"},
+  {base:"lead",past:"led",participle:"led",meaning:"liderar",ipa:"/liːd/"},
+  {base:"let",past:"let",participle:"let",meaning:"dejar/permitir",ipa:"/lɛt/"},
+  {base:"lose",past:"lost",participle:"lost",meaning:"perder",ipa:"/luːz/"},
+  {base:"ride",past:"rode",participle:"ridden",meaning:"montar",ipa:"/raɪd/"},
+  {base:"ring",past:"rang",participle:"rung",meaning:"sonar/llamar",ipa:"/rɪŋ/"},
+  {base:"rise",past:"rose",participle:"risen",meaning:"levantarse/subir",ipa:"/raɪz/"},
+  {base:"shake",past:"shook",participle:"shaken",meaning:"sacudir",ipa:"/ʃeɪk/"},
+  {base:"shine",past:"shone",participle:"shone",meaning:"brillar",ipa:"/ʃaɪn/"},
+  {base:"shoot",past:"shot",participle:"shot",meaning:"disparar",ipa:"/ʃuːt/"},
+  {base:"show",past:"showed",participle:"shown",meaning:"mostrar",ipa:"/ʃoʊ/"},
+  {base:"shut",past:"shut",participle:"shut",meaning:"cerrar",ipa:"/ʃʌt/"},
+  {base:"sink",past:"sank",participle:"sunk",meaning:"hundir",ipa:"/sɪŋk/"},
+  {base:"steal",past:"stole",participle:"stolen",meaning:"robar",ipa:"/stiːl/"},
+  {base:"strike",past:"struck",participle:"struck",meaning:"golpear",ipa:"/straɪk/"},
+  {base:"swear",past:"swore",participle:"sworn",meaning:"jurar",ipa:"/swɛər/"},
+  {base:"sweep",past:"swept",participle:"swept",meaning:"barrer",ipa:"/swiːp/"},
+  {base:"swing",past:"swung",participle:"swung",meaning:"balancear",ipa:"/swɪŋ/"},
+  {base:"tear",past:"tore",participle:"torn",meaning:"rasgar",ipa:"/tɛər/"},
+  {base:"throw",past:"threw",participle:"thrown",meaning:"lanzar",ipa:"/θroʊ/"},
+  {base:"weep",past:"wept",participle:"wept",meaning:"llorar",ipa:"/wiːp/"},
+  {base:"wind",past:"wound",participle:"wound",meaning:"enrollar/dar cuerda",ipa:"/waɪnd/"},
+  {base:"awake",past:"awoke",participle:"awoken",meaning:"despertar",ipa:"/əˈweɪk/"},
+{base:"bear",past:"bore",participle:"borne",meaning:"soportar/llevar",ipa:"/bɛər/"},
+{base:"become",past:"became",participle:"become",meaning:"llegar a ser",ipa:"/bɪˈkʌm/"},
+{base:"bend",past:"bent",participle:"bent",meaning:"doblar",ipa:"/bɛnd/"},
+{base:"bet",past:"bet",participle:"bet",meaning:"apostar",ipa:"/bɛt/"},
+{base:"bind",past:"bound",participle:"bound",meaning:"atar",ipa:"/baɪnd/"},
+{base:"bleed",past:"bled",participle:"bled",meaning:"sangrar",ipa:"/bliːd/"},
+{base:"breed",past:"bred",participle:"bred",meaning:"criar",ipa:"/briːd/"},
+{base:"broadcast",past:"broadcast",participle:"broadcast",meaning:"transmitir",ipa:"/ˈbrɔːdkæst/"},
+{base:"burst",past:"burst",participle:"burst",meaning:"estallar",ipa:"/bɜːrst/"},
+{base:"cast",past:"cast",participle:"cast",meaning:"lanzar/echar",ipa:"/kæst/"},
+{base:"cling",past:"clung",participle:"clung",meaning:"aferrarse",ipa:"/klɪŋ/"},
+{base:"creep",past:"crept",participle:"crept",meaning:"arrastrarse",ipa:"/kriːp/"},
+{base:"dig",past:"dug",participle:"dug",meaning:"cavar",ipa:"/dɪɡ/"},
+{base:"dive",past:"dove",participle:"dived",meaning:"bucear",ipa:"/daɪv/"},
+{base:"feed",past:"fed",participle:"fed",meaning:"alimentar",ipa:"/fiːd/"},
+{base:"flee",past:"fled",participle:"fled",meaning:"huir",ipa:"/fliː/"},
+{base:"fling",past:"flung",participle:"flung",meaning:"lanzar",ipa:"/flɪŋ/"},
+{base:"forbid",past:"forbade",participle:"forbidden",meaning:"prohibir",ipa:"/fərˈbɪd/"},
+{base:"forecast",past:"forecast",participle:"forecast",meaning:"predecir",ipa:"/ˈfɔːrkæst/"},
+{base:"forgive",past:"forgave",participle:"forgiven",meaning:"perdonar",ipa:"/fərˈɡɪv/"},
+{base:"freeze",past:"froze",participle:"frozen",meaning:"congelar",ipa:"/friːz/"},
+{base:"grind",past:"ground",participle:"ground",meaning:"moler",ipa:"/ɡraɪnd/"},
+{base:"kneel",past:"knelt",participle:"knelt",meaning:"arrodillarse",ipa:"/niːl/"},
+{base:"knit",past:"knit",participle:"knit",meaning:"tejer",ipa:"/nɪt/"},
+{base:"leap",past:"leapt",participle:"leapt",meaning:"saltar",ipa:"/liːp/"},
+{base:"lend",past:"lent",participle:"lent",meaning:"prestar",ipa:"/lɛnd/"},
+{base:"light",past:"lit",participle:"lit",meaning:"encender",ipa:"/laɪt/"},
+{base:"mistake",past:"mistook",participle:"mistaken",meaning:"confundir",ipa:"/mɪˈsteɪk/"},
+{base:"overcome",past:"overcame",participle:"overcome",meaning:"superar",ipa:"/ˌoʊvərˈkʌm/"},
+{base:"oversee",past:"oversaw",participle:"overseen",meaning:"supervisar",ipa:"/ˌoʊvərˈsiː/"},
+{base:"plead",past:"plead",participle:"plead",meaning:"suplicar",ipa:"/pliːd/"},
+{base:"prove",past:"proved",participle:"proven",meaning:"probar",ipa:"/pruːv/"},
+{base:"quit",past:"quit",participle:"quit",meaning:"renunciar",ipa:"/kwɪt/"},
+{base:"rid",past:"rid",participle:"rid",meaning:"liberar",ipa:"/rɪd/"},
+{base:"seek",past:"sought",participle:"sought",meaning:"buscar",ipa:"/siːk/"},
+{base:"sew",past:"sewed",participle:"sewn",meaning:"coser",ipa:"/soʊ/"},
+{base:"shed",past:"shed",participle:"shed",meaning:"derramar",ipa:"/ʃɛd/"},
+{base:"shrink",past:"shrank",participle:"shrunk",meaning:"encoger",ipa:"/ʃrɪŋk/"},
+{base:"shut",past:"shut",participle:"shut",meaning:"cerrar",ipa:"/ʃʌt/"},
+{base:"slay",past:"slew",participle:"slain",meaning:"matar",ipa:"/sleɪ/"},
+{base:"slide",past:"slid",participle:"slid",meaning:"deslizar",ipa:"/slaɪd/"},
+{base:"sow",past:"sowed",participle:"sown",meaning:"sembrar",ipa:"/soʊ/"},
+{base:"speed",past:"sped",participle:"sped",meaning:"acelerar",ipa:"/spiːd/"},
+{base:"spell",past:"spelt",participle:"spelt",meaning:"deletrear",ipa:"/spɛl/"},
+{base:"spill",past:"spilt",participle:"spilt",meaning:"derramar",ipa:"/spɪl/"},
+{base:"spin",past:"spun",participle:"spun",meaning:"girar",ipa:"/spɪn/"},
+{base:"spit",past:"spat",participle:"spat",meaning:"escupir",ipa:"/spɪt/"},
+{base:"split",past:"split",participle:"split",meaning:"dividir",ipa:"/splɪt/"},
+{base:"spread",past:"spread",participle:"spread",meaning:"extender",ipa:"/sprɛd/"},
+{base:"spring",past:"sprang",participle:"sprung",meaning:"saltar",ipa:"/sprɪŋ/"},
+{base:"sting",past:"stung",participle:"stung",meaning:"picar",ipa:"/stɪŋ/"},
+{base:"stink",past:"stank",participle:"stunk",meaning:"apestar",ipa:"/stɪŋk/"},
+{base:"stride",past:"strode",participle:"stridden",meaning:"avanzar",ipa:"/straɪd/"},
+{base:"strive",past:"strove",participle:"striven",meaning:"esforzarse",ipa:"/straɪv/"},
+{base:"swear",past:"swore",participle:"sworn",meaning:"jurar",ipa:"/swɛər/"},
+{base:"swell",past:"swelled",participle:"swollen",meaning:"hinchar",ipa:"/swɛl/"},
+{base:"thrust",past:"thrust",participle:"thrust",meaning:"empujar",ipa:"/θrʌst/"},
+{base:"tread",past:"trod",participle:"trodden",meaning:"pisar",ipa:"/trɛd/"},
+{base:"undergo",past:"underwent",participle:"undergone",meaning:"experimentar",ipa:"/ˌʌndərˈɡoʊ/"},
+{base:"undertake",past:"undertook",participle:"undertaken",meaning:"emprender",ipa:"/ˌʌndərˈteɪk/"},
+{base:"upset",past:"upset",participle:"upset",meaning:"molestar",ipa:"/ʌpˈsɛt/"},
+{base:"weave",past:"wove",participle:"woven",meaning:"tejer",ipa:"/wiːv/"},
+{base:"wed",past:"wed",participle:"wed",meaning:"casar",ipa:"/wɛd/"},
+{base:"weep",past:"wept",participle:"wept",meaning:"llorar",ipa:"/wiːp/"},
+{base:"wet",past:"wet",participle:"wet",meaning:"mojar",ipa:"/wɛt/"},
+{base:"wring",past:"wrung",participle:"wrung",meaning:"exprimir",ipa:"/rɪŋ/"},
+{base:"bid",past:"bid",participle:"bid",meaning:"ofertar",ipa:"/bɪd/"},
+{base:"forsake",past:"forsook",participle:"forsaken",meaning:"abandonar",ipa:"/fərˈseɪk/"},
+{base:"withdraw",past:"withdrew",participle:"withdrawn",meaning:"retirar",ipa:"/wɪðˈdrɔː/"},
+{base:"withhold",past:"withheld",participle:"withheld",meaning:"retener",ipa:"/wɪðˈhoʊld/"},
+{base:"bespeak",past:"bespoke",participle:"bespoken",meaning:"indicar",ipa:"/bɪˈspiːk/"},
+{base:"bestride",past:"bestrode",participle:"bestridden",meaning:"montar a horcajadas",ipa:"/bɪˈstraɪd/"},
+{base:"outrun",past:"outran",participle:"outrun",meaning:"superar corriendo",ipa:"/aʊtˈrʌn/"},
+{base:"overdraw",past:"overdrew",participle:"overdrawn",meaning:"sobregirar",ipa:"/ˌoʊvərˈdrɔː/"},
+{base:"rethink",past:"rethought",participle:"rethought",meaning:"reconsiderar",ipa:"/riːˈθɪŋk/"},
+{base:"unbind",past:"unbound",participle:"unbound",meaning:"desatar",ipa:"/ʌnˈbaɪnd/"}
+];
+
+// ═══════════════════════════════════════════════════════
+// PHRASAL VERBS
+// ═══════════════════════════════════════════════════════
+const PHRASAL = [
+// A1-A2
+{phrase:"get up",meaning:"levantarse",example:"I get up at 7 AM every day.",level:"A1",topic:"basics"},
+{phrase:"wake up",meaning:"despertarse",example:"Wake up! It's already morning.",level:"A1",topic:"basics"},
+{phrase:"look for",meaning:"buscar",example:"I'm looking for my keys.",level:"A1",topic:"basics"},
+{phrase:"find out",meaning:"descubrir",example:"I finally found out the truth.",level:"A2",topic:"basics"},
+{phrase:"give up",meaning:"rendirse",example:"Never give up on your dreams.",level:"A2",topic:"emotions"},
+{phrase:"turn on",meaning:"encender",example:"Turn on the computer, please.",level:"A1",topic:"tech"},
+{phrase:"turn off",meaning:"apagar",example:"Turn off the lights when you leave.",level:"A1",topic:"tech"},
+{phrase:"put on",meaning:"ponerse ropa",example:"Put on your jacket, it's cold.",level:"A1",topic:"basics"},
+{phrase:"take off",meaning:"quitarse/despegar",example:"Take off your shoes at the door.",level:"A2",topic:"travel"},
+{phrase:"go on",meaning:"continuar",example:"Please go on with your story.",level:"A2",topic:"basics"},
+{phrase:"come back",meaning:"regresar",example:"I'll come back later tonight.",level:"A2",topic:"travel"},
+{phrase:"look after",meaning:"cuidar",example:"Can you look after my cat?",level:"A2",topic:"family"},
+{phrase:"take care of",meaning:"encargarse de",example:"I'll take care of the problem.",level:"A2",topic:"work"},
+{phrase:"run out of",meaning:"quedarse sin",example:"We ran out of time.",level:"A2",topic:"basics"},
+{phrase:"fill out",meaning:"llenar formulario",example:"Please fill out this form.",level:"A2",topic:"work"},
+
+// B1-B2
+{phrase:"carry on",meaning:"continuar",example:"Carry on with your excellent work.",level:"B1",topic:"work"},
+{phrase:"break down",meaning:"averiarse",example:"My car broke down on the highway.",level:"B1",topic:"travel"},
+{phrase:"call off",meaning:"cancelar",example:"They called off the meeting.",level:"B1",topic:"work"},
+{phrase:"point out",meaning:"señalar",example:"She pointed out the mistake.",level:"B1",topic:"academic"},
+{phrase:"set up",meaning:"configurar",example:"Let me set up your account.",level:"B1",topic:"tech"},
+{phrase:"look forward to",meaning:"esperar con ilusión",example:"I look forward to meeting you.",level:"B1",topic:"emotions"},
+{phrase:"put off",meaning:"posponer",example:"Don't put off important tasks.",level:"B2",topic:"work"},
+{phrase:"get along with",meaning:"llevarse bien",example:"I get along with my colleagues.",level:"B1",topic:"work"},
+{phrase:"run into",meaning:"encontrarse con",example:"I ran into an old friend.",level:"B1",topic:"basics"},
+{phrase:"bring up",meaning:"mencionar/criar",example:"He brought up a valid point.",level:"B2",topic:"business"},
+{phrase:"turn down",meaning:"rechazar",example:"She turned down the offer.",level:"B2",topic:"work"},
+{phrase:"make up",meaning:"inventar/reconciliarse",example:"Don't make up excuses.",level:"B1",topic:"basics"},
+{phrase:"go through",meaning:"pasar por/revisar",example:"Let's go through the report.",level:"B2",topic:"work"},
+{phrase:"take up",meaning:"empezar actividad",example:"I took up running last year.",level:"B1",topic:"emotions"},
+{phrase:"cut down on",meaning:"reducir",example:"I need to cut down on sugar.",level:"B2",topic:"food"},
+{phrase:"come across",meaning:"encontrarse con",example:"I came across an interesting book.",level:"B2",topic:"academic"},
+{phrase:"deal with",meaning:"manejar",example:"How do you deal with stress?",level:"B2",topic:"emotions"},
+{phrase:"end up",meaning:"terminar en",example:"We ended up eating at home.",level:"B1",topic:"basics"},
+{phrase:"fall apart",meaning:"desmoronarse",example:"The plan fell apart quickly.",level:"B2",topic:"business"},
+{phrase:"keep up with",meaning:"mantenerse al día",example:"It's hard to keep up with technology.",level:"B2",topic:"tech"},
+{phrase:"look up",meaning:"buscar información",example:"Look it up in the dictionary.",level:"B1",topic:"academic"},
+{phrase:"make out",meaning:"distinguir",example:"I couldn't make out what he said.",level:"B2",topic:"basics"},
+{phrase:"pick up",meaning:"recoger/aprender",example:"Pick up the children at school.",level:"B1",topic:"family"},
+{phrase:"stand out",meaning:"destacar",example:"Her work always stands out.",level:"B2",topic:"business"},
+{phrase:"work out",meaning:"ejercitar/resolver",example:"Let's work out the details.",level:"B1",topic:"work"},
+
+// C1-C2
+{phrase:"account for",meaning:"representar/explicar",example:"This accounts for 30% of sales.",level:"C1",topic:"business"},
+{phrase:"adhere to",meaning:"adherirse a",example:"All employees must adhere to the policy.",level:"C1",topic:"work"},
+{phrase:"allude to",meaning:"aludir a",example:"He alluded to the scandal without naming names.",level:"C2",topic:"academic"},
+{phrase:"aspire to",meaning:"aspirar a",example:"She aspires to become CEO.",level:"C1",topic:"work"},
+{phrase:"bear with",meaning:"tener paciencia",example:"Please bear with me while I explain.",level:"C1",topic:"basics"},
+{phrase:"build on",meaning:"basarse en",example:"We need to build on our success.",level:"C1",topic:"business"},
+{phrase:"call for",meaning:"requerir",example:"This situation calls for immediate action.",level:"C1",topic:"work"},
+{phrase:"cap off",meaning:"coronar/completar",example:"This achievement caps off a great year.",level:"C2",topic:"business"},
+{phrase:"cash in on",meaning:"aprovechar para ganar",example:"They cashed in on the trend.",level:"C2",topic:"business"},
+{phrase:"clamp down on",meaning:"reprimir",example:"The government clamped down on protests.",level:"C2",topic:"politics"},
+{phrase:"come up with",meaning:"idear",example:"We need to come up with a solution.",level:"C1",topic:"work"},
+{phrase:"count on",meaning:"contar con",example:"You can count on me for support.",level:"C1",topic:"basics"},
+{phrase:"delve into",meaning:"profundizar en",example:"Let's delve into the details.",level:"C2",topic:"academic"},
+{phrase:"do away with",meaning:"eliminar",example:"They did away with the old system.",level:"C1",topic:"work"},
+{phrase:"draw on",meaning:"utilizar recursos",example:"She drew on her experience.",level:"C2",topic:"academic"},
+{phrase:"eke out",meaning:"lograr con dificultad",example:"They eked out a narrow victory.",level:"C2",topic:"business"},
+{phrase:"embark on",meaning:"embarcarse en",example:"We're embarking on a new project.",level:"C1",topic:"work"},
+{phrase:"fall back on",meaning:"recurrir a",example:"You can fall back on your savings.",level:"C1",topic:"finance"},
+{phrase:"faze out",meaning:"eliminar gradualmente",example:"They're phasing out old products.",level:"C1",topic:"business"},
+{phrase:"get across",meaning:"comunicar",example:"I couldn't get my point across.",level:"C1",topic:"communication"},
+{phrase:"give in",meaning:"ceder",example:"Don't give in to pressure.",level:"C1",topic:"emotions"},
+{phrase:"go about",meaning:"abordar",example:"How should we go about this?",level:"C1",topic:"work"},
+{phrase:"home in on",meaning:"enfocarse en",example:"We need to home in on the issue.",level:"C2",topic:"academic"},
+{phrase:"iron out",meaning:"resolver problemas",example:"Let's iron out the details.",level:"C1",topic:"work"},
+{phrase:"lash out at",meaning:"atacar verbalmente",example:"He lashed out at his critics.",level:"C2",topic:"emotions"},
+{phrase:"lay off",meaning:"despedir",example:"The company had to lay off workers.",level:"C1",topic:"work"},
+{phrase:"live up to",meaning:"estar a la altura",example:"She lived up to expectations.",level:"C1",topic:"work"},
+{phrase:"look into",meaning:"investigar",example:"We'll look into the matter.",level:"C1",topic:"work"},
+{phrase:"make up for",meaning:"compensar",example:"This makes up for lost time.",level:"C1",topic:"basics"},
+{phrase:"map out",meaning:"planear detalladamente",example:"We mapped out the strategy.",level:"C2",topic:"business"},
+{phrase:"mull over",meaning:"reflexionar sobre",example:"I need to mull over this decision.",level:"C2",topic:"work"},
+{phrase:"nip in the bud",meaning:"cortar de raíz",example:"We need to nip this in the bud.",level:"C2",topic:"work"},
+{phrase:"opt out",meaning:"excluirse",example:"You can opt out of the program.",level:"C1",topic:"work"},
+{phrase:"pare down",meaning:"reducir",example:"We need to pare down expenses.",level:"C2",topic:"business"},
+{phrase:"pass over",meaning:"ignorar/pasar por alto",example:"She was passed over for promotion.",level:"C1",topic:"work"},
+{phrase:"pin down",meaning:"identificar con precisión",example:"It's hard to pin down the cause.",level:"C2",topic:"academic"},
+{phrase:"play down",meaning:"minimizar",example:"They played down the incident.",level:"C2",topic:"business"},
+{phrase:"pore over",meaning:"estudiar detenidamente",example:"She pored over the documents.",level:"C2",topic:"academic"},
+{phrase:"pull off",meaning:"lograr con éxito",example:"They pulled off the deal.",level:"C1",topic:"business"},
+{phrase:"ramp up",meaning:"aumentar",example:"We need to ramp up production.",level:"C1",topic:"business"},
+{phrase:"reckon with",meaning:"tener en cuenta",example:"This is a force to be reckoned with.",level:"C2",topic:"business"},
+{phrase:"rule out",meaning:"descartar",example:"We can't rule out that possibility.",level:"C1",topic:"academic"},
+{phrase:"scrape by",meaning:"sobrevivir con dificultad",example:"They're just scraping by.",level:"C1",topic:"finance"},
+{phrase:"shore up",meaning:"reforzar",example:"We need to shore up support.",level:"C2",topic:"business"},
+{phrase:"shrug off",meaning:"ignorar/deshacerse de",example:"She shrugged off the criticism.",level:"C1",topic:"emotions"},
+{phrase:"size up",meaning:"evaluar",example:"He sized up the competition.",level:"C2",topic:"business"},
+{phrase:"slack off",meaning:"holgazanear",example:"Don't slack off on this project.",level:"C1",topic:"work"},
+{phrase:"stem from",meaning:"originarse en",example:"The problem stems from miscommunication.",level:"C2",topic:"academic"},
+{phrase:"step up",meaning:"intensificar",example:"We need to step up our efforts.",level:"C1",topic:"work"},
+{phrase:"stick to",meaning:"mantenerse en",example:"Stick to the plan.",level:"C1",topic:"work"},
+{phrase:"take on",meaning:"asumir/contratar",example:"We're taking on new staff.",level:"C1",topic:"work"},
+{phrase:"talk into",meaning:"convencer de",example:"She talked me into going.",level:"C1",topic:"basics"},
+{phrase:"talk out of",meaning:"disuadir de",example:"He talked me out of quitting.",level:"C1",topic:"basics"},
+{phrase:"tear up",meaning:"romper",example:"She tore up the contract.",level:"C1",topic:"work"},
+{phrase:"think through",meaning:"pensar detenidamente",example:"Think through the consequences.",level:"C1",topic:"work"},
+{phrase:"throw in",meaning:"añadir gratis",example:"They threw in a free upgrade.",level:"C1",topic:"business"},
+{phrase:"toss around",meaning:"discutir ideas",example:"We tossed around some ideas.",level:"C2",topic:"work"},
+{phrase:"touch on",meaning:"mencionar brevemente",example:"The report touches on several issues.",level:"C2",topic:"academic"},
+{phrase:"track down",meaning:"localizar",example:"We tracked down the source.",level:"C1",topic:"work"},
+{phrase:"turn around",meaning:"mejorar situación",example:"They turned the company around.",level:"C2",topic:"business"},
+{phrase:"turn out",meaning:"resultar",example:"It turned out better than expected.",level:"C1",topic:"basics"},
+{phrase:"weigh in",meaning:"opinar/intervenir",example:"The CEO weighed in on the decision.",level:"C2",topic:"business"},
+{phrase:"whittle down",meaning:"reducir gradualmente",example:"We whittled down the list.",level:"C2",topic:"work"},
+{phrase:"wind down",meaning:"relajarse/reducir",example:"I need to wind down before bed.",level:"C1",topic:"emotions"},
+{phrase:"wipe out",meaning:"eliminar/destruir",example:"The storm wiped out the village.",level:"C1",topic:"news"},
+{phrase:"work toward",meaning:"trabajar hacia",example:"We're working toward a solution.",level:"C1",topic:"work"},
+{phrase:"zero in on",meaning:"enfocarse precisamente",example:"Let's zero in on the main issue.",level:"C2",topic:"academic"},
+{phrase:"abide by",meaning:"acatar/respetar",example:"You must abide by the rules.",level:"C1",topic:"work"},
+{phrase:"angle for",meaning:"buscar conseguir",example:"She was angling for a promotion.",level:"C2",topic:"work"},
+{phrase:"back up",meaning:"respaldar",example:"Please back up your files.",level:"B1",topic:"tech"},
+{phrase:"bargain for",meaning:"esperar",example:"I didn't bargain for this.",level:"C1",topic:"basics"},
+{phrase:"boil down to",meaning:"reducirse a",example:"It boils down to money.",level:"B2",topic:"business"},
+{phrase:"bounce back",meaning:"recuperarse",example:"She bounced back quickly.",level:"B2",topic:"emotions"},
+{phrase:"brush up on",meaning:"repasar",example:"I need to brush up on my English.",level:"B1",topic:"academic"},
+{phrase:"butter up",meaning:"adular",example:"He's buttering up the boss.",level:"C1",topic:"work"},
+{phrase:"cater to",meaning:"satisfacer",example:"This hotel caters to families.",level:"B2",topic:"business"},
+{phrase:"clam up",meaning:"callarse",example:"He clammed up when I asked.",level:"C1",topic:"basics"},
+{phrase:"conk out",meaning:"averiarse",example:"My phone conked out.",level:"C1",topic:"tech"},
+{phrase:"crack down on",meaning:"reprimir",example:"The police cracked down on crime.",level:"C1",topic:"work"},
+{phrase:"dawn on",meaning:"caer en cuenta",example:"It dawned on me that I was wrong.",level:"B2",topic:"basics"},
+{phrase:"dispense with",meaning:"prescindir de",example:"Let's dispense with formalities.",level:"C2",topic:"work"},
+{phrase:"dwell on",meaning:"detenerse en",example:"Don't dwell on the past.",level:"C1",topic:"emotions"},
+{phrase:"ease off",meaning:"disminuir",example:"The rain eased off.",level:"B2",topic:"basics"},
+{phrase:"fend off",meaning:"defenderse",example:"She fended off the attack.",level:"C1",topic:"basics"},
+{phrase:"frown upon",meaning:"desaprobar",example:"They frown upon lateness.",level:"C1",topic:"work"},
+{phrase:"gear up",meaning:"prepararse",example:"We're gearing up for the event.",level:"B2",topic:"work"},
+{phrase:"hash out",meaning:"discutir detalladamente",example:"Let's hash out the details.",level:"C2",topic:"work"},
+{phrase:"jump at",meaning:"aceptar con entusiasmo",example:"I'd jump at that opportunity.",level:"B2",topic:"work"},
+{phrase:"keep at",meaning:"persistir",example:"Keep at it, you'll succeed.",level:"B1",topic:"emotions"},
+{phrase:"latch onto",meaning:"apegarse",example:"She latched onto that idea.",level:"C1",topic:"basics"},
+{phrase:"loom over",meaning:"amenazar",example:"Debt loomed over them.",level:"C2",topic:"business"},
+{phrase:"mull over",meaning:"reflexionar",example:"I need to mull it over.",level:"C1",topic:"work"}
+];
+
+// ═══════════════════════════════════════════════════════
+// IDIOMS
+// ═══════════════════════════════════════════════════════
+const IDIOMS = [
+  {idiom:"Break the ice",meaning:"Romper el hielo / Iniciar conversación",example:"He told a joke to break the ice.",topic:"basics"},
+  {idiom:"Piece of cake",meaning:"Pan comido / Muy fácil",example:"The test was a piece of cake.",topic:"academic"},
+  {idiom:"Hit the books",meaning:"Ponerse a estudiar en serio",example:"I need to hit the books tonight.",topic:"academic"},
+  {idiom:"Cost an arm and a leg",meaning:"Costar un ojo de la cara",example:"That car costs an arm and a leg.",topic:"business"},
+  {idiom:"Under the weather",meaning:"Sentirse indispuesto / Enfermo",example:"I'm feeling under the weather today.",topic:"emotions"},
+  {idiom:"Spill the beans",meaning:"Revelar un secreto",example:"Who spilled the beans about the party?",topic:"basics"},
+  {idiom:"Bite the bullet",meaning:"Aguantar con valor",example:"Just bite the bullet and tell the truth.",topic:"emotions"},
+  {idiom:"Once in a blue moon",meaning:"Muy de vez en cuando",example:"I see her once in a blue moon.",topic:"basics"},
+  {idiom:"The ball is in your court",meaning:"La decisión es tuya",example:"I've made my offer; the ball is in your court.",topic:"work"},
+  {idiom:"Burn the midnight oil",meaning:"Trabajar o estudiar hasta muy tarde",example:"She burned the midnight oil to finish.",topic:"work"},
+  {idiom:"Cut corners",meaning:"Hacer algo a medias / Escatimar",example:"Never cut corners on quality.",topic:"business"},
+  {idiom:"Get cold feet",meaning:"Echarse atrás por miedo",example:"He got cold feet before the speech.",topic:"emotions"},
+  {idiom:"In the same boat",meaning:"En la misma situación difícil",example:"We're all in the same boat here.",topic:"basics"},
+  {idiom:"Miss the boat",meaning:"Perder una oportunidad",example:"If you wait too long, you'll miss the boat.",topic:"business"},
+  {idiom:"On the ball",meaning:"Estar atento y eficiente",example:"She's really on the ball with this project.",topic:"work"},
+  {idiom:"Hit the nail on the head",meaning:"Dar en el clavo",example:"You hit the nail on the head with that comment.",topic:"basics"},
+  {idiom:"Let the cat out of the bag",meaning:"Descubrir un secreto",example:"He let the cat out of the bag about the surprise.",topic:"basics"},
+  {idiom:"Bite off more than you can chew",meaning:"Abarcar más de lo que se puede",example:"Don't bite off more than you can chew.",topic:"work"},
+  {idiom:"Kick the bucket",meaning:"Estirar la pata / Morir",example:"He kicked the bucket after a long illness.",topic:"basics"},
+  {idiom:"Hit the sack",meaning:"Irse a dormir",example:"I need to hit the sack early tonight.",topic:"basics"},
+  {idiom:"Steal someone's thunder",meaning:"Quitarle el protagonismo a alguien",example:"She stole his thunder at the presentation.",topic:"work"},
+  {idiom:"A blessing in disguise",meaning:"Un bien disfrazado de mal",example:"Losing that job was a blessing in disguise.",topic:"emotions"},
+  {idiom:"Actions speak louder than words",meaning:"Las obras valen más que las palabras",example:"Actions speak louder than words.",topic:"basics"},
+  {idiom:"Better late than never",meaning:"Mejor tarde que nunca",example:"He finally apologized — better late than never.",topic:"basics"},
+  {idiom:"Every cloud has a silver lining",meaning:"No hay mal que por bien no venga",example:"Every cloud has a silver lining.",topic:"emotions"},
+];
+
+// ═══════════════════════════════════════════════════════
+// GRAMMAR
+// ═══════════════════════════════════════════════════════
+const GRAMMAR = [
+  {title:"Present Simple",level:"A1",rule:"Usado para hábitos, rutinas, verdades generales y hechos permanentes.",structure:"Subject + verb (base) · he/she/it: adds -s/-es",examples:["I work every day.","She studies English at night.","Water boils at 100°C.","Does he play football?"]},
+  {title:"Present Continuous",level:"A1",rule:"Para acciones que ocurren ahora mismo o en este período de tiempo.",structure:"Subject + am/is/are + verb-ing",examples:["I am studying now.","She is working from home.","They are not playing.","Are you listening?"]},
+  {title:"Past Simple",level:"A2",rule:"Para acciones completadas en un momento específico del pasado.",structure:"Subject + verb-ed (regular) or irregular form",examples:["I worked yesterday.","She went to Paris last summer.","We didn't finish on time.","Did you see the film?"]},
+  {title:"Present Perfect",level:"B1",rule:"Conecta el pasado con el presente. Uso: experiencias, acciones recientes con relevancia actual.",structure:"Subject + have/has + past participle",examples:["I have visited Paris.","She has just finished work.","Have you ever tried sushi?","I haven't seen him lately."]},
+  {title:"Future: Will vs Going to",level:"B1",rule:"'Will' → decisiones espontáneas y predicciones. 'Going to' → planes e intenciones ya decididas.",structure:"Will: S + will + verb | Going to: S + am/is/are + going to + verb",examples:["I'll help you! (spontaneous decision)","I'm going to study tonight. (plan)","It will probably rain tomorrow.","Look at those clouds — it's going to rain!"]},
+  {title:"First & Second Conditional",level:"B2",rule:"First: situación real y posible. Second: hipotético o improbable en el presente/futuro.",structure:"1st: If + present, will + verb | 2nd: If + past, would + verb",examples:["If it rains, I'll stay home.","If I won the lottery, I would travel the world.","If you study hard, you will pass.","If she were taller, she would be a model."]},
+  {title:"Passive Voice",level:"B2",rule:"Cuando el objeto de la acción es más importante que quien la realiza.",structure:"Subject + be (in appropriate tense) + past participle + (by + agent)",examples:["The book was written by Tolkien.","English is spoken worldwide.","The project will be completed soon.","Mistakes were made in the process."]},
+  {title:"Third Conditional",level:"C1",rule:"Para situaciones imposibles o imaginarias en el pasado. 'Hubiera hecho si hubiera...'",structure:"If + past perfect, would + have + past participle",examples:["If I had studied harder, I would have passed.","She would have come if she had known.","If he hadn't left early, he would have seen you."]},
+  {title:"Reported Speech",level:"C1",rule:"Para reportar lo que alguien dijo. Los tiempos verbales retroceden ('backshift').",structure:"He/She said (that) + clause (with backshift of tenses)",examples:["'I am tired.' → She said she was tired.","'I will call.' → He said he would call.","'I have finished.' → She said she had finished."]},
+  {title:"Modal Verbs of Deduction",level:"C1",rule:"Para expresar certeza, posibilidad o imposibilidad sobre situaciones presentes o pasadas.",structure:"Subject + modal (must/might/could/can't) + verb base",examples:["She must be at home (I'm almost sure).","It might rain later (possible).","He can't be serious (impossible).","They could be stuck in traffic."]},
+  {title:"Subjunctive Mood",level:"C2",rule:"Expresa deseos, hipótesis formales, sugerencias o condiciones contrarias a los hechos.",structure:"It is essential/important/vital that + subject + verb (base form, no -s)",examples:["I suggest that he apply for the job.","It is vital that she be present.","If I were you, I would reconsider.","The judge demanded that he remain silent."]},
+  {title:"Inversion for Emphasis",level:"C2",rule:"Se invierte sujeto y auxiliar para énfasis formal, literario o retórico. Muy común en C2.",structure:"Negative/restrictive adverb + auxiliary + subject + verb",examples:["Never have I seen such courage.","Not only did she win, she broke the record.","Hardly had he arrived when the storm began.","Under no circumstances should you lie."]},
+// A1
+{title:"Articles (A/An/The)",level:"A1",rule:"'A/An' para cosas no específicas. 'The' para cosas específicas o mencionadas antes.",structure:"a/an + singular countable noun | the + any noun",examples:["I have a cat.","She is an engineer.","The cat is sleeping.","The sun is bright."]},
+{title:"Countable/Uncountable Nouns",level:"A1",rule:"Countable: se pueden contar (one apple, two apples). Uncountable: no se cuentan (water, information).",structure:"many/few + countable | much/little + uncountable",examples:["How many apples?","How much water?","I have few friends.","I have little time."]},
+{title:"Possessives",level:"A1",rule:"'s para posesión. También: my, your, his, her, its, our, their.",structure:"noun + 's | possessive adjective + noun",examples:["John's car","Mary's book","This is my house","Their dog is friendly"]},
+{title:"Comparatives",level:"A1",rule:"Comparar dos cosas. Adjetivos cortos: -er. Largos: more + adjective.",structure:"adj-er + than | more + adj + than",examples:["She is taller than me.","This is more expensive.","He runs faster.","It's more interesting."]},
+{title:"Superlatives",level:"A2",rule:"El más/menos de un grupo. Cortos: the -est. Largos: the most.",structure:"the + adj-est | the most + adj",examples:["She is the tallest.","This is the most expensive.","He's the best player.","It's the least important."]},
+{title:"Adverbs of Frequency",level:"A1",rule:"Indican cuán frecuente: always, usually, often, sometimes, rarely, never.",structure:"Subject + adverb + verb (o después de 'be')",examples:["I always study.","She is usually late.","We often travel.","They never smoke."]},
+{title:"There is/There are",level:"A1",rule:"Existencia. 'There is' singular. 'There are' plural.",structure:"There is + singular | There are + plural",examples:["There is a book.","There are three books.","Is there a problem?","Are there any questions?"]},
+{title:"Question Words",level:"A1",rule:"What, Where, When, Who, Why, How, Which, Whose para hacer preguntas.",structure:"Question word + auxiliary + subject + verb",examples:["What do you do?","Where do you live?","When did you arrive?","Why are you here?"]},
+
+// A2
+{title:"Past Continuous",level:"A2",rule:"Acciones en progreso en el pasado. También para acciones interrumpidas.",structure:"was/were + verb-ing",examples:["I was studying at 8 PM.","They were sleeping.","I was cooking when you called.","While I was walking, it started to rain."]},
+{title:"Used to",level:"A2",rule:"Hábitos o estados pasados que ya no existen.",structure:"Subject + used to + verb (base)",examples:["I used to play tennis.","She used to live here.","Did you use to smoke?","I didn't use to like coffee."]},
+{title:"Future Continuous",level:"A2",rule:"Acciones que estarán en progreso en un momento futuro.",structure:"will be + verb-ing",examples:["I'll be working at 9 AM.","They'll be traveling next week.","Will you be staying long?","I won't be coming tomorrow."]},
+{title:"Modal Verbs (Can/Could/May/Might)",level:"A2",rule:"Habilidad, posibilidad, permiso. Can=presente, Could=pasado/más formal.",structure:"Subject + modal + verb (base)",examples:["I can swim.","Could you help me?","It may rain.","It might be true."]},
+{title:"Must/Have to",level:"A2",rule:"Obligación. 'Must' más fuerte/personal. 'Have to' más externo.",structure:"Subject + must/have to + verb (base)",examples:["I must finish this.","You have to wear a uniform.","Must I go?","She doesn't have to come."]},
+{title:"Should/Ought to",level:"A2",rule:"Consejo o recomendación. 'Ought to' más formal.",structure:"Subject + should/ought to + verb (base)",examples:["You should study more.","He ought to apologize.","Should I call her?","We shouldn't be late."]},
+{title:"Too/Enough",level:"A2",rule:"'Too' = exceso. 'Enough' = suficiente. Enough va después del adjetivo.",structure:"too + adj | adj + enough",examples:["It's too hot.","She's too young.","Is it warm enough?","He isn't tall enough."]},
+{title:"So/Such",level:"A2",rule:"Énfasis. 'So' + adj/adv. 'Such' + (a/an) + adj + noun.",structure:"so + adj/adv | such + (a/an) + adj + noun",examples:["It's so beautiful!","She's so kind!","It's such a nice day!","They're such friendly people!"]},
+
+// B1
+{title:"Present Perfect Continuous",level:"B1",rule:"Acciones que comenzaron en el pasado y continúan, o acaban de terminar con evidencia visible.",structure:"have/has been + verb-ing",examples:["I've been studying for hours.","She's been working here since 2020.","Have you been exercising?","They haven't been sleeping well."]},
+{title:"Past Perfect",level:"B1",rule:"Acción completada antes de otra acción pasada.",structure:"had + past participle",examples:["I had finished before she arrived.","She had already left.","Had you seen him before?","They hadn't eaten yet."]},
+{title:"Past Perfect Continuous",level:"B1",rule:"Duración de acción antes de otro punto en el pasado.",structure:"had been + verb-ing",examples:["I had been waiting for an hour.","She had been studying all day.","Had you been working long?","They hadn't been sleeping well."]},
+{title:"Future Perfect",level:"B1",rule:"Acción que estará completada en un punto futuro.",structure:"will have + past participle",examples:["I'll have finished by 5 PM.","She'll have graduated by then.","Will you have completed it?","They won't have arrived yet."]},
+{title:"Wishes & Regrets",level:"B1",rule:"'I wish' + past para presente. 'I wish' + past perfect para pasado.",structure:"I wish + past | I wish + past perfect",examples:["I wish I had more time.","I wish I were taller.","I wish I had studied harder.","I wish I hadn't said that."]},
+{title:"Relative Clauses",level:"B1",rule:"Defining (esencial, sin comas). Non-defining (extra información, con comas).",structure:"who/which/that/whose/where/when",examples:["The man who called is my boss.","The book that I read was great.","My brother, who lives in Paris, is visiting.","London, where I was born, is expensive."]},
+{title:"Reported Questions",level:"B1",rule:"Preguntas reportadas pierden auxiliar y cambian a orden afirmativo.",structure:"asked + if/whether + clause | asked + question word + clause",examples:["'Are you coming?' → He asked if I was coming.","'Where do you live?' → She asked where I lived.","'Did you finish?' → They asked whether I had finished."]},
+{title:"Causative (Have/Get something done)",level:"B1",rule:"Cuando alguien más hace algo para ti.",structure:"have/get + object + past participle",examples:["I had my hair cut.","She got her car repaired.","We're having our house painted.","He got his phone fixed."]},
+
+// B2
+{title:"Mixed Conditionals",level:"B2",rule:"Combinan tiempos diferentes. Pasado → Presente o Presente → Pasado.",structure:"If + past perfect, would + verb | If + past, would have + participle",examples:["If I had studied, I would have a better job now.","If I were smarter, I would have passed.","If she had saved money, she wouldn't be broke.","If he weren't afraid, he would have jumped."]},
+{title:"Inversion (Advanced)",level:"B2",rule:"Inversión después de expresiones negativas/formales para énfasis.",structure:"Negative adverb + auxiliary + subject + verb",examples:["Rarely have I seen such beauty.","Never will I forget this.","Not only did she win, but she also broke the record.","Under no circumstances should you open this."]},
+{title:"Participle Clauses",level:"B2",rule:"Reducir cláusulas usando participios para concisión.",structure:"Present participle (-ing) | Past participle (-ed/en)",examples:["Walking down the street, I saw an accident.","Exhausted from work, he went to bed.","Having finished the report, she left.","Built in 1900, the house is historic."]},
+{title:"Gerunds vs Infinitives",level:"B2",rule:"Algunos verbos van con gerundio, otros con infinitivo. Algunos cambian significado.",structure:"verb + -ing | verb + to + base",examples:["I enjoy swimming.","I want to swim.","I stopped smoking. (quit)","I stopped to smoke. (pause to do it)"]},
+{title:"Modal Perfect",level:"B2",rule:"Especulación sobre el pasado. Must have, can't have, might have, should have.",structure:"modal + have + past participle",examples:["She must have left early.","He can't have done that.","They might have forgotten.","You should have called me."]},
+{title:"Future in the Past",level:"B2",rule:"Hablar de futuro desde perspectiva pasada.",structure:"was/were going to | was/were to + verb",examples:["I was going to call you.","She was to meet him at 5.","They were going to travel.","He was to become president."]},
+{title:"Ellipsis & Substitution",level:"B2",rule:"Omitir palabras entendidas. Usar 'so', 'not', 'do', 'one(s)'.",structure:"so/not | do/does/did | one/ones",examples:["I think so.","I hope not.","She works harder than I do.","I prefer the red one."]},
+{title:"Cleft Sentences",level:"B2",rule:"Enfatizar parte específica de la oración.",structure:"It is/was + emphasized part + that/who | What + clause + is/was",examples:["It was John who called.","It was yesterday that I saw her.","What I need is a vacation.","What surprised me was his reaction."]},
+
+// C1
+{title:"Advanced Modal Expressions",level:"C1",rule:"Expresiones modales complejas para matices de significado.",structure:"needn't have | didn't need to | would rather | had better",examples:["You needn't have come. (you came but it wasn't necessary)","I didn't need to go. (I didn't go)","I'd rather you didn't smoke.","You'd better leave now."]},
+{title:"Subjunctive (Advanced)",level:"C1",rule:"Formal para deseos, sugerencias, necesidades. Verbo en base sin -s.",structure:"It's essential that + subject + verb(base)","examples":["It's essential that he be informed.","I suggest that she apply.","They demanded that he resign.","It's important that this remain confidential."]},
+{title:"Fronting",level:"C1",rule:"Mover elemento al inicio para énfasis dramático o literario.",structure:"Object/Complement + subject + verb",examples:["This I cannot accept.","Strange it may seem, it's true.","Beautiful was the sunset.","Money he has, but happiness he lacks."]},
+{title:"Marginal Modals",level:"C1",rule:"Dare, need, ought, used to como modales.",structure:"dare/need + verb(base) (en negativas/preguntas)",examples:["Dare he ask?","Need I say more?","You ought to know.","I used to live here."]},
+{title:"Advanced Connectors",level:"C1",rule:"Conectores sofisticados para escritura académica/formal.",structure:"Notwithstanding, Albeit, Inasmuch as, Notwithstanding",examples:["Notwithstanding the difficulties, we succeeded.","Albeit tired, she continued working.","Inasmuch as this is true, we must act.","Be that as it may, we proceed."]},
+{title:"Nominalization",level:"C1",rule:"Convertir verbos/adjetivos en sustantivos para estilo formal.",structure:"verb/adj → noun form",examples:["decide → decision","analyze → analysis","stable → stability","arrive → arrival"]},
+{title:"Hedging Language",level:"C1",rule:"Suavizar afirmaciones para precisión académica.",structure:"appear to, seem to, tend to, suggest that, may/might",examples:["This appears to indicate...","The results suggest that...","It may be possible that...","There tends to be a correlation..."]},
+{title:"Advanced Passive Forms",level:"C1",rule:"Pasivas con modales perfectos, continuas, con verbos de reporte.",structure:"modal + have been + participle | be + being + participle",examples:["It should have been done.","The project is being reviewed.","He is said to be rich.","The building was being constructed."]},
+
+// C2
+{title:"Archaic & Literary Forms",level:"C2",rule:"Formas literarias para escritura creativa o comprensión de textos clásicos.",structure:"Were I, Had I, Should you, Be it",examples:["Were I you, I would reconsider.","Had I known, I would have come.","Should you require assistance, call me.","Be it ever so humble, there's no place like home."]},
+{title:"Advanced Inversion Patterns",level:"C2",rule:"Inversiones complejas para énfasis retórico avanzado.",structure:"So/Such + auxiliary + subject | Little/No sooner + auxiliary",examples:["So difficult was the exam that many failed.","Such was his anger that he shouted.","Little did she know what awaited her.","No sooner had I arrived than it started."]},
+{title:"Subtle Aspect Distinctions",level:"C2",rule:"Matices finos entre aspectos verbales para precisión nativa.",structure:"Various combinations of perfect/continuous",examples:["I've read the book. (completed)","I've been reading the book. (ongoing)","I had read it before. (before past moment)","I had been reading for hours. (duration before past)"]},
+{title:"Discourse Markers",level:"C2",rule:"Marcadores para flujo natural en conversación avanzada.",structure:"Mind you, That said, As it were, If you will",examples:["It's expensive. Mind you, it's worth it.","He's talented. That said, he's lazy.","It's a masterpiece, as it were.","He's the leader, if you will."]},
+{title:"Idiomatic Prepositions",level:"C2",rule:"Combinaciones fijas de verbo+preposición avanzadas.",structure:"verb + specific preposition",examples:["abide by (rules)","acquaint with","adhere to","apologize for","approve of","aspire to","associate with"]},
+{title:"Future Perfect Continuous",level:"C1",rule:"Acciones que continuarán hasta un punto futuro.",structure:"will have been + verb-ing",examples:["By 2025, I will have been working here for 10 years.","She will have been studying for hours by then.","They will have been waiting for two hours.","He will have been living there since 2020."]},
+{title:"Inversion with 'Only'",level:"C2",rule:"Inversión para enfatizar condiciones únicas.",structure:"Only + time phrase + auxiliary + subject",examples:["Only after the meeting did I realize the mistake.","Only when you try do you understand.","Only by working hard will you succeed.","Only then did she understand."]},
+{title:"Ellipsis in Comparisons",level:"C1",rule:"Omitir palabras repetidas en comparaciones avanzadas.",structure:"comparative structure with omitted elements",examples:["She's taller than her brother (is).","He earns more than I (do).","They work harder than us (do).","This is better than that (is)."]},
+{title:"Reduced Relative Clauses",level:"C1",rule:"Simplificar cláusulas relativas eliminando pronombre y 'be'.",structure:"present/past participle phrase",examples:["The man standing there is my boss.","The book written by her became famous.","Students living on campus have meal plans.","The car parked outside belongs to John."]},
+{title:"Cleft Sentences with 'What'",level:"B2",rule:"Enfatizar información usando 'what' + cláusula.",structure:"What + subject + verb + be + emphasized part",examples:["What I need is a vacation.","What surprised me was his reaction.","What we discussed was the budget.","What she wants is more time."]},
+{title:"Adverbial Clauses of Concession",level:"C1",rule:"Expresar contraste con conectores formales.",structure:"Although/Even though/Whereas + clause",examples:["Although it rained, we enjoyed the trip.","Whereas he is tall, she is short.","Even though she was tired, she worked.","While I understand, I cannot agree."]},
+{title:"Modal Verbs: Needn't vs Didn't Need to",level:"B2",rule:"Diferenciar entre acción innecesaria realizada o no.",structure:"needn't have + past participle (se hizo) | didn't need to + verb (no se hizo)",examples:["You needn't have bought milk (but you did).","I didn't need to go (so I didn't).","She needn't have worried (but she did).","We didn't need to hurry (so we didn't)."]},
+{title:"Subjunctive with 'As if'",level:"C1",rule:"Usar subjuntivo para situaciones irreales con 'as if'.",structure:"as if + past subjunctive (were)",examples:["He acts as if he were the boss.","She talks as if she knew everything.","They look as if they were tired.","It sounds as if it were real."]},
+{title:"Fronting with 'So'",level:"C1",rule:"Invertir para enfatizar acuerdo o similitud.",structure:"So + auxiliary + subject",examples:["So do I.","So did she.","So will they.","So have we."]},
+{title:"Emphatic 'Do'",level:"B2",rule:"Usar 'do/does/did' para enfatizar verbos.",structure:"do/does/did + verb base",examples:["I do understand what you mean.","She does work very hard.","They did arrive on time.","He does care about you."]}
+];
+// ═══════════════════════════════════════════════════════
+// REGULAR VERBS - Verbos regulares más comunes
+// ═══════════════════════════════════════════════════════
+const REGULAR_VERBS = [
+  {base:"accept", past:"accepted", participle:"accepted", meaning:"aceptar", ipa:"/əkˈsɛpt/"},
+  {base:"add", past:"added", participle:"added", meaning:"añadir", ipa:"/æd/"},
+  {base:"admire", past:"admired", participle:"admired", meaning:"admirar", ipa:"/ədˈmaɪər/"},
+  {base:"agree", past:"agreed", participle:"agreed", meaning:"acordar", ipa:"/əˈɡriː/"},
+  {base:"allow", past:"allowed", participle:"allowed", meaning:"permitir", ipa:"/əˈlaʊ/"},
+  {base:"answer", past:"answered", participle:"answered", meaning:"responder", ipa:"/ˈɑːnsər/"},
+  {base:"appear", past:"appeared", participle:"appeared", meaning:"aparecer", ipa:"/əˈpɪər/"},
+  {base:"arrive", past:"arrived", participle:"arrived", meaning:"llegar", ipa:"/əˈraɪv/"},
+  {base:"ask", past:"asked", participle:"asked", meaning:"preguntar", ipa:"/æsk/"},
+  {base:"believe", past:"believed", participle:"believed", meaning:"creer", ipa:"/bɪˈliːv/"},
+  {base:"belong", past:"belonged", participle:"belonged", meaning:"pertenecer", ipa:"/bɪˈlɒŋ/"},
+  {base:"borrow", past:"borrowed", participle:"borrowed", meaning:"pedir prestado", ipa:"/ˈbɒroʊ/"},
+  {base:"call", past:"called", participle:"called", meaning:"llamar", ipa:"/kɔːl/"},
+  {base:"carry", past:"carried", participle:"carried", meaning:"llevar", ipa:"/ˈkæri/"},
+  {base:"change", past:"changed", participle:"changed", meaning:"cambiar", ipa:"/tʃeɪndʒ/"},
+  {base:"clean", past:"cleaned", participle:"cleaned", meaning:"limpiar", ipa:"/kliːn/"},
+  {base:"close", past:"closed", participle:"closed", meaning:"cerrar", ipa:"/kloʊz/"},
+  {base:"cook", past:"cooked", participle:"cooked", meaning:"cocinar", ipa:"/kʊk/"},
+  {base:"copy", past:"copied", participle:"copied", meaning:"copiar", ipa:"/ˈkɒpi/"},
+  {base:"correct", past:"corrected", participle:"corrected", meaning:"corregir", ipa:"/kəˈrɛkt/"},
+  {base:"count", past:"counted", participle:"counted", meaning:"contar", ipa:"/kaʊnt/"},
+  {base:"create", past:"created", participle:"created", meaning:"crear", ipa:"/kriˈeɪt/"},
+  {base:"cry", past:"cried", participle:"cried", meaning:"llorar", ipa:"/kraɪ/"},
+  {base:"dance", past:"danced", participle:"danced", meaning:"bailar", ipa:"/dæns/"},
+  {base:"decide", past:"decided", participle:"decided", meaning:"decidir", ipa:"/dɪˈsaɪd/"},
+  {base:"describe", past:"described", participle:"described", meaning:"describir", ipa:"/dɪˈskraɪb/"},
+  {base:"discuss", past:"discussed", participle:"discussed", meaning:"discutir", ipa:"/dɪˈskʌs/"},
+  {base:"divide", past:"divided", participle:"divided", meaning:"dividir", ipa:"/dɪˈvaɪd/"},
+  {base:"dream", past:"dreamed", participle:"dreamed", meaning:"soñar", ipa:"/driːm/"},
+  {base:"earn", past:"earned", participle:"earned", meaning:"ganar dinero", ipa:"/ɜːrn/"},
+  {base:"enjoy", past:"enjoyed", participle:"enjoyed", meaning:"disfrutar", ipa:"/ɪnˈdʒɔɪ/"},
+  {base:"explain", past:"explained", participle:"explained", meaning:"explicar", ipa:"/ɪkˈspleɪn/"},
+  {base:"explore", past:"explored", participle:"explored", meaning:"explorar", ipa:"/ɪkˈsplɔːr/"},
+  {base:"finish", past:"finished", participle:"finished", meaning:"terminar", ipa:"/ˈfɪnɪʃ/"},
+  {base:"follow", past:"followed", participle:"followed", meaning:"seguir", ipa:"/ˈfɒloʊ/"},
+  {base:"guess", past:"guessed", participle:"guessed", meaning:"adivinar", ipa:"/ɡɛs/"},
+  {base:"happen", past:"happened", participle:"happened", meaning:"suceder", ipa:"/ˈhæpən/"},
+  {base:"help", past:"helped", participle:"helped", meaning:"ayudar", ipa:"/hɛlp/"},
+  {base:"hope", past:"hoped", participle:"hoped", meaning:"esperar", ipa:"/hoʊp/"},
+  {base:"imagine", past:"imagined", participle:"imagined", meaning:"imaginar", ipa:"/ɪˈmædʒɪn/"},
+  {base:"improve", past:"improved", participle:"improved", meaning:"mejorar", ipa:"/ɪmˈpruːv/"},
+  {base:"include", past:"included", participle:"included", meaning:"incluir", ipa:"/ɪnˈkluːd/"},
+  {base:"invite", past:"invited", participle:"invited", meaning:"invitar", ipa:"/ɪnˈvaɪt/"},
+  {base:"jump", past:"jumped", participle:"jumped", meaning:"saltar", ipa:"/dʒʌmp/"},
+  {base:"laugh", past:"laughed", participle:"laughed", meaning:"reír", ipa:"/læf/"},
+  {base:"learn", past:"learned", participle:"learned", meaning:"aprender", ipa:"/lɜːrn/"},
+  {base:"listen", past:"listened", participle:"listened", meaning:"escuchar", ipa:"/ˈlɪsən/"},
+  {base:"look", past:"looked", participle:"looked", meaning:"mirar", ipa:"/lʊk/"},
+  {base:"love", past:"loved", participle:"loved", meaning:"amar", ipa:"/lʌv/"},
+  {base:"move", past:"moved", participle:"moved", meaning:"mover", ipa:"/muːv/"},
+  {base:"need", past:"needed", participle:"needed", meaning:"necesitar", ipa:"/niːd/"},
+  {base:"notice", past:"noticed", participle:"noticed", meaning:"notar", ipa:"/ˈnoʊtɪs/"},
+  {base:"offer", past:"offered", participle:"offered", meaning:"ofrecer", ipa:"/ˈɒfər/"},
+  {base:"open", past:"opened", participle:"opened", meaning:"abrir", ipa:"/ˈoʊpən/"},
+  {base:"order", past:"ordered", participle:"ordered", meaning:"ordenar", ipa:"/ˈɔːrdər/"},
+  {base:"pass", past:"passed", participle:"passed", meaning:"pasar", ipa:"/pæs/"},
+  {base:"plan", past:"planned", participle:"planned", meaning:"planear", ipa:"/plæn/"},
+  {base:"play", past:"played", participle:"played", meaning:"jugar", ipa:"/pleɪ/"},
+  {base:"prefer", past:"preferred", participle:"preferred", meaning:"preferir", ipa:"/prɪˈfɜːr/"},
+  {base:"prepare", past:"prepared", participle:"prepared", meaning:"preparar", ipa:"/prɪˈpɛər/"},
+  {base:"promise", past:"promised", participle:"promised", meaning:"prometer", ipa:"/ˈprɒmɪs/"},
+  {base:"question", past:"questioned", participle:"questioned", meaning:"cuestionar", ipa:"/ˈkwɛstʃən/"},
+  {base:"realize", past:"realized", participle:"realized", meaning:"darse cuenta", ipa:"/ˈrɪəlaɪz/"},
+  {base:"remember", past:"remembered", participle:"remembered", meaning:"recordar", ipa:"/rɪˈmɛmbər/"},
+  {base:"repeat", past:"repeated", participle:"repeated", meaning:"repetir", ipa:"/rɪˈpiːt/"},
+  {base:"return", past:"returned", participle:"returned", meaning:"regresar", ipa:"/rɪˈtɜːrn/"},
+  {base:"save", past:"saved", participle:"saved", meaning:"ahorrar", ipa:"/seɪv/"},
+  {base:"seem", past:"seemed", participle:"seemed", meaning:"parecer", ipa:"/siːm/"},
+  {base:"share", past:"shared", participle:"shared", meaning:"compartir", ipa:"/ʃɛər/"},
+  {base:"shout", past:"shouted", participle:"shouted", meaning:"gritar", ipa:"/ʃaʊt/"},
+  {base:"smile", past:"smiled", participle:"smiled", meaning:"sonreír", ipa:"/smaɪl/"},
+  {base:"start", past:"started", participle:"started", meaning:"empezar", ipa:"/stɑːrt/"},
+  {base:"stay", past:"stayed", participle:"stayed", meaning:"quedarse", ipa:"/steɪ/"},
+  {base:"stop", past:"stopped", participle:"stopped", meaning:"parar", ipa:"/stɒp/"},
+  {base:"study", past:"studied", participle:"studied", meaning:"estudiar", ipa:"/ˈstʌdi/"},
+  {base:"talk", past:"talked", participle:"talked", meaning:"hablar", ipa:"/tɔːk/"},
+  {base:"travel", past:"traveled", participle:"traveled", meaning:"viajar", ipa:"/ˈtrævəl/"},
+  {base:"try", past:"tried", participle:"tried", meaning:"intentar", ipa:"/traɪ/"},
+  {base:"use", past:"used", participle:"used", meaning:"usar", ipa:"/juːz/"},
+  {base:"visit", past:"visited", participle:"visited", meaning:"visitar", ipa:"/ˈvɪzɪt/"},
+  {base:"wait", past:"waited", participle:"waited", meaning:"esperar", ipa:"/weɪt/"},
+  {base:"walk", past:"walked", participle:"walked", meaning:"caminar", ipa:"/wɔːk/"},
+  {base:"want", past:"wanted", participle:"wanted", meaning:"querer", ipa:"/wɒnt/"},
+  {base:"wash", past:"washed", participle:"washed", meaning:"lavar", ipa:"/wɒʃ/"},
+  {base:"watch", past:"watched", participle:"watched", meaning:"mirar", ipa:"/wɒtʃ/"},
+  {base:"wish", past:"wished", participle:"wished", meaning:"desear", ipa:"/wɪʃ/"},
+  {base:"work", past:"worked", participle:"worked", meaning:"trabajar", ipa:"/wɜːrk/"},
+  {base:"worry", past:"worried", participle:"worried", meaning:"preocuparse", ipa:"/ˈwɜːri/"},
+];
+
+/// ═══════════════════════════════════════════════════════
+// LISTENING PHRASES - VERSIÓN EXTENDIDA (100+ frases)
+// ═══════════════════════════════════════════════════════
+const LISTEN_PHRASES = [
+  // A1 - Básico (20 frases)
+  {text: "Hello, how are you today?", level: "A1"},
+  {text: "I would like a cup of coffee, please.", level: "A1"},
+  {text: "What is your name?", level: "A1"},
+  {text: "Where do you live?", level: "A1"},
+  {text: "I am from Spain.", level: "A1"},
+  {text: "How old are you?", level: "A1"},
+  {text: "What time is it?", level: "A1"},
+  {text: "I have a brother and a sister.", level: "A1"},
+  {text: "The cat is sleeping on the sofa.", level: "A1"},
+  {text: "I like to eat pizza for dinner.", level: "A1"},
+  {text: "Can you help me, please?", level: "A1"},
+  {text: "Excuse me, where is the bathroom?", level: "A1"},
+  {text: "What is your favorite color?", level: "A1"},
+  {text: "I go to school by bus.", level: "A1"},
+  {text: "She is very happy today.", level: "A1"},
+  {text: "My phone is on the table.", level: "A1"},
+  {text: "Do you like music?", level: "A1"},
+  {text: "I work in an office.", level: "A1"},
+  {text: "It is sunny and warm outside.", level: "A1"},
+  {text: "Let's go to the park.", level: "A1"},
+
+  // A2 - Intermedio bajo (20 frases)
+  {text: "Where is the nearest bus station?", level: "A2"},
+  {text: "Could you please repeat that more slowly?", level: "A2"},
+  {text: "I usually wake up at seven in the morning.", level: "A2"},
+  {text: "She has lived in London for three years.", level: "A2"},
+  {text: "What did you do last weekend?", level: "A2"},
+  {text: "I am going to visit my grandmother tomorrow.", level: "A2"},
+  {text: "The weather is very cold today.", level: "A2"},
+  {text: "Can you tell me how to get to the museum?", level: "A2"},
+  {text: "I need to buy some bread and milk.", level: "A2"},
+  {text: "My favorite subject at school is science.", level: "A2"},
+  {text: "He works as a doctor in the hospital.", level: "A2"},
+  {text: "We are planning to travel to Italy next summer.", level: "A2"},
+  {text: "She doesn't like coffee, she prefers tea.", level: "A2"},
+  {text: "How often do you exercise?", level: "A2"},
+  {text: "I felt tired after work yesterday.", level: "A2"},
+  {text: "What kind of music do you listen to?", level: "A2"},
+  {text: "They are cooking dinner in the kitchen.", level: "A2"},
+  {text: "I need to see a doctor because I have a headache.", level: "A2"},
+  {text: "She is taller than her brother.", level: "A2"},
+  {text: "We enjoyed the concert very much.", level: "A2"},
+
+  // B1 - Intermedio (20 frases)
+  {text: "I'm looking forward to our meeting tomorrow.", level: "B1"},
+  {text: "She has been working on the project for three months.", level: "B1"},
+  {text: "If I had more time, I would learn to play the guitar.", level: "B1"},
+  {text: "The company is looking for someone with experience.", level: "B1"},
+  {text: "I used to live in the countryside when I was a child.", level: "B1"},
+  {text: "Could you give me some advice about finding a job?", level: "B1"},
+  {text: "It's important to manage your time effectively.", level: "B1"},
+  {text: "The movie was so boring that I fell asleep.", level: "B1"},
+  {text: "She speaks three languages fluently.", level: "B1"},
+  {text: "I need to improve my communication skills.", level: "B1"},
+  {text: "By the time we arrived, the meeting had already started.", level: "B1"},
+  {text: "You don't have to dress formally for the event.", level: "B1"},
+  {text: "She suggested going to a new restaurant downtown.", level: "B1"},
+  {text: "I'm not used to waking up so early.", level: "B1"},
+  {text: "The more you practice, the better you become.", level: "B1"},
+  {text: "He apologized for being late to the meeting.", level: "B1"},
+  {text: "This is the first time I have tried sushi.", level: "B1"},
+  {text: "They are considering moving to another city.", level: "B1"},
+  {text: "I'd rather stay home than go out in this weather.", level: "B1"},
+  {text: "She told me that she would call later.", level: "B1"},
+
+  // B2 - Intermedio alto (15 frases)
+  {text: "Despite the challenges, we achieved all our goals.", level: "B2"},
+  {text: "The government should take action to reduce pollution.", level: "B2"},
+  {text: "Having completed the training, she felt more confident.", level: "B2"},
+  {text: "This is the most fascinating book I have ever read.", level: "B2"},
+  {text: "Were you to change your mind, please let me know.", level: "B2"},
+  {text: "Had I known about the traffic, I would have left earlier.", level: "B2"},
+  {text: "She is known for having revolutionized the industry.", level: "B2"},
+  {text: "The proposal was turned down due to budget constraints.", level: "B2"},
+  {text: "Little did they know what was about to happen.", level: "B2"},
+  {text: "It is imperative that we find a solution soon.", level: "B2"},
+  {text: "The project entails a great deal of responsibility.", level: "B2"},
+  {text: "Not until I read the report did I understand the issue.", level: "B2"},
+  {text: "We take for granted many things that others lack.", level: "B2"},
+  {text: "Her latest novel is well worth reading.", level: "B2"},
+  {text: "They are unlikely to arrive before noon.", level: "B2"},
+
+  // C1 - Avanzado (15 frases)
+  {text: "The implications of this research are far-reaching.", level: "C1"},
+  {text: "Her argument was cogent and well-structured.", level: "C1"},
+  {text: "We need to address the issue from a holistic perspective.", level: "C1"},
+  {text: "The results substantiate the initial hypothesis.", level: "C1"},
+  {text: "Not only did she excel academically, but she also led the team.", level: "C1"},
+  {text: "There is a prevailing misconception about the subject.", level: "C1"},
+  {text: "The company's approach is predicated on sustainability.", level: "C1"},
+  {text: "His remarks were met with widespread skepticism.", level: "C1"},
+  {text: "The policy is conducive to economic growth.", level: "C1"},
+  {text: "She displayed a remarkable aptitude for problem-solving.", level: "C1"},
+  {text: "The findings are corroborated by multiple studies.", level: "C1"},
+  {text: "This methodology is largely unprecedented in the field.", level: "C1"},
+  {text: "We must be cognizant of the potential risks involved.", level: "C1"},
+  {text: "The narrative is both compelling and nuanced.", level: "C1"},
+  {text: "So impactful was her speech that it sparked a movement.", level: "C1"},
+
+  // C2 - Experto (15 frases)
+  {text: "Never have I witnessed such an extraordinary performance.", level: "C2"},
+  {text: "The quintessential example of innovation in modern technology.", level: "C2"},
+  {text: "His perspicacious analysis left no room for doubt.", level: "C2"},
+  {text: "Had I known, I would have acted differently.", level: "C2"},
+  {text: "Under no circumstances should this information be disclosed.", level: "C2"},
+  {text: "The paradigm shift precipitated a seismic change in the industry.", level: "C2"},
+  {text: "Her oeuvre is characterized by a profound introspection.", level: "C2"},
+  {text: "The theory is predicated on a tenuous assumption.", level: "C2"},
+  {text: "Such a stance is tantamount to acquiescence.", level: "C2"},
+  {text: "He has a propensity for overcomplicating matters.", level: "C2"},
+  {text: "The discourse was replete with erudite allusions.", level: "C2"},
+  {text: "She navigated the intricate nuances with consummate ease.", level: "C2"},
+  {text: "This is a watershed moment in the history of the discipline.", level: "C2"},
+  {text: "The confluence of events was nothing short of serendipitous.", level: "C2"},
+  {text: "Incontrovertible evidence points to a different conclusion.", level: "C2"},
+];
+// ═══════════════════════════════════════════════════════
+// VOCABULARIO EXTENDIDO - Temas faltantes
+// ═══════════════════════════════════════════════════════
+const EXTENDED_TOPICS = {
+  health: [
+    {word:"doctor", meaning:"médico", example:"I need to see a doctor.", ipa:"/ˈdɒktər/"},
+    {word:"hospital", meaning:"hospital", example:"She works at the hospital.", ipa:"/ˈhɒspɪtəl/"},
+    {word:"medicine", meaning:"medicina", example:"Take your medicine.", ipa:"/ˈmɛdɪsɪn/"},
+    {word:"pain", meaning:"dolor", example:"I have a pain in my back.", ipa:"/peɪn/"},
+    {word:"headache", meaning:"dolor de cabeza", example:"I have a headache.", ipa:"/ˈhɛdeɪk/"},
+    {word:"fever", meaning:"fiebre", example:"She has a high fever.", ipa:"/ˈfiːvər/"},
+    {word:"cough", meaning:"tos", example:"He has a bad cough.", ipa:"/kɒf/"},
+    {word:"healthy", meaning:"saludable", example:"Eat healthy food.", ipa:"/ˈhɛlθi/"},
+    {word:"exercise", meaning:"ejercicio", example:"Exercise is important.", ipa:"/ˈɛksərsaɪz/"},
+    {word:"rest", meaning:"descanso", example:"You need to rest.", ipa:"/rɛst/"},
+  ],
+  education: [
+    {word:"school", meaning:"escuela", example:"I go to school.", ipa:"/skuːl/"},
+    {word:"teacher", meaning:"profesor", example:"My teacher is nice.", ipa:"/ˈtiːtʃər/"},
+    {word:"student", meaning:"estudiante", example:"She is a good student.", ipa:"/ˈstjuːdənt/"},
+    {word:"class", meaning:"clase", example:"The class starts at 9.", ipa:"/klæs/"},
+    {word:"exam", meaning:"examen", example:"I have an exam tomorrow.", ipa:"/ɪɡˈzæm/"},
+    {word:"homework", meaning:"tarea", example:"Do your homework.", ipa:"/ˈhoʊmwɜːrk/"},
+    {word:"university", meaning:"universidad", example:"He studies at university.", ipa:"/ˌjuːnɪˈvɜːrsɪti/"},
+    {word:"degree", meaning:"título", example:"She has a degree in law.", ipa:"/dɪˈɡriː/"},
+  ],
+  house: [
+    {word:"house", meaning:"casa", example:"This is my house.", ipa:"/haʊs/"},
+    {word:"room", meaning:"habitación", example:"My room is clean.", ipa:"/ruːm/"},
+    {word:"kitchen", meaning:"cocina", example:"I cook in the kitchen.", ipa:"/ˈkɪtʃɪn/"},
+    {word:"bedroom", meaning:"dormitorio", example:"I sleep in my bedroom.", ipa:"/ˈbɛdruːm/"},
+    {word:"bathroom", meaning:"baño", example:"Where is the bathroom?", ipa:"/ˈbæθruːm/"},
+    {word:"door", meaning:"puerta", example:"Close the door.", ipa:"/dɔːr/"},
+    {word:"window", meaning:"ventana", example:"Open the window.", ipa:"/ˈwɪndoʊ/"},
+    {word:"table", meaning:"mesa", example:"The book is on the table.", ipa:"/ˈteɪbəl/"},
+    {word:"chair", meaning:"silla", example:"Sit on the chair.", ipa:"/tʃɛər/"},
+    {word:"bed", meaning:"cama", example:"I need a new bed.", ipa:"/bɛd/"},
+  ],
+  clothing: [
+    {word:"shirt", meaning:"camisa", example:"I wear a white shirt.", ipa:"/ʃɜːrt/"},
+    {word:"pants", meaning:"pantalones", example:"These pants are new.", ipa:"/pænts/"},
+    {word:"dress", meaning:"vestido", example:"She wore a red dress.", ipa:"/drɛs/"},
+    {word:"shoes", meaning:"zapatos", example:"My shoes are black.", ipa:"/ʃuːz/"},
+    {word:"jacket", meaning:"chaqueta", example:"It's cold, wear a jacket.", ipa:"/ˈdʒækɪt/"},
+    {word:"hat", meaning:"sombrero", example:"I like your hat.", ipa:"/hæt/"},
+    {word:"socks", meaning:"calcetines", example:"I need new socks.", ipa:"/sɒks/"},
+  ],
+  weather: [
+    {word:"weather", meaning:"clima", example:"The weather is nice.", ipa:"/ˈwɛðər/"},
+    {word:"rain", meaning:"lluvia", example:"It might rain today.", ipa:"/reɪn/"},
+    {word:"sun", meaning:"sol", example:"The sun is shining.", ipa:"/sʌn/"},
+    {word:"cloud", meaning:"nube", example:"There are clouds in the sky.", ipa:"/klaʊd/"},
+    {word:"wind", meaning:"viento", example:"The wind is strong.", ipa:"/wɪnd/"},
+    {word:"snow", meaning:"nieve", example:"It snows in winter.", ipa:"/snoʊ/"},
+    {word:"hot", meaning:"caliente", example:"It is very hot today.", ipa:"/hɒt/"},
+    {word:"cold", meaning:"frío", example:"It is cold outside.", ipa:"/koʊld/"},
+    {word:"temperature", meaning:"temperatura", example:"What is the temperature?", ipa:"/ˈtɛmprətʃər/"},
+  ],
+  sports: [
+    {word:"soccer", meaning:"fútbol", example:"I play soccer.", ipa:"/ˈsɒkər/"},
+    {word:"basketball", meaning:"baloncesto", example:"He plays basketball.", ipa:"/ˈbæskɪtbɔːl/"},
+    {word:"tennis", meaning:"tenis", example:"She loves tennis.", ipa:"/ˈtɛnɪs/"},
+    {word:"swimming", meaning:"natación", example:"Swimming is fun.", ipa:"/ˈswɪmɪŋ/"},
+    {word:"running", meaning:"correr", example:"I go running every day.", ipa:"/ˈrʌnɪŋ/"},
+    {word:"sport", meaning:"deporte", example:"What sport do you like?", ipa:"/spɔːrt/"},
+    {word:"team", meaning:"equipo", example:"We are a good team.", ipa:"/tiːm/"},
+    {word:"game", meaning:"juego/partido", example:"We won the game.", ipa:"/ɡeɪm/"},
+  ],
+  art_culture: [
+    {word:"music", meaning:"música", example:"I love classical music.", ipa:"/ˈmjuːzɪk/"},
+    {word:"painting", meaning:"pintura", example:"She makes beautiful paintings.", ipa:"/ˈpeɪntɪŋ/"},
+    {word:"theater", meaning:"teatro", example:"We went to the theater.", ipa:"/ˈθɪətər/"},
+    {word:"concert", meaning:"concierto", example:"The concert was amazing.", ipa:"/ˈkɒnsərt/"},
+    {word:"artist", meaning:"artista", example:"He is a talented artist.", ipa:"/ˈɑːrtɪst/"},
+    {word:"song", meaning:"canción", example:"That is my favorite song.", ipa:"/sɒŋ/"},
+    {word:"dance", meaning:"baile", example:"Let's dance!", ipa:"/dæns/"},
+  ],
+};
+// ═══════════════════════════════════════════════════════
+// ADVERBS - Adverbios de frecuencia, modo, lugar y tiempo
+// ═══════════════════════════════════════════════════════
+const ADVERBS = {
+  frequency: [
+    {word:"always", meaning:"siempre", example:"I always study.", ipa:"/ˈɔːlweɪz/"},
+    {word:"usually", meaning:"usualmente", example:"I usually wake up early.", ipa:"/ˈjuːʒuəli/"},
+    {word:"often", meaning:"a menudo", example:"I often go to the park.", ipa:"/ˈɒfən/"},
+    {word:"sometimes", meaning:"a veces", example:"Sometimes I cook dinner.", ipa:"/ˈsʌmtaɪmz/"},
+    {word:"rarely", meaning:"raramente", example:"I rarely eat fast food.", ipa:"/ˈrɛərli/"},
+    {word:"never", meaning:"nunca", example:"I never smoke.", ipa:"/ˈnɛvər/"},
+    {word:"always", meaning:"siempre", example:"She always smiles.", ipa:"/ˈɔːlweɪz/"},
+  ],
+  manner: [
+    {word:"quickly", meaning:"rápidamente", example:"He ran quickly.", ipa:"/ˈkwɪkli/"},
+    {word:"slowly", meaning:"lentamente", example:"Please speak slowly.", ipa:"/ˈsloʊli/"},
+    {word:"carefully", meaning:"cuidadosamente", example:"Drive carefully.", ipa:"/ˈkɛrfəli/"},
+    {word:"loudly", meaning:"ruidosamente", example:"They laughed loudly.", ipa:"/ˈlaʊdli/"},
+    {word:"quietly", meaning:"silenciosamente", example:"She entered quietly.", ipa:"/ˈkwaɪətli/"},
+    {word:"happily", meaning:"felizmente", example:"They live happily.", ipa:"/ˈhæpɪli/"},
+    {word:"easily", meaning:"fácilmente", example:"I can do it easily.", ipa:"/ˈiːzɪli/"},
+  ],
+  place: [
+    {word:"here", meaning:"aquí", example:"Come here, please.", ipa:"/hɪər/"},
+    {word:"there", meaning:"allí", example:"The book is there.", ipa:"/ðɛər/"},
+    {word:"everywhere", meaning:"en todas partes", example:"I looked everywhere.", ipa:"/ˈɛvriwɛər/"},
+    {word:"nowhere", meaning:"en ningún lugar", example:"I have nowhere to go.", ipa:"/ˈnoʊwɛr/"},
+    {word:"inside", meaning:"dentro", example:"It's warm inside.", ipa:"/ɪnˈsaɪd/"},
+    {word:"outside", meaning:"afuera", example:"Let's go outside.", ipa:"/ˌaʊtˈsaɪd/"},
+  ],
+  time: [
+    {word:"now", meaning:"ahora", example:"Do it now.", ipa:"/naʊ/"},
+    {word:"soon", meaning:"pronto", example:"I will come soon.", ipa:"/suːn/"},
+    {word:"already", meaning:"ya", example:"I already finished.", ipa:"/ɔːlˈrɛdi/"},
+    {word:"yet", meaning:"todavía", example:"I haven't eaten yet.", ipa:"/jɛt/"},
+    {word:"today", meaning:"hoy", example:"I am busy today.", ipa:"/təˈdeɪ/"},
+    {word:"tomorrow", meaning:"mañana", example:"See you tomorrow.", ipa:"/təˈmɒroʊ/"},
+    {word:"yesterday", meaning:"ayer", example:"I worked yesterday.", ipa:"/ˈjɛstərdeɪ/"},
+    {word:"always", meaning:"siempre", example:"I will always love you.", ipa:"/ˈɔːlweɪz/"},
+  ],
+};
+
+// ═══════════════════════════════════════════════════════
+// SPEECH ENGINE
+// ═══════════════════════════════════════════════════════
+function loadVoices() {
+  if (!('speechSynthesis' in window)) return;
+  const populate = () => {
+    S.voices = window.speechSynthesis.getVoices();
+    filterVoices();
+  };
+  populate();
+  speechSynthesis.onvoiceschanged = populate;
+}
+
+function filterVoices() {
+  if (!S.voices.length) return;
+  const accent = document.getElementById('accentSelect')?.value || 'US';
+  const gender = document.getElementById('genderSelect')?.value || 'all';
+  const sel = document.getElementById('voiceSelect');
+  if (!sel) return;
+
+  const ACCENT_MAP = {
+    US: ['en-US','en_US'],
+    GB: ['en-GB','en_GB'],
+    AU: ['en-AU','en_AU'],
+    IE: ['en-IE','en_IE'],
+    IN: ['en-IN','en_IN'],
+    all: ['en']
+  };
+  const acceptedLangs = ACCENT_MAP[accent] || ['en'];
+
+  let filtered = S.voices.filter(v => {
+    const langMatch = accent === 'all'
+      ? v.lang.startsWith('en')
+      : acceptedLangs.some(l => v.lang.startsWith(l) || v.lang === l);
+    if (!langMatch) return false;
+    if (gender === 'all') return true;
+    const n = v.name.toLowerCase();
+    // Heuristic: detect gender from voice name
+    const femaleTerms = ['female','woman','girl','zira','hazel','susan','karen','samantha','victoria','kate','moira','fiona','tessa','serena','amelie','alice','elsa','ava'];
+    const maleTerms = ['male','man','david','george','daniel','alex','tom','fred','fred','reed','jorge','diego'];
+    const isFemale = femaleTerms.some(t => n.includes(t));
+    const isMale = maleTerms.some(t => n.includes(t)) && !isFemale;
+    if (gender === 'female') return isFemale;
+    if (gender === 'male') return isMale;
+    return true;
+  });
+
+  // If none found with accent+gender, fallback to any English
+  if (!filtered.length) {
+    filtered = S.voices.filter(v => v.lang.startsWith('en'));
+  }
+
+  sel.innerHTML = '<option value="">🤖 Mejor automática</option>';
+  filtered.forEach(v => {
+    const flagMap = {'en-US':'🇺🇸','en-GB':'🇬🇧','en-AU':'🇦🇺','en-IE':'🇮🇪','en-IN':'🇮🇳'};
+    const flag = Object.entries(flagMap).find(([k]) => v.lang.startsWith(k))?.[1] || '🌐';
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    opt.textContent = `${flag} ${v.name}`;
+    sel.appendChild(opt);
+  });
+
+  // Auto-select first
+  if (filtered.length && sel.options.length > 1) {
+    sel.selectedIndex = 1;
+  }
+}
+
+function speak(text, onEnd) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'en-US';
+
+  const rate = parseFloat(document.getElementById('speechRate')?.value || 0.9);
+  const pitch = parseFloat(document.getElementById('speechPitch')?.value || 1.0);
+  utt.rate = rate;
+  utt.pitch = pitch;
+
+  // Select voice
+  const selName = document.getElementById('voiceSelect')?.value;
+  if (selName) {
+    const v = S.voices.find(v => v.name === selName);
+    if (v) {
+      utt.voice = v;
+      utt.lang = v.lang;
+    }
+  } else {
+    // Auto: pick best available English voice
+    const best = S.voices.find(v => v.lang === 'en-US' && v.localService) ||
+                 S.voices.find(v => v.lang.startsWith('en-US')) ||
+                 S.voices.find(v => v.lang.startsWith('en'));
+    if (best) { utt.voice = best; utt.lang = best.lang; }
+  }
+
+  if (onEnd) utt.onend = onEnd;
+  window.speechSynthesis.speak(utt);
+}
+
+function speakBtn(btn, text) {
+  const was = document.querySelector('.speak-btn.speaking');
+  if (was) was.classList.remove('speaking');
+  btn.classList.add('speaking');
+  speak(text, () => btn.classList.remove('speaking'));
+}
+
+function testVoice() {
+  speak("Hello! This is a test of the selected voice. How does it sound?");
+  toast('▶ Reproduciendo prueba de voz...', 'info');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER VOCABULARY
+// ═══════════════════════════════════════════════════════
+function getAllWords(level, topic) {
+  const lvl = VOCAB[level];
+  if (!lvl) return [];
+  let words = [];
+  if (topic === 'all') {
+    Object.values(lvl).forEach(arr => words.push(...arr));
+  } else {
+    words = lvl[topic] || [];
+  }
+  return words;
+}
+
+function renderVocab() {
+  const container = document.getElementById('vocabContainer');
+  const search = document.getElementById('vocabSearch')?.value?.trim().toLowerCase() || '';
+  let words = getAllWords(S.level, S.topic);
+
+  if (search) {
+    words = words.filter(w =>
+      w.word.toLowerCase().includes(search) ||
+      w.meaning.toLowerCase().includes(search) ||
+      w.example.toLowerCase().includes(search)
+    );
+  }
+
+  if (!words.length) {
+    container.innerHTML = `<div class="empty-state"><span class="e-icon">🔍</span>${search ? 'Sin resultados para "'+search+'"' : 'No hay palabras en este tema/nivel'}</div>`;
+    return;
+  }
+
+  container.innerHTML = words.map(w => {
+    const isMastered = S.masteredWords.includes(w.word);
+    const exHighlighted = w.example.replace(
+      new RegExp('\\b' + w.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '\\b','gi'),
+      match => `<em>${match}</em>`
+    );
+    return `
+    <div class="vitem" onclick="speakBtn(this.querySelector('.speak-btn'), '${esc(w.word)}'); markStudied('${esc(w.word)}')">
+      <div class="vitem-body">
+        <div class="vitem-word">
+          ${w.word}
+          ${isMastered ? '<span class="badge-mastered">✓ dominada</span>' : ''}
+        </div>
+        ${w.ipa ? `<div class="vitem-ipa">${w.ipa}</div>` : ''}
+        <div class="vitem-meaning">${w.meaning}</div>
+        <div class="vitem-ex">${exHighlighted}</div>
+      </div>
+      <div class="vitem-actions">
+        <button class="speak-btn" onclick="event.stopPropagation(); speakBtn(this,'${esc(w.word)}')" title="Pronunciar">🔊</button>
+        ${!isMastered ? `<button class="master-btn" onclick="event.stopPropagation(); masterWord('${esc(w.word)}')">✓ Dom.</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function markStudied(word) {
+  if (!S.studiedWords[word]) {
+    S.studiedWords[word] = Date.now();
+    localStorage.setItem('lx_studied', JSON.stringify(S.studiedWords));
+    updateStats();
+  }
+}
+
+function masterWord(word) {
+  if (masterWordUser(word)) {
+    if (!S.masteredWords.includes(word)) {
+      S.masteredWords.push(word);
+      if (!S.srs.find(i => i.word === word)) {
+        S.srs.push({word, intervalIdx: 0, nextReview: Date.now()});
+      }
+      syncStateToUser();
+      renderVocab();
+      updateStats();
+      toast(`⭐ "${word}" marcada como dominada!`, 'ok');
+      checkAchievements();
+    }
+  }
+}
+
+// 🎖️ SISTEMA DE RANGOS (XP)
+function getUserRank() {
+  const score = S.score;
+  if (score >= 5000) return { name: "🔮 MAESTRO SUPREMO", color: "#fbbf24", min: 5000 };
+  if (score >= 2000) return { name: "⚡ EXPERTO AVANZADO", color: "#a78bff", min: 2000 };
+  if (score >= 1000) return { name: "🎓 MAESTRO", color: "#38bdf8", min: 1000 };
+  if (score >= 500) return { name: "📘 AVANZADO", color: "#22d3a8", min: 500 };
+  if (score >= 200) return { name: "📖 INTERMEDIO", color: "#fb923c", min: 200 };
+  if (score >= 50) return { name: "🌱 APRENDIZ", color: "#f472b6", min: 50 };
+  return { name: "🆕 NOVATO", color: "#9898b0", min: 0 };
+}
+
+function updateRankDisplay() {
+  const rank = getUserRank();
+  const nextRank = (() => {
+    if (S.score >= 5000) return null;
+    if (S.score >= 2000) return { name: "MAESTRO SUPREMO", need: 5000 - S.score };
+    if (S.score >= 1000) return { name: "EXPERTO AVANZADO", need: 2000 - S.score };
+    if (S.score >= 500) return { name: "MAESTRO", need: 1000 - S.score };
+    if (S.score >= 200) return { name: "AVANZADO", need: 500 - S.score };
+    if (S.score >= 50) return { name: "INTERMEDIO", need: 200 - S.score };
+    return { name: "APRENDIZ", need: 50 - S.score };
+  })();
+  
+  const levelCircle = document.getElementById('levelCircle');
+  if (levelCircle) {
+    levelCircle.style.background = `linear-gradient(135deg, ${rank.color}30, ${rank.color}10)`;
+    levelCircle.style.borderColor = rank.color;
+    levelCircle.title = `${rank.name} (${S.score} pts)`;
+    
+    // Añadir texto de rango
+    if (!document.getElementById('rankLabel')) {
+      const rankLabel = document.createElement('div');
+      rankLabel.id = 'rankLabel';
+      rankLabel.style.fontSize = '0.7rem';
+      rankLabel.style.marginTop = '6px';
+      rankLabel.style.textAlign = 'center';
+      rankLabel.style.color = rank.color;
+      levelCircle.parentElement.appendChild(rankLabel);
+    }
+    const rankLabel = document.getElementById('rankLabel');
+    if (rankLabel) {
+      rankLabel.textContent = nextRank ? `${rank.name} · ${nextRank.need} pts para ${nextRank.name}` : `🏆 ${rank.name}`;
+      rankLabel.style.color = rank.color;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER VERBS
+// ═══════════════════════════════════════════════════════
+function renderVerbs() {
+  const tbody = document.getElementById('verbsBody');
+  tbody.innerHTML = VERBS.map(v => `
+    <tr>
+      <td><span class="verb-base">${v.base}</span><br><small style="color:var(--text2);font-size:0.73rem;font-family:'JetBrains Mono',monospace">${v.ipa||''}</small></td>
+      <td class="verb-past">${v.past}</td>
+      <td class="verb-part">${v.participle}</td>
+      <td class="verb-mean">${v.meaning}</td>
+      <td><button class="speak-btn" style="width:28px;height:28px;font-size:0.75rem;" onclick="speakBtn(this,'${v.base}')">🔊</button></td>
+    </tr>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER PHRASAL / IDIOMS
+// ═══════════════════════════════════════════════════════
+function renderPhrasal() {
+  const container = document.getElementById('phrasalList');
+  const data = S.topic === 'all' ? PHRASAL : PHRASAL.filter(p => p.topic === S.topic);
+  if (!data.length) { container.innerHTML='<div class="empty-state"><span class="e-icon">📋</span>Sin resultados para este tema</div>'; return; }
+  container.innerHTML = data.map(p => `
+    <div class="pitem">
+      <div class="pitem-body">
+        <div class="pitem-phrase">${p.phrase}</div>
+        <div class="pitem-mean">${p.meaning}</div>
+        <div class="pitem-ex">"${p.example}"</div>
+      </div>
+      <button class="speak-btn" onclick="speakBtn(this,'${esc(p.phrase)}')">🔊</button>
+    </div>
+  `).join('');
+}
+
+function renderIdioms() {
+  const container = document.getElementById('idiomsList');
+  const data = S.topic === 'all' ? IDIOMS : IDIOMS.filter(i => i.topic === S.topic);
+  if (!data.length) { container.innerHTML='<div class="empty-state"><span class="e-icon">💬</span>Sin resultados para este tema</div>'; return; }
+  container.innerHTML = data.map(i => `
+    <div class="pitem idiom-style">
+      <div class="pitem-body">
+        <div class="pitem-phrase">${i.idiom}</div>
+        <div class="pitem-mean">${i.meaning}</div>
+        <div class="pitem-ex">"${i.example}"</div>
+      </div>
+      <button class="speak-btn" style="background:rgba(244,114,182,0.15);color:var(--pink)" onclick="speakBtn(this,'${esc(i.idiom)}')">🔊</button>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER GRAMMAR
+// ═══════════════════════════════════════════════════════
+function renderGrammar() {
+  const container = document.getElementById('grammarList');
+  const filtered = GRAMMAR.filter(g => g.level === S.level);
+  if (!filtered.length) {
+    const all = GRAMMAR;
+    container.innerHTML = all.map((g,i) => gCard(g,i)).join('');
+    return;
+  }
+  container.innerHTML = filtered.map((g,i) => gCard(g,i)).join('') +
+    '<div style="margin-top:12px;padding:10px 14px;background:var(--surface2);border-radius:10px;font-size:0.82rem;color:var(--text2)">💡 Mostrando gramática para nivel '+S.level+'. Cambia el nivel para ver otras lecciones.</div>';
+}
+
+function gCard(g, i) {
+  return `
+  <div class="gitem" id="gc${i}">
+    <div class="gitem-head" onclick="toggleGrammar(${i})">
+      <div class="gitem-title">
+        📘 ${g.title}
+        <span class="gitem-badge">${g.level}</span>
+      </div>
+      <span style="color:var(--text2);font-size:0.8rem">▼</span>
+    </div>
+    <div class="gitem-body" id="gb${i}">
+      <div class="gitem-rule">📌 ${g.rule}</div>
+      <div class="gitem-struct">⌘ ${g.structure}</div>
+      <div class="gitem-examples">
+        ${g.examples.map(ex => `
+          <div class="gitem-ex">
+            <span>${ex}</span>
+            <button class="speak-btn" style="width:26px;height:26px;font-size:0.7rem;flex-shrink:0" onclick="speakBtn(this,'${esc(ex)}')">🔊</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleGrammar(i) {
+  const body = document.getElementById('gb'+i);
+  if (body) body.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════
+let quizCurrent = null;
+
+function generateQuiz() {
+  const words = getAllWords(S.level, S.topic);
+  if (words.length < 4) {
+    document.getElementById('quizOpts').innerHTML = '<div class="empty-state"><span class="e-icon">⚠️</span>Necesitas al menos 4 palabras en este nivel/tema</div>';
+    return;
+  }
+  const idx = Math.floor(Math.random() * words.length);
+  quizCurrent = words[idx];
+
+  document.getElementById('quizWord').innerHTML = quizCurrent.word + (quizCurrent.ipa ? `<span class="ipa">${quizCurrent.ipa}</span>` : '');
+  document.getElementById('quizEx').textContent = '"' + quizCurrent.example + '"';
+
+  // Options
+  let pool = words.filter(w => w.meaning !== quizCurrent.meaning);
+  pool = shuffle(pool).slice(0, 3);
+  const options = shuffle([quizCurrent, ...pool]);
+  const letters = ['A','B','C','D'];
+
+  document.getElementById('quizOpts').innerHTML = options.map((opt, i) => `
+    <button class="quiz-opt" onclick="answerQuiz(this, '${esc(opt.meaning)}', '${esc(quizCurrent.meaning)}')">
+      <span class="quiz-opt-letter">${letters[i]}</span>
+      ${opt.meaning}
+    </button>
+  `).join('');
+}
+
+function answerQuiz(btn, selected, correct) {
+  const isCorrect = selected === correct;
+  document.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    S.quizCorrect++;
+    S.quizStreak++;
+    updateUserStreak(true);
+    
+    let bonus = 10;
+    if (S.quizStreak >= 10) bonus = 50;
+    else if (S.quizStreak >= 5) bonus = 25;
+    else if (S.quizStreak >= 3) bonus = 15;
+    
+    S.score += bonus;
+    addUserPoints(bonus);
+    syncStateToUser();
+    speak(quizCurrent.word);
+    
+    let streakMsg = `🔥 Racha: ${S.quizStreak}`;
+    if (bonus > 10) streakMsg += ` +${bonus} bonus!`;
+    toast(`✅ ¡Correcto! +${bonus} puntos ${streakMsg}`, 'ok');
+    
+    if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(50);
+    
+  } else {
+    btn.classList.add('wrong');
+    S.quizWrong++;
+    updateUserStreak(false);
+    syncStateToUser();
+    
+    if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(200);
+    
+    document.querySelectorAll('.quiz-opt').forEach(b => {
+      if (b.textContent.trim().includes(correct)) b.classList.add('correct');
+    });
+    
+    if (S.quizStreak >= 3) toast(`💔 ¡Racha de ${S.quizStreak} perdida!`, 'err');
+    S.quizStreak = 0;
+    
+    speak(quizCurrent.word);
+    toast(`❌ Era: "${correct}"`, 'err');
+  }
+
+  document.getElementById('qCorrect').textContent = S.quizCorrect;
+  document.getElementById('qWrong').textContent = S.quizWrong;
+  document.getElementById('qStreak').textContent = `🔥 ${S.quizStreak} racha`;
+  updateStats();
+
+  setTimeout(generateQuiz, 1600);
+}
+// 🏆 SISTEMA DE LOGROS
+function checkAchievements() {
+  const mastered = S.masteredWords.length;
+  const totalScore = S.score;
+  const verbsMastered = VERBS.filter(v => S.masteredWords.includes(v.base)).length;
+  
+  let newAchievement = null;
+  
+  // Logros por palabras dominadas
+  if (mastered >= 100 && !localStorage.getItem('ach_100')) {
+    newAchievement = { name: "🏅 Maestro del Vocabulario", desc: "100 palabras dominadas", reward: 100 };
+    localStorage.setItem('ach_100', 'true');
+    S.score += 100;
+  } else if (mastered >= 50 && !localStorage.getItem('ach_50')) {
+    newAchievement = { name: "⭐ Aprendiz Experto", desc: "50 palabras dominadas", reward: 50 };
+    localStorage.setItem('ach_50', 'true');
+    S.score += 50;
+  } else if (mastered >= 20 && !localStorage.getItem('ach_20')) {
+    newAchievement = { name: "🌱 Primeros Pasos", desc: "20 palabras dominadas", reward: 25 };
+    localStorage.setItem('ach_20', 'true');
+    S.score += 25;
+  }
+  
+  // Logros por puntuación
+  if (totalScore >= 1000 && !localStorage.getItem('ach_1000')) {
+    newAchievement = { name: "👑 Leyenda", desc: "1000 puntos acumulados", reward: 200 };
+    localStorage.setItem('ach_1000', 'true');
+    S.score += 200;
+  } else if (totalScore >= 500 && !localStorage.getItem('ach_500')) {
+    newAchievement = { name: "🎯 Experto", desc: "500 puntos acumulados", reward: 100 };
+    localStorage.setItem('ach_500', 'true');
+    S.score += 100;
+  } else if (totalScore >= 100 && !localStorage.getItem('ach_100')) {
+    newAchievement = { name: "🌟 Prometedor", desc: "100 puntos acumulados", reward: 50 };
+    localStorage.setItem('ach_100', 'true');
+    S.score += 50;
+  }
+  
+  // Logro por verbos irregulares
+  if (verbsMastered >= 20 && !localStorage.getItem('ach_verbs')) {
+    newAchievement = { name: "📖 Maestro de Verbos", desc: "20 verbos irregulares dominados", reward: 75 };
+    localStorage.setItem('ach_verbs', 'true');
+    S.score += 75;
+  }
+  
+  if (newAchievement) {
+    localStorage.setItem('lx_score', S.score);
+    toast(`🏆 ¡NUEVO LOGRO! ${newAchievement.name} (+${newAchievement.reward} puntos)`, 'ok');
+    updateStats();
+    renderAchievementsPanel();
+  }
+}
+
+// Mostrar panel de logros
+function renderAchievementsPanel() {
+  const achievements = [
+    { key: 'ach_20', name: '🌱 Primeros Pasos', desc: '20 palabras dominadas', unlocked: localStorage.getItem('ach_20') },
+    { key: 'ach_50', name: '⭐ Aprendiz Experto', desc: '50 palabras dominadas', unlocked: localStorage.getItem('ach_50') },
+    { key: 'ach_100', name: '🏅 Maestro del Vocabulario', desc: '100 palabras dominadas', unlocked: localStorage.getItem('ach_100') },
+    { key: 'ach_100', name: '🌟 Prometedor', desc: '100 puntos', unlocked: localStorage.getItem('ach_100') },
+    { key: 'ach_500', name: '🎯 Experto', desc: '500 puntos', unlocked: localStorage.getItem('ach_500') },
+    { key: 'ach_1000', name: '👑 Leyenda', desc: '1000 puntos', unlocked: localStorage.getItem('ach_1000') },
+    { key: 'ach_verbs', name: '📖 Maestro de Verbos', desc: '20 verbos irregulares', unlocked: localStorage.getItem('ach_verbs') }
+  ];
+  
+  const unlocked = achievements.filter(a => a.unlocked);
+  if (unlocked.length === 0) return;
+  
+  // Mostrar en la barra de stats (pequeño indicador)
+  const statsRow = document.querySelector('.stats-row');
+  if (statsRow && !document.getElementById('achievementBadge')) {
+    const badge = document.createElement('div');
+    badge.id = 'achievementBadge';
+    badge.className = 'stat-pill';
+    badge.style.cursor = 'pointer';
+    badge.onclick = () => {
+      toast(`🏆 Logros: ${unlocked.map(a => a.name).join(' · ')}`, 'info');
+    };
+    badge.innerHTML = `🏆 <span class="sval">${unlocked.length}</span><span class="slbl">logros</span>`;
+    statsRow.appendChild(badge);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// FILL IN THE BLANK
+// ═══════════════════════════════════════════════════════
+let fillData = null;
+let fillAttempts = 0;
+let fillHintRevealed = 0;
+
+function generateFill() {
+  const words = getAllWords(S.level, S.topic).filter(w => w.example);
+  if (!words.length) return;
+  fillData = words[Math.floor(Math.random() * words.length)];
+  fillAttempts = 0;
+  fillHintRevealed = 0;
+
+  document.getElementById('fillAttempts').textContent = '0';
+  const sentence = fillData.example.replace(
+    new RegExp('\\b' + fillData.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '\\b','i'),
+    `<span class="fill-blank">[___]</span>`
+  );
+  document.getElementById('fillSentence').innerHTML = sentence;
+  document.getElementById('fillInp').value = '';
+  document.getElementById('fillInp').className = 'fill-inp';
+  document.getElementById('fillFeedback').className = 'fill-feedback';
+  document.getElementById('fillFeedback').textContent = '';
+  document.getElementById('fillHint').style.display = 'none';
+  document.getElementById('fillInp').focus();
+}
+
+function checkFill() {
+  if (!fillData) return;
+  const answer = document.getElementById('fillInp').value.trim();
+  if (!answer) return;
+
+  fillAttempts++;
+  document.getElementById('fillAttempts').textContent = fillAttempts;
+  const correct = fillData.word.toLowerCase();
+
+  if (answer.toLowerCase() === correct) {
+    document.getElementById('fillInp').className = 'fill-inp correct-inp';
+    document.getElementById('fillFeedback').className = 'fill-feedback ok';
+    document.getElementById('fillFeedback').textContent = `✅ ¡Correcto! La palabra es "${fillData.word}" · ${fillData.meaning}`;
+    speak(fillData.word);
+    S.score += Math.max(5, 15 - fillAttempts * 2);
+    localStorage.setItem('lx_score', S.score);
+    updateStats();
+    updateRankDisplay();
+    markStudied(fillData.word);
+    setTimeout(generateFill, 2000);
+  } else {
+    document.getElementById('fillInp').className = 'fill-inp wrong-inp';
+    document.getElementById('fillFeedback').className = 'fill-feedback err';
+    document.getElementById('fillFeedback').textContent = `❌ Incorrecto. Intenta de nuevo.`;
+    setTimeout(() => {
+      document.getElementById('fillInp').className = 'fill-inp';
+    }, 600);
+    document.getElementById('fillInp').value = '';
+    document.getElementById('fillInp').focus();
+  }
+}
+
+function showFillHint() {
+  if (!fillData) return;
+  fillHintRevealed = Math.min(fillData.word.length, fillHintRevealed + 1);
+  const hint = fillData.word.slice(0, fillHintRevealed) + '_ '.repeat(fillData.word.length - fillHintRevealed);
+  document.getElementById('fillHintLetters').textContent = hint.trim();
+  document.getElementById('fillHint').style.display = 'flex';
+}
+
+function skipFill() {
+  if (!fillData) return;
+  toast(`→ Era: "${fillData.word}" — ${fillData.meaning}`, 'info');
+  setTimeout(generateFill, 400);
+}
+
+// ═══════════════════════════════════════════════════════
+// LISTENING
+// ═══════════════════════════════════════════════════════
+let listenData = null;
+let listenPlayCount = 0;
+const MAX_PLAYS = 3;
+
+function generateListen() {
+  const phrases = LISTEN_PHRASES.filter(p => p.level === S.level || S.level === 'A1');
+  listenData = phrases[Math.floor(Math.random() * phrases.length)];
+  listenPlayCount = 0;
+  document.getElementById('listenPlayCount').textContent = '0';
+  document.getElementById('listenPlayBtn').className = 'listen-play';
+  document.getElementById('listenPlayBtn').textContent = '▶';
+  document.getElementById('listenInp').value = '';
+  document.getElementById('listenFeedback').className = 'fill-feedback';
+  document.getElementById('listenFeedback').textContent = '';
+  renderViz(false);
+}
+
+function playListenAudio() {
+  if (!listenData) return;
+  if (listenPlayCount >= MAX_PLAYS) {
+    toast(`Máximo ${MAX_PLAYS} reproducciones. Escribe tu respuesta.`, 'info');
+    return;
+  }
+  listenPlayCount++;
+  document.getElementById('listenPlayCount').textContent = listenPlayCount;
+  const btn = document.getElementById('listenPlayBtn');
+  btn.classList.add('playing');
+  renderViz(true);
+  speak(listenData.text, () => {
+    btn.classList.remove('playing');
+    renderViz(false);
+  });
+}
+
+function renderViz(active) {
+  const viz = document.getElementById('listenViz');
+  viz.innerHTML = Array.from({length:20}, (_,i) => {
+    const h = active ? (20 + Math.random() * 40) : 4;
+    return `<div class="vis-bar" style="height:${h}px;opacity:${active?'1':'0.3'}"></div>`;
+  }).join('');
+  if (active) {
+    let t = setInterval(() => {
+      if (!document.querySelector('.listen-play.playing')) { clearInterval(t); renderViz(false); return; }
+      viz.querySelectorAll('.vis-bar').forEach(b => {
+        b.style.height = (8 + Math.random() * 44) + 'px';
+      });
+    }, 100);
+  }
+}
+
+function checkListen() {
+  if (!listenData) return;
+  const inp = document.getElementById('listenInp').value.trim();
+  if (!inp) return;
+  const normalize = s => s.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();
+  if (normalize(inp) === normalize(listenData.text)) {
+    document.getElementById('listenFeedback').className = 'fill-feedback ok';
+    document.getElementById('listenFeedback').textContent = '✅ ¡Perfecto! Transcripción exacta.';
+    S.score += 20;
+    localStorage.setItem('lx_score', S.score);
+    updateStats();
+    speak(listenData.text);
+    setTimeout(generateListen, 2500);
+  } else {
+    document.getElementById('listenFeedback').className = 'fill-feedback err';
+    document.getElementById('listenFeedback').textContent = `❌ No coincide. Escucha de nuevo si tienes reproducciones disponibles.`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// SRS
+// ═══════════════════════════════════════════════════════
+const SRS_INTERVALS = [1, 3, 7, 14, 30]; // días
+
+function renderSRS() {
+  const container = document.getElementById('srsContainer');
+  const due = S.srs.filter(i => i.nextReview <= Date.now());
+
+  if (!due.length) {
+    const next = S.srs.sort((a,b)=>a.nextReview-b.nextReview)[0];
+    const msg = S.srs.length
+      ? `🎉 ¡Todo al día! Próximo repaso: ${next ? new Date(next.nextReview).toLocaleDateString('es') : 'pronto'}`
+      : 'Marca palabras como "Dom." en vocabulario para añadirlas al repaso.';
+    container.innerHTML = `<div class="srs-empty"><div class="big">${S.srs.length ? '🎉' : '🧠'}</div><p>${msg}</p></div>`;
+    return;
+  }
+
+  const item = due[0];
+  // Find word data
+  let wordData = null;
+  for (const lvl of Object.values(VOCAB)) {
+    for (const arr of Object.values(lvl)) {
+      const found = arr.find(w => w.word === item.word);
+      if (found) { wordData = found; break; }
+    }
+    if (wordData) break;
+  }
+
+  container.innerHTML = `
+    <div style="font-size:0.82rem;color:var(--text2);margin-bottom:10px;">${due.length} palabras para repasar</div>
+    <div class="srs-card">
+      <div class="srs-word">${item.word}</div>
+      ${wordData?.ipa ? `<div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent2);margin-bottom:8px;">${wordData.ipa}</div>` : ''}
+      <button class="btn" style="margin-bottom:8px;width:100%" onclick="revealSRS()">👁 Ver significado</button>
+      <div class="srs-reveal" id="srsReveal">
+        <strong>${wordData?.meaning || ''}</strong><br>
+        <em style="color:var(--text2);font-size:0.85rem">"${wordData?.example || ''}"</em>
+        <div class="srs-btns" style="margin-top:12px">
+          <button class="srs-btn hard" onclick="rateSRS('${esc(item.word)}','hard')">😓 Difícil</button>
+          <button class="srs-btn good" onclick="rateSRS('${esc(item.word)}','good')">🤔 Bien</button>
+          <button class="srs-btn easy" onclick="rateSRS('${esc(item.word)}','easy')">😊 Fácil</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function revealSRS() {
+  const el = document.getElementById('srsReveal');
+  if (el) { el.classList.add('shown'); const w = el.closest('.srs-card').querySelector('.srs-word')?.textContent; if (w) speak(w.trim()); }
+}
+
+function rateSRS(word, rating) {
+  const item = S.srs.find(i => i.word === word);
+  if (!item) return;
+  const DELTA = {hard: 0, good: 1, easy: 2};
+  item.intervalIdx = Math.min(SRS_INTERVALS.length - 1, Math.max(0, item.intervalIdx + DELTA[rating]));
+  if (rating === 'hard') item.intervalIdx = 0;
+  item.nextReview = Date.now() + SRS_INTERVALS[item.intervalIdx] * 86400000;
+  localStorage.setItem('lx_srs', JSON.stringify(S.srs));
+  updateStats();
+  renderSRS();
+  toast(`🔄 "${word}" → repaso en ${SRS_INTERVALS[item.intervalIdx]} día(s)`, 'info');
+}
+
+// ═══════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════
+function updateStats() {
+  const studied = Object.keys(S.studiedWords).length;
+  const mastered = S.masteredWords.length;
+  const due = S.srs.filter(i => i.nextReview <= Date.now()).length;
+
+  document.getElementById('statStudied').textContent = studied;
+  document.getElementById('statMastered').textContent = mastered;
+  document.getElementById('statScore').textContent = S.score;
+  document.getElementById('statReview').textContent = due;
+
+  // Total vocab
+  let total = 0;
+  for (const lvl of Object.values(VOCAB)) for (const arr of Object.values(lvl)) total += arr.length;
+  const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════
+function switchVGTab(name, btn) {
+  S.currentVGTab = name;
+  document.querySelectorAll('[data-vg]').forEach(b => b.classList.toggle('active', b.dataset.vg === name));
+  document.querySelectorAll('[id^="vg-"]').forEach(el => {
+    el.style.display = 'none';
+    el.classList.remove('active');
+  });
+  const el = document.getElementById('vg-' + name);
+  if (el) { el.style.display = 'flex'; el.classList.add('active'); }
+}
+
+function switchPrTab(name, btn) {
+  S.currentPrTab = name;
+  document.querySelectorAll('[data-pr]').forEach(b => b.classList.toggle('active', b.dataset.pr === name));
+  document.querySelectorAll('[id^="pr-"]').forEach(el => {
+    el.style.display = 'none';
+    el.classList.remove('active');
+  });
+  const el = document.getElementById('pr-' + name);
+  if (el) { el.style.display = 'flex'; el.classList.add('active'); }
+  if (name === 'srs') renderSRS();
+  if (name === 'fill') generateFill();
+  if (name === 'listen') generateListen();
+  if (name === 'quiz') generateQuiz();
+}
+
+function reloadPractice() {
+  const tab = S.currentPrTab;
+  if (tab === 'quiz') generateQuiz();
+  else if (tab === 'fill') generateFill();
+  else if (tab === 'listen') generateListen();
+  else if (tab === 'srs') renderSRS();
+}
+
+function changeLevel(level) {
+  S.level = level;
+  document.querySelectorAll('.lvl-btn').forEach(b => b.classList.toggle('active', b.dataset.level === level));
+  document.getElementById('levelCircle').textContent = level;
+  renderAll();
+  toast(`📚 Nivel: ${level}`, 'info');
+}
+
+function changeTopic(topic) {
+  S.topic = topic;
+  document.querySelectorAll('.topic-chip').forEach(c => c.classList.toggle('active', c.dataset.topic === topic));
+  renderAll();
+}
+
+function renderAll() {
+  renderVocab();
+  renderPhrasal();
+  renderIdioms();
+  renderGrammar();
+  generateQuiz();
+  generateFill();
+  generateListen();
+  updateStats();
+}
+
+function toggleVoicePanel() {
+  const p = document.getElementById('voicePanel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) loadVoices();
+}
+
+function toggleLight() {
+  document.body.classList.toggle('light');
+  const btn = document.getElementById('themeBtn');
+  btn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  localStorage.setItem('lx_theme', document.body.classList.contains('light') ? 'light' : 'dark');
+}
+
+function toast(msg, type = 'ok') {
+  const notifs = document.getElementById('notifs');
+  const div = document.createElement('div');
+  div.className = `notif ${type}`;
+  div.textContent = msg;
+  notifs.appendChild(div);
+  setTimeout(() => div.remove(), 3500);
+}
+
+function exportData() {
+  const data = {
+    version: '3.0',
+    exported: new Date().toISOString(),
+    studiedWords: S.studiedWords,
+    masteredWords: S.masteredWords,
+    score: S.score,
+    srs: S.srs
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `lexis-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📤 Progreso exportado', 'ok');
+}
+
+function resetAll() {
+  if (!confirm('¿Reiniciar todo el progreso? Esta acción no se puede deshacer.')) return;
+  ['lx_studied','lx_mastered','lx_score','lx_srs'].forEach(k => localStorage.removeItem(k));
+  S.studiedWords = {}; S.masteredWords = []; S.score = 0; S.srs = [];
+  S.quizCorrect = 0; S.quizWrong = 0; S.quizStreak = 0;
+  renderAll();
+  toast('🔄 Progreso reiniciado', 'info');
+}
+
+function esc(s) {
+  return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function showAchievementsModal() {
+  const achievements = [
+    { key: 'ach_20', name: '🌱 Primeros Pasos', desc: '20 palabras dominadas', reward: 25 },
+    { key: 'ach_50', name: '⭐ Aprendiz Experto', desc: '50 palabras dominadas', reward: 50 },
+    { key: 'ach_100', name: '🏅 Maestro del Vocabulario', desc: '100 palabras dominadas', reward: 100 },
+    { key: 'ach_100', name: '🌟 Prometedor', desc: '100 puntos', reward: 50 },
+    { key: 'ach_500', name: '🎯 Experto', desc: '500 puntos', reward: 100 },
+    { key: 'ach_1000', name: '👑 Leyenda', desc: '1000 puntos', reward: 200 },
+    { key: 'ach_verbs', name: '📖 Maestro de Verbos', desc: '20 verbos irregulares', reward: 75 }
+  ];
+  
+  let msg = "🏆 TUS LOGROS 🏆\n\n";
+  let hasAny = false;
+  achievements.forEach(a => {
+    const unlocked = localStorage.getItem(a.key);
+    if (unlocked) {
+      msg += `✅ ${a.name} — ${a.desc} (+${a.reward} pts)\n`;
+      hasAny = true;
+    } else {
+      msg += `🔒 ${a.name} — ${a.desc}\n`;
+    }
+  });
+  if (!hasAny) msg += "\n✨ ¡Sigue practicando para desbloquear tus primeros logros!";
+  
+  alert(msg);
+}
+// ═══════════════════════════════════════════════════════
+// FILL INPUT ENTER KEY
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (S.currentPrTab === 'fill') checkFill();
+    else if (S.currentPrTab === 'listen') checkListen();
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function initLogin() {
+  const loginModal = document.getElementById('loginModal');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginInput = document.getElementById('loginName');
+  
+  const lastUser = localStorage.getItem('lexis_last_user');
+  
+  if (lastUser) {
+    loadUser(lastUser);
+    syncUserToState();
+    loginModal.style.display = 'none';
+    document.querySelector('.app').style.display = 'block';
+    initApp();
+  } else {
+    loginModal.style.display = 'flex';
+    loginBtn.onclick = () => {
+      const name = loginInput.value.trim();
+      if (name) {
+        loadUser(name);
+        syncUserToState();
+        loginModal.style.display = 'none';
+        document.querySelector('.app').style.display = 'block';
+        initApp();
+      } else {
+        alert('Por favor ingresa tu nombre');
+      }
+    };
+    loginInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+  }
+}
+
+function initApp() {
+  // Restore theme
+  if (localStorage.getItem('lx_theme') === 'light') {
+    document.body.classList.add('light');
+    document.getElementById('themeBtn').textContent = '🌙';
+  }
+
+  // Level nav
+  document.getElementById('levelNav').addEventListener('click', e => {
+    const btn = e.target.closest('.lvl-btn');
+    if (btn) changeLevel(btn.dataset.level);
+  });
+
+  // Topics
+  document.getElementById('topicsBar').addEventListener('click', e => {
+    const chip = e.target.closest('.topic-chip');
+    if (chip) changeTopic(chip.dataset.topic);
+  });
+
+  // Initial tab visibility fix
+  document.querySelectorAll('[id^="pr-"]').forEach(el => el.style.display = 'none');
+  const activePr = document.getElementById('pr-quiz');
+  if (activePr) { activePr.style.display = 'flex'; activePr.classList.add('active'); }
+
+  document.querySelectorAll('[id^="vg-"]').forEach(el => { el.style.display = 'none'; el.classList.remove('active'); });
+  const activeVG = document.getElementById('vg-irregular');
+  if (activeVG) { activeVG.style.display = 'flex'; activeVG.classList.add('active'); }
+
+  // Load voices
+  loadVoices();
+
+  // Render everything
+  renderVerbs();
+  renderPhrasal();
+  renderIdioms();
+  renderGrammar();
+  renderVocab();
+  generateQuiz();
+  generateFill();
+  generateListen();
+  updateStats();
+  
+  // Agregar info de usuario al topbar
+  addUserInfoToTopbar();
+}
+
+function addUserInfoToTopbar() {
+  const topbar = document.querySelector('.topbar');
+  if (topbar && !document.getElementById('userInfoDiv')) {
+    const userDiv = document.createElement('div');
+    userDiv.id = 'userInfoDiv';
+    userDiv.style.cssText = 'display: flex; gap: 12px; align-items: center; background: var(--surface2); padding: 6px 14px; border-radius: 40px;';
+    userDiv.innerHTML = `
+      <span id="userNameDisplay">${userProgress?.name || 'Usuario'}</span>
+      <span id="userLevelDisplay">${userProgress?.level || 'A1'}</span>
+      <span id="userStreakDisplay">🔥 ${userProgress?.streak || 0}</span>
+    `;
+    const logo = topbar.querySelector('.logo');
+    if (logo) {
+      logo.after(userDiv);
+    } else {
+      topbar.insertBefore(userDiv, topbar.firstChild.nextSibling);
+    }
+  }
+  
+  // Actualizar stats de racha
+  const streakEl = document.getElementById('userStreakDisplay');
+  if (streakEl && userProgress) {
+    streakEl.innerHTML = `🔥 ${userProgress.streak}`;
+  }
+  
+  const levelEl = document.getElementById('userLevelDisplay');
+  if (levelEl && userProgress) {
+    levelEl.innerHTML = userProgress.level;
+  }
+  
+  const nameEl = document.getElementById('userNameDisplay');
+  if (nameEl && userProgress) {
+    nameEl.innerHTML = userProgress.name;
+  }
+  
+  // Agregar mejor racha al stats-row si no existe
+  const statsRow = document.querySelector('.stats-row');
+  if (statsRow && !document.getElementById('statBestStreak')?.parentElement) {
+    const bestPill = document.createElement('div');
+    bestPill.className = 'stat-pill';
+    bestPill.innerHTML = `🏆 Mejor racha: <span class="sval" id="statBestStreak">${userProgress?.bestStreak || 0}</span>`;
+    statsRow.appendChild(bestPill);
+  }
+}
+
+// Modificar updateStats para mostrar mejor racha
+const originalUpdateStats = updateStats;
+updateStats = function() {
+  originalUpdateStats();
+  const bestStreakEl = document.getElementById('statBestStreak');
+  if (bestStreakEl && userProgress) {
+    bestStreakEl.innerText = userProgress.bestStreak;
+  }
+  addUserInfoToTopbar();
+};
+
+// Modificar resetAll para usuario
+const originalResetAll = resetAll;
+resetAll = function() {
+  if (!confirm('¿Reiniciar todo tu progreso? No se puede deshacer.')) return;
+  
+  if (userProgress) {
+    userProgress.level = 'A1';
+    userProgress.score = 0;
+    userProgress.streak = 0;
+    userProgress.bestStreak = 0;
+    userProgress.masteredWords = [];
+    userProgress.studiedWords = {};
+    userProgress.srs = [];
+    userProgress.quizCorrect = 0;
+    userProgress.quizWrong = 0;
+    userProgress.quizStreak = 0;
+    saveUser();
+    
+    S.level = 'A1';
+    S.score = 0;
+    S.studiedWords = {};
+    S.masteredWords = [];
+    S.srs = [];
+    S.quizCorrect = 0;
+    S.quizWrong = 0;
+    S.quizStreak = 0;
+    
+    renderAll();
+    toast('🔄 Progreso reiniciado', 'info');
+  }
+};
+
+// Modificar exportData para usuario
+const originalExportData = exportData;
+exportData = function() {
+  if (!userProgress) return;
+  const data = {
+    version: '3.0',
+    user: userProgress.name,
+    exported: new Date().toISOString(),
+    progress: userProgress
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `lexis-${userProgress.name}-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📤 Progreso exportado', 'ok');
+};
+
+// Iniciar con login
+document.addEventListener('DOMContentLoaded', initLogin);
+</script>
+</body>
+</html>
