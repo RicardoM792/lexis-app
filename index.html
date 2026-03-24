@@ -1034,15 +1034,103 @@ body.light::before {
     radial-gradient(ellipse 60% 50% at 80% 100%, rgba(34,211,168,0.04) 0%, transparent 60%);
 }
 
-@media(max-width: 480px) {
-  .topbar { padding: 0 12px; }
-  .hero { padding: 24px 12px 20px; }
-  .topics-bar { padding: 0 12px 16px; }
-  .main { padding: 0 12px 80px; gap: 14px; }
-  .vocab-scroll, .verbs-wrap, .phrase-list, .grammar-list { max-height: 360px; }
-  .nav-levels { padding: 3px; }
-  .lvl-btn { padding: 5px 10px; font-size: 0.76rem; }
+@media (max-width: 768px) {
+  .nav-levels {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 12px;
+    margin: 0 -12px;
+    width: calc(100% + 24px);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  
+  .lvl-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+  
+  .lvl-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+  }
 }
+
+/* Barra de temas (Todos, Básicos, etc.) */
+@media (max-width: 768px) {
+  .topics-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 8px 0 12px 0;
+    margin: 0 -12px;
+    width: calc(100% + 24px);
+    padding-left: 12px;
+    padding-right: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  
+  .topic-chip {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 40px;
+  }
+  
+  .topic-chip.active {
+    background: rgba(124,92,252,0.2);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+@media (max-width: 768px) {
+  .nav-levels::-webkit-scrollbar,
+  .topics-scroll::-webkit-scrollbar {
+    height: 3px;
+  }
+  
+  .nav-levels::-webkit-scrollbar-track,
+  .topics-scroll::-webkit-scrollbar-track {
+    background: var(--surface3);
+    border-radius: 10px;
+  }
+  
+  .nav-levels::-webkit-scrollbar-thumb,
+  .topics-scroll::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+  }
+}
+
+/* Mejora para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .lvl-btn {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .topic-chip {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+}
+</style>
 </style>
 </head>
 <body>
@@ -1066,11 +1154,12 @@ body.light::before {
   </div>
 
   <div class="topbar-right">
-    <button class="icon-btn" onclick="toggleLight()" title="Tema" id="themeBtn">🌙</button>
-    <button class="icon-btn" onclick="exportData()" title="Exportar">↑</button>
-    <button class="icon-btn" onclick="resetAll()" title="Reiniciar">↺</button>
-    <button class="icon-btn" onclick="showAchievementsModal()" title="Logros">🏆</button>
-  </div>
+   <button class="icon-btn" onclick="toggleLight()" title="Tema" id="themeBtn">🌙</button>
+   <button class="icon-btn" onclick="exportData()" title="Exportar">↑</button>
+   <button class="icon-btn" onclick="importData()" title="Importar">↓</button>
+   <button class="icon-btn" onclick="resetAll()" title="Reiniciar">↺</button>
+   <button class="icon-btn" onclick="showAchievementsModal()" title="Logros">🏆</button>
+</div>
 </nav>
 
 <!-- HERO -->
@@ -3515,7 +3604,84 @@ function exportData() {
   URL.revokeObjectURL(url);
   toast('📤 Progreso exportado', 'ok');
 }
+// Función para IMPORTAR progreso (mantiene racha)
+function importData() {
+  // Crear input file oculto
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+        
+        // Verificar que es un archivo válido
+        if (!imported.progress && !imported.masteredWords) {
+          toast('❌ Archivo no válido', 'err');
+          return;
+        }
+        
+        // Extraer los datos (puede venir en diferentes formatos)
+        const newProgress = imported.progress || imported;
+        
+        // Preguntar si quiere sobrescribir o fusionar
+        const confirmMsg = `¿Importar progreso?
+        
+📊 Datos a importar:
+• Usuario: ${newProgress.name || 'Desconocido'}
+• Puntos: ${newProgress.score || 0}
+• Palabras dominadas: ${(newProgress.masteredWords || []).length}
+• Racha actual: ${newProgress.streak || 0}
+• Mejor racha: ${newProgress.bestStreak || 0}
 
+⚠️ Esto SOBRESCRIBIRÁ tu progreso actual.
+¿Continuar?`;
+        
+        if (confirm(confirmMsg)) {
+          // Sobrescribir el progreso actual
+          userProgress.name = newProgress.name || userProgress.name;
+          userProgress.level = newProgress.level || userProgress.level;
+          userProgress.score = newProgress.score || 0;
+          userProgress.streak = newProgress.streak || 0;
+          userProgress.bestStreak = newProgress.bestStreak || 0;
+          userProgress.masteredWords = newProgress.masteredWords || [];
+          userProgress.studiedWords = newProgress.studiedWords || {};
+          userProgress.srs = newProgress.srs || [];
+          userProgress.quizCorrect = newProgress.quizCorrect || 0;
+          userProgress.quizWrong = newProgress.quizWrong || 0;
+          userProgress.quizStreak = newProgress.quizStreak || 0;
+          userProgress.lastLogin = Date.now();
+          
+          saveUser();
+          syncUserToState();
+          
+          // Recargar toda la interfaz
+          renderAll();
+          updateStats();
+          addUserInfoToTopbar();
+          
+          toast(`✅ Progreso importado correctamente. ¡Tu racha de ${userProgress.streak} días se mantiene!`, 'ok');
+          
+          // Mostrar resumen
+          setTimeout(() => {
+            alert(`📊 RESUMEN IMPORTADO\n\nPuntos: ${userProgress.score}\nPalabras dominadas: ${userProgress.masteredWords.length}\nRacha: ${userProgress.streak} días\nMejor racha: ${userProgress.bestStreak}`);
+          }, 500);
+        }
+      } catch (error) {
+        console.error(error);
+        toast('❌ Error al leer el archivo', 'err');
+      }
+    };
+    reader.readAsText(file);
+  };
+  
+  input.click();
+}
 function resetAll() {
   if (!confirm('¿Reiniciar todo el progreso? Esta acción no se puede deshacer.')) return;
   ['lx_studied','lx_mastered','lx_score','lx_srs'].forEach(k => localStorage.removeItem(k));
