@@ -1153,12 +1153,13 @@ body.light::before {
     <button class="lvl-btn" data-level="C2">C2</button>
   </div>
 
-  <div class="topbar-right">
-   <button class="icon-btn" onclick="toggleLight()" title="Tema" id="themeBtn">🌙</button>
-   <button class="icon-btn" onclick="exportData()" title="Exportar">↑</button>
-   <button class="icon-btn" onclick="importData()" title="Importar">↓</button>
-   <button class="icon-btn" onclick="resetAll()" title="Reiniciar">↺</button>
-   <button class="icon-btn" onclick="showAchievementsModal()" title="Logros">🏆</button>
+<div class="topbar-right">
+  <button class="icon-btn" onclick="switchUser()" title="Cambiar usuario">👤</button>
+  <button class="icon-btn" onclick="toggleLight()" title="Tema" id="themeBtn">🌙</button>
+  <button class="icon-btn" onclick="exportData()" title="Exportar">↑</button>
+  <button class="icon-btn" onclick="importData()" title="Importar">↓</button>
+  <button class="icon-btn" onclick="resetAll()" title="Reiniciar">↺</button>
+  <button class="icon-btn" onclick="showAchievementsModal()" title="Logros">🏆</button>
 </div>
 </nav>
 
@@ -2883,15 +2884,28 @@ function testVoice() {
 // RENDER VOCABULARY
 // ═══════════════════════════════════════════════════════
 function getAllWords(level, topic) {
-  const lvl = VOCAB[level];
-  if (!lvl) return [];
-  let words = [];
+  // Si es "todos", mostrar solo palabras del nivel actual
   if (topic === 'all') {
+    const lvl = VOCAB[level];
+    if (!lvl) return [];
+    let words = [];
     Object.values(lvl).forEach(arr => words.push(...arr));
-  } else {
-    words = lvl[topic] || [];
+    return words;
   }
-  return words;
+  
+  // Para temas específicos, buscar en TODOS los niveles
+  let allWords = [];
+  
+  // Recorrer todos los niveles (A1, A2, B1, B2, C1, C2)
+  for (const lvlName in VOCAB) {
+    const levelData = VOCAB[lvlName];
+    // Buscar el tema en este nivel
+    if (levelData[topic]) {
+      allWords.push(...levelData[topic]);
+    }
+  }
+  
+  return allWords;
 }
 
 function renderVocab() {
@@ -3112,8 +3126,8 @@ let quizCurrent = null;
 
 function generateQuiz() {
   const words = getAllWords(S.level, S.topic);
-  if (words.length < 4) {
-    document.getElementById('quizOpts').innerHTML = '<div class="empty-state"><span class="e-icon">⚠️</span>Necesitas al menos 4 palabras en este nivel/tema</div>';
+  if (words.length < 2) {
+    document.getElementById('quizOpts').innerHTML = '<div class="empty-state"><span class="e-icon">⚠️</span>No hay suficientes palabras en este tema. Cambia de tema o nivel.</div>';
     return;
   }
   const idx = Math.floor(Math.random() * words.length);
@@ -3279,8 +3293,13 @@ let fillAttempts = 0;
 let fillHintRevealed = 0;
 
 function generateFill() {
+  // Usar la misma función getAllWords mejorada
   const words = getAllWords(S.level, S.topic).filter(w => w.example);
-  if (!words.length) return;
+  if (!words.length) {
+    // Si no hay palabras con ejemplo, mostrar mensaje
+    document.getElementById('fillSentence').innerHTML = 'No hay oraciones de ejemplo para este tema. Cambia de tema o nivel.';
+    return;
+  }
   fillData = words[Math.floor(Math.random() * words.length)];
   fillAttempts = 0;
   fillHintRevealed = 0;
@@ -3354,7 +3373,11 @@ const MAX_PLAYS = 3;
 
 function generateListen() {
   const phrases = LISTEN_PHRASES.filter(p => p.level === S.level || S.level === 'A1');
-  listenData = phrases[Math.floor(Math.random() * phrases.length)];
+  if (!phrases.length) {
+    listenData = LISTEN_PHRASES[0];
+  } else {
+    listenData = phrases[Math.floor(Math.random() * phrases.length)];
+  }
   listenPlayCount = 0;
   document.getElementById('listenPlayCount').textContent = '0';
   document.getElementById('listenPlayBtn').className = 'listen-play';
@@ -3729,6 +3752,27 @@ function showAchievementsModal() {
   
   alert(msg);
 }
+function switchUser() {
+  if (confirm('¿Cambiar de usuario? Tu progreso actual se guardará.')) {
+    // Limpiar el usuario actual de la memoria
+    localStorage.removeItem('lexis_last_user');
+    currentUser = null;
+    userProgress = null;
+    
+    // Ocultar la app y mostrar el modal de login
+    document.querySelector('.app').style.display = 'none';
+    
+    // Limpiar el campo del modal
+    const loginInput = document.getElementById('loginName');
+    if (loginInput) loginInput.value = '';
+    
+    // Mostrar el modal de login
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) loginModal.style.display = 'flex';
+    
+    toast('👋 Sesión cerrada. Ingresa con otro nombre', 'info');
+  }
+}
 // ═══════════════════════════════════════════════════════
 // FILL INPUT ENTER KEY
 // ═══════════════════════════════════════════════════════
@@ -3757,6 +3801,7 @@ function initLogin() {
     initApp();
   } else {
     loginModal.style.display = 'flex';
+    
     loginBtn.onclick = () => {
       const name = loginInput.value.trim();
       if (name) {
@@ -3769,6 +3814,7 @@ function initLogin() {
         alert('Por favor ingresa tu nombre');
       }
     };
+    
     loginInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') loginBtn.click();
     });
@@ -3878,9 +3924,8 @@ updateStats = function() {
 };
 
 // Modificar resetAll para usuario
-const originalResetAll = resetAll;
-resetAll = function() {
-  if (!confirm('¿Reiniciar todo tu progreso? No se puede deshacer.')) return;
+function resetAll() {
+  if (!confirm('¿Reiniciar TODO tu progreso? Esta acción no se puede deshacer.')) return;
   
   if (userProgress) {
     userProgress.level = 'A1';
@@ -3905,9 +3950,12 @@ resetAll = function() {
     S.quizStreak = 0;
     
     renderAll();
+    updateStats();
+    addUserInfoToTopbar();
+    
     toast('🔄 Progreso reiniciado', 'info');
   }
-};
+}
 
 // Modificar exportData para usuario
 const originalExportData = exportData;
